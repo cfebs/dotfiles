@@ -1,7 +1,24 @@
 " Switch to pathogen
-runtime bundle/pathogen/autoload/pathogen.vim
-call pathogen#infect()
-call pathogen#helptags()
+"runtime bundle/pathogen/autoload/pathogen.vim
+"call pathogen#infect()
+"call pathogen#helptags()
+
+"" Vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+
+Bundle "kchmck/vim-coffee-script"
+Bundle "kien/ctrlp.vim"
+Bundle "groenewege/vim-less"
+Bundle "altercation/vim-colors-solarized"
+Bundle "godlygeek/tabular"
+Bundle "tpope/vim-fugitive"
+Bundle "tpope/vim-markdown"
+Bundle "mattn/zencoding-vim"
+
+filetype plugin indent on
 
 "set t_Co=256
 set t_Co=16
@@ -9,7 +26,6 @@ set history=1000
 let mapleader = ","
 set autoread
 set nocp
-filetype plugin indent on
 set ruler
 set backspace=eol,start,indent
 
