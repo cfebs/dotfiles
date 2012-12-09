@@ -45,9 +45,13 @@ set nolazyredraw
 "" Tabbing
 set ai
 set expandtab
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 set smarttab
+
+"" ruby, html
+au FileType ruby setl sw=2 sts=2 et
+au FileType html setl sw=2 sts=2 et
 
 "" Status
 set laststatus=2
