@@ -29,9 +29,8 @@ set nocp
 set ruler
 set backspace=eol,start,indent
 
-" created by the manage script
-set backupdir=$HOME/.vim/.vimbackup/
-set directory=$HOME/.vim/.vimswp/
+set backupdir=/tmp/
+set directory=/tmp/
 
 "" Noice
 nnoremap ; :
