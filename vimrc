@@ -17,6 +17,8 @@ Bundle "godlygeek/tabular"
 Bundle "tpope/vim-fugitive"
 Bundle "tpope/vim-markdown"
 Bundle "mattn/zencoding-vim"
+Bundle "xolox/vim-notes"
+Bundle "cfebs/vim-prose"
 
 filetype plugin indent on
 
@@ -66,7 +68,6 @@ set smarttab
 
 "" ruby, html
 au FileType ruby setl sw=2 sts=2 et
-au FileType html setl sw=2 sts=2 et
 
 "" Status
 set laststatus=2
@@ -95,7 +96,7 @@ set wildmode=list:longest
 set wildignore+=*tmp/*,*.so,*.swp,*.zip,*/.git/*,.gitkeep
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll|pyc)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
@@ -111,18 +112,15 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
+nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
 "" Python
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
 
-"" Spell Check
-map <leader>ss :setlocal spell!<cr>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
 
 """" Plugins
+
+""" notes
 
 """ org
 au! BufRead,BufWrite,BufWritePost,BufNewFile *.org

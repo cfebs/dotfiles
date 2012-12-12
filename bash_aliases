@@ -7,11 +7,10 @@ alias 3="cd ../../../"
 alias 4="cd ../../../../"
 
 # xampp
-lampp="/opt/lampp/lampp"
+alias lampp="sudo /opt/lampp/lampp"
 if [ -d "$lampp" ]
 then
   export LAMPP_HOME="/opt/lampp/lampp"
-  alias lampp="cd $LAMPP_HOME"
 fi
 
 # http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
