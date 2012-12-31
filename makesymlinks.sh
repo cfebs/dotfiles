@@ -56,3 +56,6 @@ done
 
 # back to where we started
 cd "$curdir"
+
+echo "Cloning vundle to ~/.vim/bundle/vundle"
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle

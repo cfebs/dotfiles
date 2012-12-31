@@ -54,7 +54,9 @@ set showmatch
 
 "" Colors
 syntax enable
-colorscheme solarized
+" Usually term not set up for solarized
+"colorscheme solarized
+colorscheme desert
 set background=dark
 set nonu
 set nolazyredraw
