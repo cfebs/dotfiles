@@ -6,6 +6,8 @@ alias 2="cd ../../"
 alias 3="cd ../../../"
 alias 4="cd ../../../../"
 
+alias bashrc=". ~/.bashrc"
+
 # xampp
 alias lampp="sudo /opt/lampp/lampp"
 if [ -d "$lampp" ]
@@ -23,7 +25,7 @@ alias vis='vim "+set si"'
 alias edit='vim'
 
 alias simple_http="python -m SimpleHTTPServer 4331"
-alias simp="$HOME/web/rb/simple/simple_server.ru -p 4331"
+alias simp="$HOME/web/rb/simple-server/simple_server.ru -p 4331"
 
 # do not delete / or prompt if deleting more than 3 files at a time #
 alias rm='rm -I --preserve-root'
@@ -46,3 +48,13 @@ rvm-project() {
     echo '.rvmrc' >> ./$1/.gitignore
   fi
 }
+
+function timer_notify() {
+    echo -e "\n\nBOOOM! Time to start."
+    notify-send -u critical "`echo BOOOOOOM | figlet`"
+}
+
+function timer() {
+    MIN=$1 && for i in $(seq $(($MIN*60)) -1 1); do echo -n "$i, "; sleep 1; done; timer_notify;
+}
+
