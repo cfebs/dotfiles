@@ -58,3 +58,10 @@ function timer() {
     MIN=$1 && for i in $(seq $(($MIN*60)) -1 1); do echo -n "$i, "; sleep 1; done; timer_notify;
 }
 
+function qfind() {
+    find . -iname "*$1*"
+}
+
+function qgrep() {
+    grep -irn "$1" .
+}
