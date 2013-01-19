@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-skipfiles="README.md $0 . .."     # files to skip linking
+skipfiles="README.md `basename $0` . .."     # files to skip linking
 curdir="`pwd`"
 
 
@@ -29,14 +29,20 @@ echo "...done"
 files=$curdir/*
 for file in $files; do
     skip=0
-    file="`basename $file`"
+    filename="`basename $file`"
 
     for skipfile in $skipfiles; do
-        if [ "$file" = "$skipfile" ]
+        if [ "$filename" = "$skipfile" ]
         then
             skip=1
         fi
     done
+
+    # do not link directories
+    if [ -d $file ]
+    then
+        skip=1
+    fi
 
     if [ "$skip" -eq "1" ]
     then
@@ -45,17 +51,19 @@ for file in $files; do
 
     echo "Moving any existing dotfiles from ~ to $olddir"
 
-    if [ -f  ~/.$file ]
+    if [ -f  ~/.$filename ]
     then
-        mv ~/.$file ~/dotfiles_old/
+        mv ~/.$filename ~/dotfiles_old/
     fi
 
     echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+
+    ln -s $dir/$filename ~/.$filename
 done
 
 # back to where we started
 cd "$curdir"
 
 echo "Cloning vundle to ~/.vim/bundle/vundle"
+
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle

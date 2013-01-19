@@ -19,6 +19,7 @@ Bundle "tpope/vim-markdown"
 Bundle "mattn/zencoding-vim"
 Bundle "xolox/vim-notes"
 Bundle "cfebs/vim-prose"
+Bundle "jpo/vim-railscasts-theme"
 
 filetype plugin indent on
 
@@ -56,7 +57,8 @@ set showmatch
 syntax enable
 " Usually term not set up for solarized
 "colorscheme solarized
-colorscheme desert
+colorscheme railscasts
+"colorscheme desert
 set background=dark
 set nonu
 set nolazyredraw
@@ -115,6 +117,7 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nnoremap <Leader>g :e#<CR>
 
 "" Python
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4

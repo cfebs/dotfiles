@@ -1,3 +1,6 @@
+
+!#include "/path/here/dotfiles/urxvt/base"
+
 URxvt.depth:                32
 URxvt.geometry:             90x30
 URxvt.transparent:          false

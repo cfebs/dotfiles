@@ -18,6 +18,7 @@ fi
 # http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 alias c='clear'
 alias bc='bc -l'
+alias lh='ls --hide="*.pyc"'
 
 alias vi=vim
 alias svi='sudo vi'
@@ -65,3 +66,15 @@ function qfind() {
 function qgrep() {
     grep -irn "$1" .
 }
+
+function run_once() {
+    if [ ! -f ~/.run_once ]
+    then
+        git config --global user.name  "febs"
+        git config --global user.email "coojoe89@gmail.com"
+        git config --global color.ui true
+
+        echo "Ran run_once() in bash_aliases" > ~/.run_once
+    fi
+}
+run_once
