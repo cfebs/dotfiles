@@ -1,5 +1,10 @@
 
+!! modular xdefaults
 !#include "/path/here/dotfiles/urxvt/base"
+
+!! Notes:
+!!  Copy from urxvt in tmux: shift - select. Middle mouse pastes
+!!  Paste into: shift - ins
 
 URxvt.depth:                32
 URxvt.geometry:             90x30
@@ -19,7 +24,7 @@ URxvt.font:               xft:Monospace:pixelsize=12
 URxvt.boldFont:           xft:Monospace:pixelsize=12
 
 ! Fix font space
-URxvt.letterSpace: -1
+URxvt.letterSpace: -2
 
 ! Scrollbar
 URxvt.scrollStyle:          rxvt
@@ -28,7 +33,8 @@ URxvt.scrollBar:            false
 ! Perl extensions
 URxvt.perl-ext-common:      default,matcher,clipboard
 URxvt.matcher.button:       1
-URxvt.urlLauncher:          firefox
+URxvt.urlLauncher:          google-chrome
+URxvt.clipboard.autocopy:   true
 
 ! Cursor
 URxvt.cursorBlink:          true

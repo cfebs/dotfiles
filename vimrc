@@ -20,6 +20,8 @@ Bundle "mattn/zencoding-vim"
 Bundle "xolox/vim-notes"
 Bundle "cfebs/vim-prose"
 Bundle "jpo/vim-railscasts-theme"
+Bundle "scrooloose/nerdcommenter"
+Bundle "aaronbieber/quicktask"
 
 filetype plugin indent on
 
@@ -66,12 +68,10 @@ set nolazyredraw
 "" Tabbing
 set ai
 set expandtab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set smarttab
 
-"" ruby, html
-au FileType ruby setl sw=2 sts=2 et
 
 "" Status
 set laststatus=2
@@ -117,19 +117,29 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-nnoremap <Leader>g :e#<CR>
+
+"" Quick leader functions
+nnoremap <leader>g :e#<cr>
+nnoremap <leader><cr> :noh<cr>
+nnoremap <leader>n :only<cr>
+
+"" Quick file access
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ov :vsp $MYVIMRC<cr>
+nnoremap <leader>ot :vsp $HOME/todo.quicktask<cr>
 
 "" Python
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
-
+"" Ruby
+autocmd FileType ruby,eruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
+"" HTML
+autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 """" Plugins
 
 """ notes
 
 """ org
-au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-au BufEnter *.org            call org#SetOrgFileType()
 
 "" ctrlp
 nmap <silent> <Leader>t :CtrlP<CR>
