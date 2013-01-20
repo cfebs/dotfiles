@@ -79,8 +79,8 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ 
 set statusline+=\ %{fugitive#statusline()}
 
 function! CurDir()
-    let home = '/home/collin/'
-    let curdir = substitute(getcwd(), home, "~/", "g")
+    let home = $HOME
+    let curdir = substitute(getcwd(), home, "~", "g")
     return curdir
 endfunction
 
