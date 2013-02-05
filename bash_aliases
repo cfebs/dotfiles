@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export EDITOR='vim'
+
 # Quick nav
 alias 1="cd ../"
 alias 2="cd ../../"
@@ -7,6 +9,7 @@ alias 3="cd ../../../"
 alias 4="cd ../../../../"
 
 alias bashrc=". ~/.bashrc"
+alias grep="grep --color"
 
 # xampp
 alias lampp="sudo /opt/lampp/lampp"
@@ -19,6 +22,7 @@ fi
 alias c='clear'
 alias bc='bc -l'
 alias lh='ls --hide="*.pyc"'
+alias l='ls'
 
 alias vi=vim
 alias svi='sudo vi'
@@ -59,6 +63,7 @@ function timer() {
     MIN=$1 && for i in $(seq $(($MIN*60)) -1 1); do echo -n "$i, "; sleep 1; done; timer_notify;
 }
 
+alias ack="ack-grep"
 function qfind() {
     find . -iname "*$1*"
 }

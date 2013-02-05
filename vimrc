@@ -58,8 +58,8 @@ set showmatch
 "" Colors
 syntax enable
 " Usually term not set up for solarized
-"colorscheme solarized
-colorscheme railscasts
+colorscheme solarized
+"colorscheme railscasts
 "colorscheme desert
 set background=dark
 set nonu
@@ -91,6 +91,9 @@ function! HasPaste()
         return ''
     endif
 endfunction
+
+"" Better pasting
+inoremap <S-Insert> <ESC>"+p`]a
 
 
 set hidden
@@ -129,7 +132,7 @@ nnoremap <leader>ov :vsp $MYVIMRC<cr>
 nnoremap <leader>ot :vsp $HOME/todo.quicktask<cr>
 
 "" Python
-autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType python,markdown setlocal tabstop=4 softtabstop=4 shiftwidth=4
 "" Ruby
 autocmd FileType ruby,eruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
 "" HTML
