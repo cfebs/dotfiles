@@ -3,7 +3,9 @@
 "call pathogen#infect()
 "call pathogen#helptags()
 
+""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Vundle
+""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -23,9 +25,13 @@ Bundle "jpo/vim-railscasts-theme"
 Bundle "scrooloose/nerdcommenter"
 Bundle "aaronbieber/quicktask"
 
+""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Fundamentals
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
 filetype plugin indent on
 
-"set t_Co=256
+"set t_Co=256   " 256 colors
 set t_Co=16
 set history=1000
 let mapleader = ","
@@ -33,9 +39,15 @@ set autoread
 set nocp
 set ruler
 set backspace=eol,start,indent
+set hidden
+set scrolloff=3
+" Prevent Vim from clobbering the scrollback buffer. See
+" http://www.shallowsky.com/linux/noaltscreen.html
+set t_ti= t_te=
+set shell=bash
 
-set backupdir=/tmp/
-set directory=/tmp/
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 "" Noice
 nnoremap ; :
@@ -56,7 +68,7 @@ set incsearch
 set showmatch
 
 "" Colors
-syntax enable
+syntax on
 " Usually term not set up for solarized
 colorscheme solarized
 "colorscheme railscasts
@@ -68,14 +80,14 @@ set nolazyredraw
 "" Tabbing
 set ai
 set expandtab
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 set smarttab
-
 
 "" Status
 set laststatus=2
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 set statusline+=\ %{fugitive#statusline()}
 
 function! CurDir()
@@ -92,15 +104,10 @@ function! HasPaste()
     endif
 endfunction
 
-"" Better pasting
-inoremap <S-Insert> <ESC>"+p`]a
-
-
-set hidden
-source $VIMRUNTIME/menu.vim
+" wilds
 set wildmenu
 set wildmode=list:longest
-set wildignore+=*tmp/*,*.so,*.swp,*.zip,*/.git/*,.gitkeep
+set wildignore+=*tmp/*,*.so,*.swp,*/.git/*,.gitkeep
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]_site|\.(git|hg|svn)$',
@@ -108,50 +115,108 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-set cpo-=<
-set wcm=<C-Z>
+""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Experimental Turn OFF
+""""""""""""""""""""""""""""""""""""""""""""""""""
+"set cpo-=<
+"set wcm=<C-Z>
 
-"" whitespace
+""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Auto Commands
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" Whitespace
+augroup vimrcEx
+  autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+  autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+  autocmd BufWinLeave * call clearmatches()
+
+  "" Python
+  autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  "" Ruby
+  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  "" HTML
+  autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+augroup end
+
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
-
 nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Auto Commands
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
 "" Quick leader functions
-nnoremap <leader>g :e#<cr>
+nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
 nnoremap <leader>n :only<cr>
+imap <c-c> <esc>
+
+"" Split nav
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
 
 "" Quick file access
 nnoremap <leader>sv :source $MYVIMRC<cr>
-nnoremap <leader>ov :vsp $MYVIMRC<cr>
+nnoremap <leader>ev :vsp $MYVIMRC<cr>
 nnoremap <leader>ot :vsp $HOME/todo.quicktask<cr>
 
-"" Python
-autocmd FileType python,markdown setlocal tabstop=4 softtabstop=4 shiftwidth=4
-"" Ruby
-autocmd FileType ruby,eruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
-"" HTML
-autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ARROW KEYS ARE UNACCEPTABLE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+
+
+"" %% expands to the current directory
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+
 
 """" Plugins
-
-""" notes
-
-""" org
 
 "" ctrlp
 nmap <silent> <Leader>t :CtrlP<CR>
 nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = ''
-
-"" tabman
-let g:tabman_number = 0
 
 "" Tabularize
 if exists(":Tabularize")

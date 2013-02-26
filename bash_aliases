@@ -65,6 +65,12 @@ function timer() {
 
 alias ack="ack-grep"
 function qfind() {
+    if [ -z $1 ]
+    then
+      echo "No search param"
+      return 0
+    fi
+
     find . -iname "*$1*"
 }
 
