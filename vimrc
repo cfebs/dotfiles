@@ -87,7 +87,7 @@ set smarttab
 "" Status
 set laststatus=2
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
-set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+set statusline=\ %{HasPaste()}\ %<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 set statusline+=\ %{fugitive#statusline()}
 
 function! CurDir()
@@ -106,7 +106,7 @@ endfunction
 
 " wilds
 set wildmenu
-set wildmode=list:longest
+set wildmode=longest,list
 set wildignore+=*tmp/*,*.so,*.swp,*/.git/*,.gitkeep
 
 let g:ctrlp_custom_ignore = {
@@ -127,6 +127,15 @@ let g:ctrlp_custom_ignore = {
 
 "" Whitespace
 augroup vimrcEx
+  autocmd!
+  autocmd FileType text setlocal textwidth=78
+
+  " Jump to last cursor position unless it's invalid or in an event handler
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
@@ -136,8 +145,7 @@ augroup vimrcEx
   autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
   "" Ruby
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  "" HTML
-  autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
 augroup end
 
@@ -154,6 +162,7 @@ nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
 nnoremap <leader>n :only<cr>
 imap <c-c> <esc>
+
 
 "" Split nav
 nnoremap <c-j> <c-w>j
