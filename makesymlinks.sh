@@ -1,18 +1,15 @@
-#!/bin/bash
-############################
-# .make.sh
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
-############################
+#!/usr/bin/env bash
 
-########## Variables
+set -e
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
+echo '1'
+
+here="`dirname $(readlink -f $0)`"
+
+# old dotfiles backup directory
+olddir="$HOME/dotfiles_old"             
 skipfiles="README.md `basename $0` . .."     # files to skip linking
-curdir="`pwd`"
-
-
-##########
+echo '2'
 
 # create dotfiles_old in homedir
 echo "Creating $olddir for backup of any existing dotfiles in ~"
@@ -20,15 +17,16 @@ mkdir -p $olddir
 echo "...done"
 
 # change to the dotfiles directory
-echo "Changing to the $dir directory"
-cd $dir
+echo "Changing to the $here directory"
+cd $here
 echo "...done"
 
-# move any existing dotfiles in homedir to dotfiles_old directory
-# create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
-files=$curdir/*
-for file in $files; do
+# _should_skip file
+# echo's 1 if it should be skipped
+function _should_skip() {
+
     skip=0
+    file="$1"
     filename="`basename $file`"
 
     for skipfile in $skipfiles; do
@@ -39,31 +37,60 @@ for file in $files; do
     done
 
     # do not link directories
-    if [ -d $file ]
+    if [ -d "$file" ]
     then
         skip=1
     fi
 
-    if [ "$skip" -eq "1" ]
+    echo "$skip"
+
+}
+
+function _create_dot_file() {
+
+    file="$1"
+    filename="`basename $file`"
+    dot_file="$HOME/.$filename"
+
+
+    if [ -e "$dot_file" ]
+    then
+        # backup
+        cp -f "$dot_file" "$olddir"
+
+        # remove old
+        rm -f "$dot_file"
+    fi
+	
+    echo "Creating symlink to $file in home directory."
+    ln -s "$here/$filename"  "$dot_file"
+
+}
+
+function _clone_vundle() {
+    vundle_dir="$HOME/.vim/bundle/vundle"
+
+    if [ -d "$vundle_dir/.git" ] 
+    then
+        return
+    fi
+
+    echo "Cloning vundle to $vundle_dir"
+    git clone https://github.com/gmarik/vundle.git "$vundle_dir"
+}
+
+## Main
+
+files=$here/*
+for file in $files; do
+
+    if [ "`_should_skip $file`" -eq "1" ]
     then
         continue
     fi
 
     echo "Moving any existing dotfiles from ~ to $olddir"
 
-    if [ -f  ~/.$filename ]
-    then
-        mv ~/.$filename ~/dotfiles_old/
-    fi
-
-    echo "Creating symlink to $file in home directory."
-
-    ln -s $dir/$filename ~/.$filename
+    _create_dot_file "$file"
+    _clone_vundle
 done
-
-# back to where we started
-cd "$curdir"
-
-echo "Cloning vundle to ~/.vim/bundle/vundle"
-
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
