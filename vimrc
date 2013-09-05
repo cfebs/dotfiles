@@ -11,19 +11,19 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
-Bundle "kchmck/vim-coffee-script"
-Bundle "kien/ctrlp.vim"
-Bundle "groenewege/vim-less"
-Bundle "altercation/vim-colors-solarized"
-Bundle "godlygeek/tabular"
-Bundle "tpope/vim-fugitive"
-Bundle "tpope/vim-markdown"
-Bundle "mattn/zencoding-vim"
-Bundle "xolox/vim-notes"
-Bundle "cfebs/vim-prose"
-Bundle "jpo/vim-railscasts-theme"
-Bundle "scrooloose/nerdcommenter"
-Bundle "aaronbieber/quicktask"
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'kien/ctrlp.vim'
+Bundle 'groenewege/vim-less'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'godlygeek/tabular'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
+Bundle 'mattn/zencoding-vim'
+Bundle 'cfebs/vim-prose'
+Bundle 'jpo/vim-railscasts-theme'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'aaronbieber/quicktask'
+Bundle 'bling/vim-airline'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "" Fundamentals
@@ -60,6 +60,9 @@ nmap <leader>2 VypVr-
 nmap <leader>3 I### <Esc>
 nmap <leader>4 I### <Esc>
 
+"" Pasting
+nmap <leader>p :setlocal paste! paste?<cr>
+
 "" Searching
 set ignorecase
 set smartcase
@@ -85,24 +88,40 @@ set tabstop=4
 set smarttab
 
 "" Status
+"" Raw status line ditched for airline
+"set statusline=\ %{HasPaste()}\ %<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+"set statusline+=\ %{fugitive#statusline()}
+
 set laststatus=2
-"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
-set statusline=\ %{HasPaste()}\ %<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
-set statusline+=\ %{fugitive#statusline()}
+let g:airline_mode_map = {
+  \ '__' : '-',
+  \ 'n'  : 'N',
+  \ 'i'  : 'I',
+  \ 'R'  : 'R',
+  \ 'c'  : 'C',
+  \ 'v'  : 'V',
+  \ 'V'  : 'V',
+  \ '' : 'V',
+  \ 's'  : 'S',
+  \ 'S'  : 'S',
+  \ '' : 'S',
+  \ }
 
-function! CurDir()
-    let home = $HOME
-    let curdir = substitute(getcwd(), home, "~", "g")
-    return curdir
-endfunction
+let g:airline_symbols = {}
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_symbols.readonly = '♿'
 
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    else
-        return ''
-    endif
-endfunction
 
 " wilds
 set wildmenu
