@@ -2,6 +2,10 @@
 
 export EDITOR='vim'
 
+alias tmux="TERM=screen-256color-bce tmux"
+
+#echo "tmux -> tmux something" | awk '{split($0, a, " -> "); print a[1], a[2]}'
+
 # Quick nav
 alias 1="cd ../"
 alias 2="cd ../../"
@@ -76,6 +80,11 @@ function qfind() {
 
 function qgrep() {
     grep -irn "$1" .
+}
+
+function net-qual() {
+    # 1st arg is the domain to make a HEAD request to
+    while true; do echo 'start'; time curl --head "$1"; echo 'finish & sleeping'; sleep 10; done;
 }
 
 function run_once() {

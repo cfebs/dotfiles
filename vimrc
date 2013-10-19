@@ -18,12 +18,15 @@ Bundle "altercation/vim-colors-solarized"
 Bundle "godlygeek/tabular"
 Bundle "tpope/vim-fugitive"
 Bundle "tpope/vim-markdown"
-Bundle "mattn/zencoding-vim"
-Bundle "xolox/vim-notes"
 Bundle "cfebs/vim-prose"
+Bundle "mattn/emmet-vim"
 Bundle "jpo/vim-railscasts-theme"
 Bundle "scrooloose/nerdcommenter"
 Bundle "aaronbieber/quicktask"
+Bundle "jonathanfilip/vim-lucius"
+Bundle "jnurmine/Zenburn"
+Bundle "nanotech/jellybeans.vim"
+Bundle "godlygeek/csapprox"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "" Fundamentals
@@ -31,8 +34,6 @@ Bundle "aaronbieber/quicktask"
 
 filetype plugin indent on
 
-"set t_Co=256   " 256 colors
-set t_Co=16
 set history=1000
 let mapleader = ","
 set autoread
@@ -45,6 +46,7 @@ set scrolloff=3
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
 set shell=bash
+set nonu
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -68,14 +70,17 @@ set incsearch
 set showmatch
 
 "" Colors
-syntax on
+set t_Co=256   " 256 colors
+"set t_Co=16
 " Usually term not set up for solarized
-colorscheme solarized
+set background=dark
+"colorscheme solarized
 "colorscheme railscasts
 "colorscheme desert
-set background=dark
-set nonu
+"colorscheme lucius
+colorscheme jellybeans
 set nolazyredraw
+syntax on
 
 "" Tabbing
 set ai
@@ -141,10 +146,10 @@ augroup vimrcEx
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
   autocmd BufWinLeave * call clearmatches()
 
-  "" Python
-  autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
-  "" Ruby
-  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  "" 4 spaces
+  autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  "" 2 spaces
+  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber set ai sw=2 sts=2 et
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
 augroup end
@@ -231,5 +236,4 @@ let g:ctrlp_working_path_mode = ''
 if exists(":Tabularize")
  nmap <Leader>a= :Tabularize /=<CR>
  nmap <Leader>a: :Tabularize /:\zs<CR>
- nmap <Leader>a, :Tabularize /,\zs<CR>
 endif
