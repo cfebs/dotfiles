@@ -16,7 +16,7 @@ URxvt.loginShell:           true
 URxvt.saveLines:            50
 URxvt.internalBorder:       3
 URxvt.lineSpace:            0
-URxvt.iconFile:             /usr/share/icons/gnome/24x24/apps/utilities-terminal.png
+! URxvt.iconFile:             /usr/share/icons/gnome/24x24/apps/utilities-terminal.png
 
 ! Fonts
 URxvt.allow_bold:           true
