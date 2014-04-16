@@ -14,6 +14,7 @@ alias 4="cd ../../../../"
 
 alias bashrc=". ~/.bashrc"
 alias grep="grep --color"
+alias less="less -R"
 
 # xampp
 alias lampp="sudo /opt/lampp/lampp"
@@ -43,6 +44,8 @@ alias rm='rm -I --preserve-root'
 alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
+
+alias sag='sudo apt-get'
 
 ## Functions
 
@@ -98,3 +101,6 @@ function run_once() {
     fi
 }
 run_once
+
+alias htmlencode="perl -MHTML::Entities -pe 'encode_entities(\$_)'"
+alias htmldecode="perl -MHTML::Entities -pe 'decode_entities(\$_)'"

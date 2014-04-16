@@ -26,7 +26,7 @@ Bundle 'bling/vim-airline'
 Bundle "jonathanfilip/vim-lucius"
 Bundle "jnurmine/Zenburn"
 Bundle "nanotech/jellybeans.vim"
-Bundle "godlygeek/csapprox"
+Bundle "gcmt/breeze.vim"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "" Fundamentals
@@ -34,7 +34,7 @@ Bundle "godlygeek/csapprox"
 
 filetype plugin indent on
 
-set history=1000
+set history=99999
 let mapleader = ","
 set autoread
 set nocp
@@ -73,15 +73,15 @@ set incsearch
 set showmatch
 
 "" Colors
-set t_Co=256   " 256 colors
-"set t_Co=16
+"set t_Co=256   " 256 colors
+set t_Co=16
 " Usually term not set up for solarized
 set background=dark
-"colorscheme solarized
+colorscheme solarized
 "colorscheme railscasts
 "colorscheme desert
 "colorscheme lucius
-colorscheme jellybeans
+"colorscheme jellybeans
 set nolazyredraw
 syntax on
 
@@ -134,7 +134,7 @@ set wildmode=longest,list
 set wildignore+=*tmp/*,*.so,*.swp,*/.git/*,.gitkeep
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)$',
+  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
   \ 'file': '\v\.(exe|so|dll|pyc)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
@@ -184,7 +184,8 @@ nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh
 "" Quick leader functions
 nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
-nnoremap <leader>n :only<cr>
+nnoremap <leader>o :only<cr>
+nnoremap <leader>c :clo<cr>
 imap <c-c> <esc>
 
 
@@ -198,23 +199,25 @@ nnoremap <c-l> <c-w>l
 "" Quick file access
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :vsp $MYVIMRC<cr>
-nnoremap <leader>ot :vsp $HOME/todo.quicktask<cr>
+
+"" phase out quicktask for task warrior
+"nnoremap <leader>ot :vsp $MY_MAIN_QUICKTASK<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
+"function! InsertTabWrapper()
+    "let col = col('.') - 1
+    "if !col || getline('.')[col - 1] !~ '\k'
+        "return "\<tab>"
+    "else
+        "return "\<c-p>"
+    "endif
+"endfunction
+"inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+"inoremap <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ARROW KEYS ARE UNACCEPTABLE
@@ -250,9 +253,14 @@ nmap <silent> <Leader>t :CtrlP<CR>
 nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = ''
+let g:ctrlp_max_files = 0
 
-"" Tabularize
-if exists(":Tabularize")
+"" Tabularize if exists(":Tabularize")
  nmap <Leader>a= :Tabularize /=<CR>
  nmap <Leader>a: :Tabularize /:\zs<CR>
 endif
+
+let g:breeze_active_filetypes = "*.html,*.htm,*.xhtml,*.xml,*.phtml"
+
+
+nmap <silent> <leader>gs :Gstatus<cr>
