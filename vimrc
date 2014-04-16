@@ -1,32 +1,24 @@
-" Switch to pathogen
-"runtime bundle/pathogen/autoload/pathogen.vim
-"call pathogen#infect()
-"call pathogen#helptags()
+call pathogen#infect()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-"" Vundle
+"" Microbe - https://github.com/xsc/microbe-vim
+"" microbe load ~/.vimrc && microbe update
 """"""""""""""""""""""""""""""""""""""""""""""""""
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
-
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'groenewege/vim-less'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'godlygeek/tabular'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-markdown'
-Bundle 'mattn/zencoding-vim'
-Bundle 'jpo/vim-railscasts-theme'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'aaronbieber/quicktask'
-Bundle 'bling/vim-airline'
-Bundle "jonathanfilip/vim-lucius"
-Bundle "jnurmine/Zenburn"
-Bundle "nanotech/jellybeans.vim"
-Bundle "gcmt/breeze.vim"
+"bundle kchmck/vim-coffee-script
+"bundle kien/ctrlp.vim
+"bundle groenewege/vim-less
+"bundle altercation/vim-colors-solarized
+"bundle godlygeek/tabular
+"bundle tpope/vim-fugitive
+"bundle tpope/vim-markdown
+"bundle mattn/zencoding-vim
+"bundle jpo/vim-railscasts-theme
+"bundle scrooloose/nerdcommenter
+"bundle aaronbieber/quicktask
+"bundle bling/vim-airline
+"bundle nanotech/jellybeans.vim
+"bundle gcmt/breeze.vim
+"bundle gregsexton/gitv
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "" Fundamentals
@@ -35,6 +27,7 @@ Bundle "gcmt/breeze.vim"
 filetype plugin indent on
 
 set history=99999
+set cursorline
 let mapleader = ","
 set autoread
 set nocp
@@ -169,8 +162,9 @@ augroup vimrcEx
   autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
   "" 2 spaces
   autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber set ai sw=2 sts=2 et
-  autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass
+  autocmd! BufRead,BufNewFile *.phtml set ft=phtml
 augroup end
 
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -207,6 +201,7 @@ nnoremap <leader>ev :vsp $MYVIMRC<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
+" Not used anymore
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "function! InsertTabWrapper()
     "let col = col('.') - 1
@@ -255,7 +250,8 @@ nmap <silent> <Leader>b :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_max_files = 0
 
-"" Tabularize if exists(":Tabularize")
+"" Tabularize
+if exists(":Tabularize")
  nmap <Leader>a= :Tabularize /=<CR>
  nmap <Leader>a: :Tabularize /:\zs<CR>
 endif
@@ -264,3 +260,8 @@ let g:breeze_active_filetypes = "*.html,*.htm,*.xhtml,*.xml,*.phtml"
 
 
 nmap <silent> <leader>gs :Gstatus<cr>
+"" Gitv
+let g:Gitv_DoNotMapCtrlKey = 1
+
+nnoremap <S-h> gT
+nnoremap <S-l> gt
