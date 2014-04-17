@@ -1,8 +1,8 @@
 call pathogen#infect()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-"" Microbe - https://github.com/xsc/microbe-vim
-"" microbe load ~/.vimrc && microbe update
+" Microbe - https://github.com/xsc/microbe-vim
+" $ microbe load && microbe update
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "bundle kchmck/vim-coffee-script
 "bundle kien/ctrlp.vim
@@ -11,19 +11,20 @@ call pathogen#infect()
 "bundle godlygeek/tabular
 "bundle tpope/vim-fugitive
 "bundle tpope/vim-markdown
-"bundle mattn/zencoding-vim
+"bundle mattn/emmet-vim
 "bundle jpo/vim-railscasts-theme
 "bundle scrooloose/nerdcommenter
 "bundle aaronbieber/quicktask
-"bundle bling/vim-airline
+"bundle itchyny/lightline.vim
 "bundle nanotech/jellybeans.vim
 "bundle gcmt/breeze.vim
 "bundle gregsexton/gitv
+"bundle christoomey/vim-tmux-navigator
+"bundle scrooloose/syntastic
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-"" Fundamentals
+" Fundamentals
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
 filetype plugin indent on
 
 set history=99999
@@ -65,7 +66,10 @@ set hlsearch
 set incsearch
 set showmatch
 
-"" Colors
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 "set t_Co=256   " 256 colors
 set t_Co=16
 " Usually term not set up for solarized
@@ -85,52 +89,19 @@ set shiftwidth=4
 set tabstop=4
 set smarttab
 
-"" Status
-"" Raw status line ditched for airline
-"set statusline=\ %{HasPaste()}\ %<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
-"set statusline+=\ %{fugitive#statusline()}
-
-set laststatus=2
-let g:airline_mode_map = {
-  \ '__' : '-',
-  \ 'n'  : 'N',
-  \ 'i'  : 'I',
-  \ 'R'  : 'R',
-  \ 'c'  : 'C',
-  \ 'v'  : 'V',
-  \ 'V'  : 'V',
-  \ '' : 'V',
-  \ 's'  : 'S',
-  \ 'S'  : 'S',
-  \ '' : 'S',
-  \ }
-
-let g:airline_symbols = {}
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-let g:airline_symbols.readonly = '♿'
-
-
-" wilds
+"" Wilds
 set wildmenu
 set wildmode=longest,list
 set wildignore+=*tmp/*,*.so,*.swp,*/.git/*,.gitkeep
 
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
-  \ 'file': '\v\.(exe|so|dll|pyc)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Status
+"" Raw status line ditched for lightline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"set statusline=\ %{HasPaste()}\ %<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+"set statusline+=\ %{fugitive#statusline()}
+
+set laststatus=2
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 "" Experimental Turn OFF
@@ -171,9 +142,9 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Auto Commands
-""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" Quick leader functions
 nnoremap <leader><leader> <c-^>
@@ -194,9 +165,8 @@ nnoremap <c-l> <c-w>l
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :vsp $MYVIMRC<cr>
 
-"" phase out quicktask for task warrior
-"nnoremap <leader>ot :vsp $MY_MAIN_QUICKTASK<cr>
-
+nnoremap <S-h> gT
+nnoremap <S-l> gt
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -222,7 +192,6 @@ map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
 
-
 "" %% expands to the current directory
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
@@ -241,7 +210,9 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 
 
-"""" Plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" ctrlp
 nmap <silent> <Leader>t :CtrlP<CR>
@@ -249,6 +220,11 @@ nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_max_files = 0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
+  \ 'file': '\v\.(exe|so|dll|pyc)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 
 "" Tabularize
 if exists(":Tabularize")
@@ -256,12 +232,26 @@ if exists(":Tabularize")
  nmap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
+"" Breeze
 let g:breeze_active_filetypes = "*.html,*.htm,*.xhtml,*.xml,*.phtml"
 
-
+"" Fugitive
 nmap <silent> <leader>gs :Gstatus<cr>
+
 "" Gitv
 let g:Gitv_DoNotMapCtrlKey = 1
 
-nnoremap <S-h> gT
-nnoremap <S-l> gt
+"" Lightline
+let g:lightline = {
+      \ 'colorscheme': '16color',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ }
+      \ }
+
+
+
