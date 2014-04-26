@@ -1,5 +1,3 @@
-call pathogen#infect()
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Microbe - https://github.com/xsc/microbe-vim
 " $ microbe load && microbe update
@@ -22,13 +20,21 @@ call pathogen#infect()
 "bundle christoomey/vim-tmux-navigator
 "bundle scrooloose/syntastic
 
+set fileformat=unix
+set fileformats=unix,dos
+
+call pathogen#infect()
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Fundamentals
 """"""""""""""""""""""""""""""""""""""""""""""""""
 filetype plugin indent on
 
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
 set history=99999
-set cursorline
+"set cursorline
 let mapleader = ","
 set autoread
 set nocp
@@ -137,6 +143,11 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
   autocmd! BufRead,BufNewFile *.phtml set ft=phtml
 augroup end
+
+function! SetLocalTabSize()
+    let size = input('Tab Size: ')
+    execute "set ts=" . size . " sts=" . size . " sw=" . size
+endfunction
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -252,6 +263,5 @@ let g:lightline = {
       \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
       \ }
       \ }
-
 
 

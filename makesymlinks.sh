@@ -2,7 +2,7 @@
 
 set -e
 
-here="`dirname $(readlink -f $0)`"
+here="$( cd "$( dirname "$0" )" && pwd )" 
 
 # old dotfiles backup directory
 olddir="$HOME/dotfiles_old"
@@ -10,6 +10,12 @@ olddir="$HOME/dotfiles_old"
 # files to skip linking in the this directory
 skipfiles="README.md `basename $0` . .."
 
+# setup the bin
+mkdir -p $HOME/.bin
+echo 'export PATH="$PATH:$HOME/.bin"' >> $HOME/.bashrc
+
+# setup src
+mkdir -p $HOME/src
 
 # _should_skip the linking/backup of file
 # echo's 1 if it should be skipped
@@ -57,6 +63,10 @@ function _create_dot_file() {
 
 }
 
+
+################################################################################
+# DEPRECATED, using microbe now
+################################################################################
 function _clone_vundle() {
     vundle_dir="$HOME/.vim/bundle/vundle"
 
@@ -68,6 +78,18 @@ function _clone_vundle() {
     mkdir -p $vundle_dir
     echo "Cloning vundle to $vundle_dir"
     git clone https://github.com/gmarik/vundle.git "$vundle_dir"
+}
+
+function _clone_microbe() {
+    local reop="microbe-vim"
+    if [ ! -d "$HOME/src/$repo" ]
+    then
+        git clone https://github.com/xsc/$repo.git "$HOME/src/$repo"
+    	return
+    fi
+
+    ln -s "$HOME/src/$repo/bin/microbe" "$HOME/.bin/microbe"
+    chmod +x ~/.bin/microbe
 }
 
 ## Main
@@ -91,5 +113,6 @@ for file in $files; do
     echo "Moving any existing dotfiles from ~ to $olddir"
 
     _create_dot_file "$file"
-    _clone_vundle
 done
+
+_clone_microbe
