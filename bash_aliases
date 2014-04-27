@@ -50,7 +50,7 @@ TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm -I $TEST_FILE 2> /
     alias rm='rm -I'
 
 alias g="git"
-__git_complete g __git_main
+complete -o default -o nospace -F _git g
 
 # confirmation #
 alias mv='mv -i'
