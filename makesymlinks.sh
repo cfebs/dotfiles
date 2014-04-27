@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 here="$( cd "$( dirname "$0" )" && pwd )" 
@@ -85,7 +84,7 @@ function _clone_microbe() {
     if [ ! -d "$HOME/src/$repo" ]
     then
         git clone https://github.com/xsc/$repo.git "$HOME/src/$repo"
-    	return
+    	return 0
     fi
 
     ln -s "$HOME/src/$repo/bin/microbe" "$HOME/.bin/microbe"
