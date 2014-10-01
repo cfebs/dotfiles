@@ -1,43 +1,44 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
-" Microbe - https://github.com/xsc/microbe-vim
-" $ microbe load && microbe update
+" https://github.com/junegunn/vim-plug
 """"""""""""""""""""""""""""""""""""""""""""""""""
-"bundle kchmck/vim-coffee-script
-"bundle kien/ctrlp.vim
-"bundle groenewege/vim-less
-"bundle altercation/vim-colors-solarized
-"bundle godlygeek/tabular
-"bundle tpope/vim-fugitive
-"bundle tpope/vim-markdown
-"bundle mattn/emmet-vim
-"bundle jpo/vim-railscasts-theme
-"bundle scrooloose/nerdcommenter
-"bundle aaronbieber/quicktask
-"bundle itchyny/lightline.vim
-"bundle nanotech/jellybeans.vim
-"bundle gcmt/breeze.vim
-"bundle gregsexton/gitv
-"bundle christoomey/vim-tmux-navigator
-"bundle scrooloose/syntastic
+call plug#begin('~/.vim/plugged')
+
+Plug 'kchmck/vim-coffee-script'
+Plug 'kien/ctrlp.vim'
+Plug 'groenewege/vim-less'
+Plug 'altercation/vim-colors-solarized'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
+Plug 'mattn/emmet-vim'
+Plug 'jpo/vim-railscasts-theme'
+Plug 'scrooloose/nerdcommenter'
+Plug 'aaronbieber/quicktask'
+Plug 'itchyny/lightline.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'gcmt/breeze.vim'
+Plug 'gregsexton/gitv'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'scrooloose/syntastic'
 
 set fileformat=unix
 set fileformats=unix,dos
 
-call pathogen#infect()
+call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Fundamentals
 """"""""""""""""""""""""""""""""""""""""""""""""""
+set nocp
 filetype plugin indent on
 
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
-set history=99999
+set history=10000
 "set cursorline
 let mapleader = ","
 set autoread
-set nocp
 set ruler
 set backspace=eol,start,indent
 set hidden

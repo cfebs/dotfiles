@@ -4,19 +4,19 @@ set -e
 here="$( cd "$( dirname "$0" )" && pwd )" 
 
 # old dotfiles backup directory
-olddir="$HOME/dotfiles_old"
+olddir="$here/dotfiles_old"
 
 # files to skip linking in the this directory
-skipfiles="README.md `basename $0` . .."
+skipfiles="README.md `basename $0` . .. dotfiles_old"
 
 # setup the bin
-mkdir -p $HOME/.bin
-echo 'export PATH="$PATH:$HOME/.bin"' >> $HOME/.bashrc
+mkdir -p $HOME/bin
+echo 'export PATH="$PATH:$HOME/bin"' >> $HOME/.bashrc
 
 # setup src
 mkdir -p $HOME/src
 
-# _should_skip the linking/backup of file
+# should_skip the linking/backup of file
 # echo's 1 if it should be skipped
 function _should_skip() {
 
@@ -38,7 +38,6 @@ function _should_skip() {
     fi
 
     echo "$skip"
-
 }
 
 function _create_dot_file() {
@@ -62,39 +61,23 @@ function _create_dot_file() {
 
 }
 
-
-################################################################################
-# DEPRECATED, using microbe now
-################################################################################
-function _clone_vundle() {
-    vundle_dir="$HOME/.vim/bundle/vundle"
-
-    if [ -d "$vundle_dir/.git" ]
+# setup the vim package manger
+function _setup_vim_pkg_man() {
+    if [[ -d ~/.vim/autoload/plug.vim ]]
     then
         return
     fi
 
-    mkdir -p $vundle_dir
-    echo "Cloning vundle to $vundle_dir"
-    git clone https://github.com/gmarik/vundle.git "$vundle_dir"
+    mkdir -p ~/.vim/autoload
+    curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
-function _clone_microbe() {
-    local reop="microbe-vim"
-    if [ ! -d "$HOME/src/$repo" ]
-    then
-        git clone https://github.com/xsc/$repo.git "$HOME/src/$repo"
-    	return 0
-    fi
-
-    ln -s "$HOME/src/$repo/bin/microbe" "$HOME/.bin/microbe"
-    chmod +x ~/.bin/microbe
-}
-
+################################################################################
 ## Main
+################################################################################
 
-# create dotfiles_old in homedir
-echo "Creating $olddir for backup of any existing dotfiles in ~"
+# create dotfiles_old
+echo "Creating $olddir for backup of any existing dotfiles in $olddir"
 mkdir -p $olddir
 
 # change to the dotfiles directory
@@ -114,4 +97,7 @@ for file in $files; do
     _create_dot_file "$file"
 done
 
-_clone_microbe
+_setup_vim_pkg_man
+
+# DONE
+
