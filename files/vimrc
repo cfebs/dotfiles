@@ -19,7 +19,7 @@ Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/syntastic'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'ctrlpvim/ctrlp.vim'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -229,17 +229,17 @@ map <leader>n :call RenameFile()<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" ctrlp
-nmap <silent> <Leader>t :FZF<CR>
-""nmap <silent> <Leader>d :CtrlPDir<CR>
-""nmap <silent> <Leader>b :CtrlPBuffer<CR>
-""nmap <silent> <Leader>m :CtrlPMRUFiles<CR>
-""let g:ctrlp_working_path_mode = ''
-""let g:ctrlp_max_files = 0
-""let g:ctrlp_custom_ignore = {
-""  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
-""  \ 'file': '\v\.(exe|so|dll|pyc)$',
-""  \ 'link': 'some_bad_symbolic_links',
-""  \ }
+nmap <silent> <Leader>t :CtrlP<CR>
+nmap <silent> <Leader>d :CtrlPDir<CR>
+nmap <silent> <Leader>b :CtrlPBuffer<CR>
+nmap <silent> <Leader>m :CtrlPMRUFiles<CR>
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_max_files = 0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
+  \ 'file': '\v\.(exe|so|dll|pyc)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 
 "" Tabularize
 if exists(":Tabularize")
