@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+HERE="$( cd "$( dirname "$0" )" && pwd )"
+source "$HERE/scriptutils.sh"
+
 # assumes ~/src/etc
 
 # vim Plug
@@ -14,14 +17,20 @@ fi
 
 
 # z
+z_source='source ~/src/etc/z/z.sh'
 if [ -d ~/src/etc/z ]
 then
     echo "Looks like z is already installed"
 else
     echo "Getting z"
     git clone https://github.com/rupa/z.git ~/src/etc/z
-    echo 'source ~/src/etc/z/z.sh' >> $HOME/.bashrc
 fi
+
+if ! _does_line_exist_in_file "$z_source" "$HOME/.bashrc"
+then
+    echo "$z_source" >> $HOME/.bashrc
+fi
+
 
 # fzf
 if [ -d ~/.fzf ]
@@ -39,8 +48,15 @@ then
     echo "Looks like nvm is already installed"
 else
     echo "Getting nvm"
-    curl https://raw.githubusercontent.com/creationix/nvm/v0.24.1/install.sh | bash
+    git clone https://github.com/creationix/nvm.git ~/.nvm && cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`
 fi
+
+nvm_source='source ~/.nvm/nvm.sh'
+if ! _does_line_exist_in_file "$nvm_source" "$HOME/.bashrc"
+then
+    echo "$nvm_source" >> $HOME/.bashrc
+fi
+
 
 # rbenv
 if [ -d ~/.rbenv ]
@@ -59,6 +75,11 @@ then
 else
     git clone https://github.com/ai/rake-completion.git ~/src/etc/rake-completion
     echo 'source ~/src/etc/rake-completion/rake' >> $HOME/.bashrc
+fi
+rake_source='source ~/src/etc/rake-completion/rake'
+if ! _does_line_exist_in_file "$rake" "$HOME/.bashrc"
+then
+    echo "$rake_source" >> $HOME/.bashrc
 fi
 
 echo "Done with getting utils"
