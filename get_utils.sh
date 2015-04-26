@@ -57,7 +57,8 @@ if [ -d ~/src/etc/rake-completion ]
 then
     echo "Looks like rake completion is already installed"
 else
-
     git clone https://github.com/ai/rake-completion.git ~/src/etc/rake-completion
-    echo 'source ~/src/etc/rake-completion' >> $HOME/.bashrc
+    echo 'source ~/src/etc/rake-completion/rake' >> $HOME/.bashrc
 fi
+
+echo "Done with getting utils"

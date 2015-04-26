@@ -2,40 +2,67 @@
 set -e
 
 here="$( cd "$( dirname "$0" )" && pwd )"
+source "$here/scriptutils.sh"
+
+# parse options
+while true
+do
+  case $1 in
+    -v) # use verbose mode
+        VERBOSE=true
+        shift
+        ;;
+    -*)
+        echo "Unknown option: $1"
+        exit 1
+        ;;
+    *)
+        break
+        ;;
+  esac
+done
+
+log() {
+    echo "$@"
+    return 0
+}
+
+logv() {
+    [ $VERBOSE ] && echo "$@"
+    return 0
+}
 
 # old dotfiles backup directory
 current_time=$(date "+%Y_%m_%d-%H_%M_%S")
-olddir_base="$here/dotfiles_old"
+olddir_base="$here/dotfiles_backup"
 olddir="$olddir_base/$current_time"
 
 # files to skip linking in the this directory
-skipfiles="README.md `basename $0` . .. dotfiles_old"
+skipfiles="README.md `basename $0` . .."
 
 ################################################################################
 ## Functions
 ################################################################################
 
-# should_skip the linking/backup of file
-# echo's 1 if it should be skipped
 _should_skip() {
-    skip=0
+    # should_skip the linking/backup of file
+    # DEPRECATED
+
+    skip=false
     file="$1"
     filename="`basename $file`"
+
+    # do not link directories
+    [ -d "$file" ] && return 0
 
     for skipfile in $skipfiles; do
         if [ "$filename" = "$skipfile" ]
         then
-            skip=1
+            return 0
         fi
     done
 
-    # do not link directories
-    if [ -d "$file" ]
-    then
-        skip=1
-    fi
-
-    echo "$skip"
+    return 1
 }
 
 _create_dot_file() {
@@ -48,15 +75,15 @@ _create_dot_file() {
     if [ -e "$dot_file" ]
     then
         # backup
-        echo "Backing up: $dot_file --> $olddir"
+        logv "Backing up: $dot_file --> $olddir"
         cp -f "$dot_file" "$olddir"
 
         # remove old
         rm -f "$dot_file"
     fi
 
-    echo "Creating symlink to $file in home directory."
-    ln -s "$here/$filename"  "$dot_file"
+    logv "Creating symlink to $file in home directory."
+    ln -s "$here/files/$filename"  "$dot_file"
 }
 
 _setup_neovim() {
@@ -85,7 +112,7 @@ _rm_backup() {
     # pretty safe rm rf
 
     local dir="$olddir_base/$1"
-    echo "Removing backup: $dir"
+    logv "Removing backup: $dir"
     rm -rf "$dir"
 }
 
@@ -96,9 +123,9 @@ _rm_backup() {
 # setup the bin
 mkdir -p $HOME/bin
 
-if [ $( grep -ic 'export PATH="\$PATH:$HOME/bin' ~/.bashrc ) -lt 1 ]
+if ! _does_line_exist_in_file 'export PATH="$PATH:$HOME/bin"' "$HOME/.bashrc"
 then
-    echo 'export PATH="$PATH:~/bin"' >> ~/.bashrc
+    echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc
 fi
 
 # setup src and etc
@@ -106,27 +133,22 @@ mkdir -p $HOME/src
 mkdir -p $HOME/src/etc
 
 # create dotfiles_old
-echo "Creating $olddir for backup of any existing dotfiles in $olddir"
+log "Creating $olddir for backup of any existing dotfiles in $olddir"
 mkdir -p $olddir
 
 # change to the dotfiles directory
-echo "Changing to the $here directory"
+logv "Changing to the $here directory"
 cd $here
 
-files=$here/*
-for file in $files; do
+log "Linking files, any existing dotfiles backed up from ~ to $olddir"
 
-    if [ "`_should_skip $file`" -eq "1" ]
-    then
-        continue
-    fi
-
-    echo "Linking files, any existing dotfiles backed up from ~ to $olddir"
-
+for file in $here/files/*; do
     _create_dot_file "$file"
 done
 
 _setup_neovim
 _trim_backups
+
+log "Done with setup"
 
 # DONE
