@@ -4,7 +4,6 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'kchmck/vim-coffee-script'
-Plug 'kien/ctrlp.vim'
 Plug 'groenewege/vim-less'
 Plug 'altercation/vim-colors-solarized'
 Plug 'godlygeek/tabular'
@@ -20,6 +19,7 @@ Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/syntastic'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -176,6 +176,8 @@ nnoremap <c-l> <c-w>l
 "" Quick file access
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :vsp $MYVIMRC<cr>
+nnoremap <leader>eb :vsp ~/.bashrc<cr>
+nnoremap <leader>eba :vsp ~/.bash_aliases<cr>
 
 nnoremap <S-h> gT
 nnoremap <S-l> gt
@@ -227,16 +229,17 @@ map <leader>n :call RenameFile()<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" ctrlp
-nmap <silent> <Leader>t :CtrlP<CR>
-nmap <silent> <Leader>d :CtrlPDir<CR>
-nmap <silent> <Leader>b :CtrlPBuffer<CR>
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_max_files = 0
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
-  \ 'file': '\v\.(exe|so|dll|pyc)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+nmap <silent> <Leader>t :FZF<CR>
+""nmap <silent> <Leader>d :CtrlPDir<CR>
+""nmap <silent> <Leader>b :CtrlPBuffer<CR>
+""nmap <silent> <Leader>m :CtrlPMRUFiles<CR>
+""let g:ctrlp_working_path_mode = ''
+""let g:ctrlp_max_files = 0
+""let g:ctrlp_custom_ignore = {
+""  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
+""  \ 'file': '\v\.(exe|so|dll|pyc)$',
+""  \ 'link': 'some_bad_symbolic_links',
+""  \ }
 
 "" Tabularize
 if exists(":Tabularize")

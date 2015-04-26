@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-here="$( cd "$( dirname "$0" )" && pwd )" 
+here="$( cd "$( dirname "$0" )" && pwd )"
 
 # old dotfiles backup directory
-olddir="$here/dotfiles_old"
+current_time=$(date "+%Y_%m_%d-%H_%M_%S")
+olddir="$here/dotfiles_old/$current_time"
 
 # files to skip linking in the this directory
 skipfiles="README.md `basename $0` . .. dotfiles_old"
@@ -13,13 +14,13 @@ skipfiles="README.md `basename $0` . .. dotfiles_old"
 mkdir -p $HOME/bin
 echo 'export PATH="$PATH:$HOME/bin"' >> $HOME/.bashrc
 
-# setup src
+# setup src and etc
 mkdir -p $HOME/src
+mkdir -p $HOME/src/etc
 
 # should_skip the linking/backup of file
 # echo's 1 if it should be skipped
-function _should_skip() {
-
+_should_skip() {
     skip=0
     file="$1"
     filename="`basename $file`"
@@ -40,12 +41,12 @@ function _should_skip() {
     echo "$skip"
 }
 
-function _create_dot_file() {
+_create_dot_file() {
+    # Backs up then links a dot file
 
     file="$1"
     filename="`basename $file`"
     dot_file="$HOME/.$filename"
-
 
     if [ -e "$dot_file" ]
     then
@@ -58,18 +59,13 @@ function _create_dot_file() {
 
     echo "Creating symlink to $file in home directory."
     ln -s "$here/$filename"  "$dot_file"
-
 }
 
-# setup the vim package manger
-function _setup_vim_pkg_man() {
-    if [[ -d ~/.vim/autoload/plug.vim ]]
-    then
-        return
-    fi
+_setup_neovim() {
+    # Link .vim* -> .nvim*
 
-    mkdir -p ~/.vim/autoload
-    curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    ln -sf ~/.vim ~/.nvim
+    ln -sf ~/.vimrc ~/.nvimrc
 }
 
 ################################################################################
@@ -97,7 +93,6 @@ for file in $files; do
     _create_dot_file "$file"
 done
 
-_setup_vim_pkg_man
+_setup_neovim
 
 # DONE
-
