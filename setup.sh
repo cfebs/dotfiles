@@ -5,18 +5,15 @@ here="$( cd "$( dirname "$0" )" && pwd )"
 
 # old dotfiles backup directory
 current_time=$(date "+%Y_%m_%d-%H_%M_%S")
-olddir="$here/dotfiles_old/$current_time"
+olddir_base="$here/dotfiles_old"
+olddir="$olddir_base/$current_time"
 
 # files to skip linking in the this directory
 skipfiles="README.md `basename $0` . .. dotfiles_old"
 
-# setup the bin
-mkdir -p $HOME/bin
-echo 'export PATH="$PATH:$HOME/bin"' >> $HOME/.bashrc
-
-# setup src and etc
-mkdir -p $HOME/src
-mkdir -p $HOME/src/etc
+################################################################################
+## Functions
+################################################################################
 
 # should_skip the linking/backup of file
 # echo's 1 if it should be skipped
@@ -51,6 +48,7 @@ _create_dot_file() {
     if [ -e "$dot_file" ]
     then
         # backup
+        echo "Backing up: $dot_file --> $olddir"
         cp -f "$dot_file" "$olddir"
 
         # remove old
@@ -68,9 +66,44 @@ _setup_neovim() {
     ln -sf ~/.vimrc ~/.nvimrc
 }
 
+_trim_backups() {
+    # trim old backups so we don't go crazy!
+
+    local max_backups=6
+    local backups=$(ls -1 "$olddir_base" | wc -l)
+
+    # remove oldest until we are under max
+    while [ $backups -ge $max_backups ]
+    do
+        oldest="$(ls -1 -t "$olddir_base" | tac | head -1)"
+        _rm_backup "$oldest"
+        backups=$(ls -1 "$olddir_base" | wc -l)
+    done
+}
+
+_rm_backup() {
+    # pretty safe rm rf
+
+    local dir="$olddir_base/$1"
+    echo "Removing backup: $dir"
+    rm -rf "$dir"
+}
+
 ################################################################################
 ## Main
 ################################################################################
+
+# setup the bin
+mkdir -p $HOME/bin
+
+if [ $( grep -ic 'export PATH="\$PATH:$HOME/bin' ~/.bashrc ) -lt 1 ]
+then
+    echo 'export PATH="$PATH:~/bin"' >> ~/.bashrc
+fi
+
+# setup src and etc
+mkdir -p $HOME/src
+mkdir -p $HOME/src/etc
 
 # create dotfiles_old
 echo "Creating $olddir for backup of any existing dotfiles in $olddir"
@@ -88,11 +121,12 @@ for file in $files; do
         continue
     fi
 
-    echo "Moving any existing dotfiles from ~ to $olddir"
+    echo "Linking files, any existing dotfiles backed up from ~ to $olddir"
 
     _create_dot_file "$file"
 done
 
 _setup_neovim
+_trim_backups
 
 # DONE

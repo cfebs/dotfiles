@@ -51,3 +51,13 @@ else
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 fi
+
+# rake completion
+if [ -d ~/src/etc/rake-completion ]
+then
+    echo "Looks like rake completion is already installed"
+else
+
+    git clone https://github.com/ai/rake-completion.git ~/src/etc/rake-completion
+    echo 'source ~/src/etc/rake-completion' >> $HOME/.bashrc
+fi
