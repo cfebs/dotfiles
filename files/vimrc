@@ -20,6 +20,10 @@ Plug 'gregsexton/gitv'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'rking/ag.vim'
+Plug 'briancollins/vim-jst'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'othree/yajs.vim'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -77,8 +81,8 @@ set showmatch
 " Colors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"set t_Co=256   " 256 colors
-set t_Co=16
+set t_Co=256   " 256 colors
+"set t_Co=16
 " Usually term not set up for solarized
 set background=dark
 colorscheme solarized
@@ -142,7 +146,8 @@ augroup vimrcEx
   autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber set ai sw=2 sts=2 et
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
-  autocmd! BufRead,BufNewFile *.phtml set ft=phtml
+  autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
+  autocmd! BufRead,BufNewFile *.fir set ft=html
 augroup end
 
 function! SetLocalTabSize()
@@ -258,7 +263,6 @@ let g:Gitv_DoNotMapCtrlKey = 1
 
 "" Lightline
 let g:lightline = {
-      \ 'colorscheme': '16color',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -269,3 +273,25 @@ let g:lightline = {
       \ }
 
 
+" wrap current visual selection in translate calls
+function! VisualBlockWrap(left, right)
+    if (len(a:left) > 0 && len(a:right) > 0)
+        normal `>
+        if &selection == 'exclusive'
+            exe "normal i".a:right
+        else
+            exe "normal a".a:right
+        endif
+        normal `<
+        exe "normal i".a:left
+        normal `<
+    endif
+endfunction
+
+" xmap == only visual mode map, no select mode
+xnoremap tt :call VisualBlockWrap("<?= $this->translate('", "') ?>")<cr>
+xnoremap tr :call VisualBlockWrap("$this->translate('", "')")<cr>
+
+
+" copy to clipboard
+vmap <Leader>xc :w !xclip -selection clipboard<cr>
