@@ -49,10 +49,12 @@ TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $T
 TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm -I $TEST_FILE 2> /dev/null && \
     alias rm='rm -I'
 
-# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-. ~/git-completion.bash
-alias g="git"
-__git_complete g _git
+if [ -f ~/src/etc/git-completion.bash ]
+then
+    . ~/src/etc/git-completion.bash
+    alias g="git"
+    __git_complete g _git
+fi
 
 
 # confirmation #

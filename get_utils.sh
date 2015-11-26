@@ -82,4 +82,12 @@ then
     echo "$rake_source" >> $HOME/.bashrc
 fi
 
+# git completion and prompt
+if [ -f ~/src/etc/git-completion.bash ]
+then
+    echo "Looks like git completion is already installed"
+else
+    wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/src/etc/git-completion.bash
+fi
+
 echo "Done with getting utils"
