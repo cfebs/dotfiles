@@ -64,6 +64,7 @@ alias ln='ln -i'
 
 alias sag='sudo apt-get'
 
+alias agi='ag -i'
 ## Functions
 
 rvm-project() {
@@ -115,4 +116,28 @@ function net-qual() {
 
 alias htmlencode="perl -MHTML::Entities -pe 'encode_entities(\$_)'"
 alias htmldecode="perl -MHTML::Entities -pe 'decode_entities(\$_)'"
+
+__my_journal() {
+    local journal_dir="$HOME/quick_journal"
+    local journal_file="$(date +%Y_%m_%d).md"
+
+    if [ ! -d "$journal_dir" ]
+    then
+        mkdir "$journal_dir";
+        echo "Creating $journal_dir"
+    fi
+
+
+    if [ ! -f "$journal_dir/$journal_file" ]
+    then
+        echo "Creating todays file $journal_file"
+        touch "$journal_dir/$journal_file"
+    fi
+
+    local content="- \`$(date +%H:%M:%S)\` $@"
+    echo "$content" >> "$journal_dir/$journal_file"
+    echo "Wrote -> $content to $journal_file"
+
+    return 0;
+}
 

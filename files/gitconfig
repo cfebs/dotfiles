@@ -21,9 +21,12 @@
     rlc = !git reflog | grep checkout | head -15
     rlcc = !git reflog | grep checkout | head -40
     rlccc = !git reflog | grep checkout | head -80
+    ru = remote update
 [color]
 	ui = true
 [push]
 	default = simple
 [credential]
 	helper = cache
+[core]
+	filemode = true
