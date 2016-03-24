@@ -32,6 +32,7 @@ alias bc='bc -l'
 alias lh='ls --hide="*.pyc"'
 alias l='ls'
 
+alias vim=nvim
 alias vi=vim
 alias v=vim
 alias svi='sudo vi'

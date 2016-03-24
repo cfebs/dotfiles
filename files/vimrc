@@ -17,13 +17,16 @@ Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
-Plug 'christoomey/vim-tmux-navigator'
+"Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'rking/ag.vim'
+"Plug 'rking/ag.vim'
 Plug 'briancollins/vim-jst'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'othree/yajs.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+"Plug '~/src/vimeo/vimeo-vim-util'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -58,8 +61,6 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 "" Noice
 nnoremap ; :
-map <C-J> <C-W>j
-map <C-K> <C-W>k
 
 "" Markdown
 nmap <leader>1 VypVr=
@@ -171,11 +172,11 @@ nnoremap <leader>c :clo<cr>
 imap <c-c> <esc>
 
 
-"" Split nav
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
+"" Split/window nav
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
 
 "" Quick file access
@@ -233,11 +234,29 @@ map <leader>n :call RenameFile()<cr>
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"" ctrlp
-nmap <silent> <Leader>t :CtrlP<CR>
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  "let g:ctrlp_use_caching = 0
+endif
+
+"" fzf
+nmap <silent> <Leader>f :GitFiles<CR>
 nmap <silent> <Leader>d :CtrlPDir<CR>
-nmap <silent> <Leader>b :CtrlPBuffer<CR>
-nmap <silent> <Leader>m :CtrlPMRUFiles<CR>
+nmap <silent> <Leader>b :Buffers<CR>
+nmap <silent> <Leader>m :CtrlPMRU<CR>
+
+"" ctrlp
+"nmap <silent> <Leader>f :CtrlP<CR>
+"nmap <silent> <Leader>d :CtrlPDir<CR>
+"nmap <silent> <Leader>b :CtrlPBuffer<CR>
+"nmap <silent> <Leader>m :CtrlPMRU<CR>
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = {
@@ -272,7 +291,6 @@ let g:lightline = {
       \ }
       \ }
 
-
 " wrap current visual selection in translate calls
 function! VisualBlockWrap(left, right)
     if (len(a:left) > 0 && len(a:right) > 0)
@@ -288,10 +306,47 @@ function! VisualBlockWrap(left, right)
     endif
 endfunction
 
+function! InsertLogger()
+    if (&ft == 'php')
+        normal o\ScribeLogger::log('LOGGER', []);
+        normal F[
+        normal 1l
+        startinsert
+
+    elseif (&ft == 'js' || &ft == 'javascript')
+        normal oconsole.log();
+        normal F(
+        normal 1l
+        startinsert
+    endif
+endfunction
+
+function! InsertTemplateTag()
+    set nosmarttab
+    set noai
+    if (&ft == 'phtml')
+        normal i<?  ?>
+        normal 2h
+    endif
+    set smarttab
+    set ai
+endfunction
+
+function! InsertTemplateTagOut()
+    set nosmarttab
+    set noai
+    if (&ft == 'phtml')
+        normal i<?=  ?>
+        normal 2h
+    endif
+    set smarttab
+    set ai
+endfunction
+
 " xmap == only visual mode map, no select mode
-xnoremap tt :call VisualBlockWrap("<?= $this->translate('", "') ?>")<cr>
-xnoremap tr :call VisualBlockWrap("$this->translate('", "')")<cr>
+xnoremap <leader>vit :call VisualBlockWrap("<?= $this->translate('", "') ?>")<cr>
+xnoremap <leader>vir :call VisualBlockWrap("$this->translate('", "')")<cr>
 
-
-" copy to clipboard
-vmap <Leader>xc :w !xclip -selection clipboard<cr>
+noremap <leader>vt :call InsertTemplateTag()<cr>
+noremap <leader>vo :call InsertTemplateTagOut()<cr>
+noremap <leader>vl :call InsertLogger()<cr>
