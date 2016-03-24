@@ -41,6 +41,9 @@ alias edit='vim'
 alias simple_http="python -m SimpleHTTPServer 4331"
 alias simp="$HOME/web/rb/simple-server/simple_server.ru -p 4331"
 
+alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
+alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
+
 alias rm='rm'
 # do not delete / or prompt if deleting more than 3 files at a time #
 TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $TEST_FILE 2> /dev/null && \
@@ -56,7 +59,6 @@ then
     __git_complete g _git
 fi
 
-
 # confirmation #
 alias mv='mv -i'
 alias cp='cp -i'
@@ -65,7 +67,20 @@ alias ln='ln -i'
 alias sag='sudo apt-get'
 
 alias agi='ag -i'
+
 ## Functions
+
+pn() {
+    while read data;
+    do
+        echo $data | awk "{ print \$$1 }"
+        #echo $data | cut -d' ' -f$1
+    done
+}
+
+g_rlc() {
+    git reflog | grep checkout | head -80 | grep moving | pn 8 | grep -v '^master$' | dmenu
+}
 
 rvm-project() {
   if [ -z "$1" ]
@@ -139,5 +154,42 @@ __my_journal() {
     echo "Wrote -> $content to $journal_file"
 
     return 0;
+}
+
+dodat() {
+    # dodat cmd src_file relative_target
+    # dodat cp /tmp/dir/file.txt new_file.txt
+    # => cp /tmp/dir/file.txt /tmp/dir/new_file.txt
+    # dodat mv /tmp/dir/file.txt new_file.txt
+    # => mv /tmp/dir/file.txt /tmp/dir/new_file.txt
+    # dodat touch /tmp/dir/file.txt new_file.txt
+    # => touch /tmp/dir/new_file.txt
+    local cmd="$1"
+    local src="$2"
+    local target="$3"
+    local dest_dir="$(dirname "$src")"
+    local result="${dest_dir}/${target}"
+
+    case "$cmd" in
+        "cp" | "mv")
+            # targets
+            $cmd "$src" "$result";
+            echo "$cmd $src $result";
+            ;;
+        "touch")
+            $cmd "$result";
+            echo "$cmd $result";
+            ;;
+        *)
+            echo "$cmd not supported"
+            ;;
+    esac
+}
+
+mkcp() {
+    local src="$1"
+    local dest="$2"
+    mkdir -pv "$src"
+    cp "$src" "$dest"
 }
 

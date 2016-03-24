@@ -6,8 +6,10 @@
     pull = pull --ff-only
     pase = pull --rebase
     lg = log
+    lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log $@ $(git merge-base master $this_branch)..$this_branch; }; f"
     dc = diff --cached
     d = diff
+    dpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git diff $@ $(git merge-base master $this_branch)...$this_branch; }; f"
     sup = submodule update --init --recursive
     commitall = !git add . && git commit
     b = branch
@@ -27,6 +29,6 @@
 [push]
 	default = simple
 [credential]
-	helper = cache
+    helper = cache --timeout=36000
 [core]
 	filemode = true
