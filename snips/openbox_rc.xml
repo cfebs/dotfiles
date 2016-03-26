@@ -49,3 +49,48 @@
     </command>
   </action>
 </keybind>
+
+<keybind key="W-A-h">
+    <!-- half left -->
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>0</x>
+      <y>0</y>
+      <width>50%</width>
+      <height>100%</height>
+    </action>
+</keybind>
+
+<keybind key="W-A-l">
+    <!-- half right -->
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>50%</x>
+      <y>0</y>
+      <width>50%</width>
+      <height>100%</height>
+    </action>
+</keybind>
+
+<keybind key="W-A-j">
+    <!-- half down -->
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>0</x>
+      <y>50%</y>
+      <width>100%</width>
+      <height>50%%</height>
+    </action>
+</keybind>
+
+<keybind key="W-A-k">
+    <!-- half up -->
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>0</x>
+      <y>0</y>
+      <width>100%</width>
+      <height>50%%</height>
+    </action>
+</keybind>
+
