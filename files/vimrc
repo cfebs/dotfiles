@@ -55,6 +55,7 @@ set scrolloff=3
 set t_ti= t_te=
 set shell=bash
 set nonu
+set mouse-=a
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -164,6 +165,11 @@ nnoremap <silent> <Leader>ws :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh
 " Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"" clipboard
+if executable('xclip')
+    vmap <Leader>xc :w !xclip -selection clipboard<cr>
+endif
+
 "" Quick leader functions
 nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
@@ -246,11 +252,25 @@ if executable('ag')
   "let g:ctrlp_use_caching = 0
 endif
 
+command! FZFMru call fzf#run({
+\ 'source':  reverse(s:all_files()),
+\ 'sink':    'edit',
+\ 'options': '-m -x +s',
+\ 'down':    '40%' })
+
+function! s:all_files()
+  return extend(
+  \ filter(copy(v:oldfiles),
+  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+endfunction
+
 "" fzf
+nmap <silent> <Leader>t :Files<CR>
 nmap <silent> <Leader>f :GitFiles<CR>
-nmap <silent> <Leader>d :CtrlPDir<CR>
+"nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :Buffers<CR>
-nmap <silent> <Leader>m :CtrlPMRU<CR>
+nmap <silent> <Leader>m :FZFMru<CR>
 
 "" ctrlp
 "nmap <silent> <Leader>f :CtrlP<CR>

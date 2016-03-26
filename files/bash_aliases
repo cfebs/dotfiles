@@ -80,7 +80,7 @@ pn() {
 }
 
 g_rlc() {
-    git reflog | grep checkout | head -80 | grep moving | pn 8 | grep -v '^master$' | dmenu
+    git checkout $(git reflog | grep checkout | head -80 | grep moving | pn 8 | grep -v '^master$' | fzf)
 }
 
 rvm-project() {
