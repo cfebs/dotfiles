@@ -39,9 +39,6 @@ alias svi='sudo vi'
 alias vis='vim "+set si"'
 alias edit='vim'
 
-alias simple_http="python -m SimpleHTTPServer 4331"
-alias simp="$HOME/web/rb/simple-server/simple_server.ru -p 4331"
-
 alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
 alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
 
@@ -65,11 +62,26 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
+alias upgrade='sudo apt-get update; sudo apt-get upgrade'
 alias sag='sudo apt-get'
 
 alias agi='ag -i'
 
 ## Functions
+
+simp() {
+    local port=8181
+    local addr='0.0.0.0'
+
+    if python3 --version &> /dev/null
+    then
+        echo "Python 3"
+        python3 -m http.server --bind "$addr" "$port"
+    else
+        echo "Python 2"
+        python -m SimpleHTTPServer "$port"
+    fi
+}
 
 pn() {
     while read data;

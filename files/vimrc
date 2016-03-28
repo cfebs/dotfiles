@@ -26,6 +26,8 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'othree/yajs.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'tweekmonster/fzf-filemru'
+  autocmd! BufRead,BufNewFile *.sass setfiletype sass
 "Plug '~/src/vimeo/vimeo-vim-util'
 
 set fileformat=unix
@@ -145,9 +147,10 @@ augroup vimrcEx
   "" 4 spaces
   autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
   "" 2 spaces
-  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber setlocal ai sw=2 sts=2 et
 
-  autocmd! BufRead,BufNewFile *.sass setfiletype sass
+  autocmd! BufRead,BufNewFile *.es6 set ft=javascript
+  autocmd! BufRead,BufNewFile *.sass set ft=sass
   autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
   autocmd! BufRead,BufNewFile *.fir set ft=html
 augroup end
@@ -270,7 +273,7 @@ nmap <silent> <Leader>t :Files<CR>
 nmap <silent> <Leader>f :GitFiles<CR>
 "nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :Buffers<CR>
-nmap <silent> <Leader>m :FZFMru<CR>
+nmap <silent> <Leader>m :CtrlPMRU<CR>
 
 "" ctrlp
 "nmap <silent> <Leader>f :CtrlP<CR>

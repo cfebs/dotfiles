@@ -94,3 +94,12 @@
     </action>
 </keybind>
 
+<keybind key="C-A-l">
+  <action name="Execute">
+    <startupnotify>
+      <enabled>true</enabled>
+      <name>lockscreen</name>
+    </startupnotify>
+    <command>xflock4</command>
+  </action>
+</keybind>
