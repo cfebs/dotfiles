@@ -103,3 +103,11 @@
     <command>xflock4</command>
   </action>
 </keybind>
+
+<keybind key="W-A-z">
+    <action name="Decorate"/>
+</keybind>
+<keybind key="W-A-x">
+    <action name="Undecorate"/>
+</keybind>
+

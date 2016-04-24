@@ -1,7 +1,13 @@
 #!/bin/bash
 
+getmakej() {
+    echo $(($(nproc) + 1));
+}
+
 export EDITOR='vim'
 
+alias makej="make -j$(getmakej)"
+alias weather='curl http://wttr.in/'
 alias tmux="TERM=screen-256color-bce tmux"
 
 # Quick nav
@@ -32,7 +38,7 @@ alias bc='bc -l'
 alias lh='ls --hide="*.pyc"'
 alias l='ls'
 
-alias vim=nvim
+#alias vim=nvim
 alias vi=vim
 alias v=vim
 alias svi='sudo vi'
@@ -61,6 +67,8 @@ fi
 alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
+
+alias clipboard='xclip -se c'
 
 alias upgrade='sudo apt-get update; sudo apt-get upgrade'
 alias sag='sudo apt-get'

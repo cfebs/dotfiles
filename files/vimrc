@@ -21,13 +21,16 @@ Plug 'gregsexton/gitv'
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
 "Plug 'rking/ag.vim'
-Plug 'briancollins/vim-jst'
+"Plug 'briancollins/vim-jst'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'ekalinin/Dockerfile.vim'
-Plug 'othree/yajs.vim'
+"Plug 'othree/yajs.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tweekmonster/fzf-filemru'
-  autocmd! BufRead,BufNewFile *.sass setfiletype sass
+Plug 'digitaltoad/vim-pug'
+"  autocmd! BufRead,BufNewFile *.sass setfiletype sass
 "Plug '~/src/vimeo/vimeo-vim-util'
 
 set fileformat=unix
@@ -107,7 +110,7 @@ set smarttab
 "" Wilds
 set wildmenu
 set wildmode=longest,list
-set wildignore+=*tmp/*,*.so,*.swp,*/.git/*,.gitkeep
+set wildignore+=*.so,*.swp,*/.git/*,.gitkeep
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Status
@@ -147,8 +150,9 @@ augroup vimrcEx
   "" 4 spaces
   autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
   "" 2 spaces
-  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber setlocal ai sw=2 sts=2 et
+  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber,pug setlocal ai sw=2 sts=2 et
 
+  autocmd! BufRead,BufNewFile *.jade set ft=pug
   autocmd! BufRead,BufNewFile *.es6 set ft=javascript
   autocmd! BufRead,BufNewFile *.sass set ft=sass
   autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
