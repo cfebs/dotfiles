@@ -15,6 +15,7 @@ alias 1="cd ../"
 alias 2="cd ../../"
 alias 3="cd ../../../"
 alias 4="cd ../../../../"
+alias ttime="/usr/bin/time"
 
 alias bashrc=". ~/.bashrc"
 
@@ -37,8 +38,9 @@ alias c='clear'
 alias bc='bc -l'
 alias lh='ls --hide="*.pyc"'
 alias l='ls'
+alias lsat='ls -at'
 
-#alias vim=nvim
+alias vim=nvim
 alias vi=vim
 alias v=vim
 alias svi='sudo vi'
@@ -214,3 +216,31 @@ mkcp() {
     cp "$src" "$dest"
 }
 
+npmbin() {
+    $(npm bin)/"$@"
+}
+
+# http://www.commandlinefu.com/commands/view/9807/convert-number-of-bytes-to-human-readable-filesize
+human_filesize() {
+    awk -v sum="$1" ' BEGIN {hum[1024^3]="Gb"; hum[1024^2]="Mb"; hum[1024]="Kb"; for (x=1024^3; x>=1024; x/=1024) { if (sum>=x) { printf "%.2f %s\n",sum/x,hum[x]; break; } } if (sum<1024) print "1kb"; } '
+}
+
+pphtml() {
+    url="$1"
+    shift
+    curl -s "$url" | pup --color "$@"
+}
+
+human_size() {
+pyscript=$(cat <<SCRIPT
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
+print sizeof_fmt($1)
+SCRIPT
+)
+    python -c "$pyscript"
+}

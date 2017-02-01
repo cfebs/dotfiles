@@ -6,10 +6,10 @@
     pull = pull --ff-only
     pase = pull --rebase
     lg = log
-    lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log $@ $(git merge-base master $this_branch)..$this_branch; }; f"
+    lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log \"$@\" --first-parent --no-merges --stat $(git merge-base master $this_branch)..$this_branch; }; f"
     dc = diff --cached
     d = diff
-    dpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git diff $@ $(git merge-base master $this_branch)...$this_branch; }; f"
+    dpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git diff \"$@\" $(git merge-base master $this_branch)...$this_branch; }; f"
     sup = submodule update --init --recursive
     commitall = !git add . && git commit
     b = branch
@@ -24,6 +24,7 @@
     rlcc = !git reflog | grep checkout | head -40
     rlccc = !git reflog | grep checkout | head -80
     ru = remote update
+    tagdates = for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags
 [color]
 	ui = true
 [push]
@@ -32,3 +33,5 @@
     helper = cache --timeout=36000
 [core]
 	filemode = true
+[rerere]
+	enabled = true
