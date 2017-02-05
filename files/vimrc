@@ -3,6 +3,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
+Plug 'craigemery/vim-autotag'
 Plug 'kchmck/vim-coffee-script'
 Plug 'groenewege/vim-less'
 Plug 'altercation/vim-colors-solarized'
@@ -17,35 +18,22 @@ Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
-"Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'rking/ag.vim'
-"Plug 'briancollins/vim-jst'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'ekalinin/Dockerfile.vim'
-"Plug 'othree/yajs.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tweekmonster/fzf-filemru'
 Plug 'digitaltoad/vim-pug'
-"  autocmd! BufRead,BufNewFile *.sass setfiletype sass
-"Plug '~/src/vimeo/vimeo-vim-util'
-"Plug 'swekaj/php-foldexpr.vim'
 Plug 'cfebs/vim-gh-line'
-"Plug 'scrooloose/syntastic'
 Plug 'posva/vim-vue'
 Plug 'lambdatoast/elm.vim'
-Plug 'neomake/neomake'
 
 set fileformat=unix
 set fileformats=unix,dos
 
 call plug#end()
-
-"let g:neomake_open_list = 2
-"let g:neomake_logfile='/tmp/neomakeerror.log'
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Fundamentals
@@ -168,8 +156,6 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
   autocmd! BufRead,BufNewFile *.fir,*.jhtml set ft=html
   autocmd! BufRead,BufNewFile *.jade set ft=javascript.jsx
-
-  "autocmd! BufWritePost,BufEnter * Neomake
 augroup end
 
 function! SetLocalTabSize()
@@ -390,38 +376,6 @@ xnoremap <leader>vir :call VisualBlockWrap("$this->translate('", "')")<cr>
 noremap <leader>vt :call InsertTemplateTag()<cr>
 noremap <leader>vo :call InsertTemplateTagOut()<cr>
 noremap <leader>vl :call InsertLogger()<cr>
-
-"let g:syntastic_filetype_map = { "javascript.jsx": "javascript" }
-"let g:syntastic_go_checkers = ['go']
-"let g:syntastic_javascript_checkers = ['eslint']
-
-
-"'--preset', 'airbnb', '--reporter', 'inline', '--esnext'],
-let g:neomake_javascript_eslint_maker = {
-    \ 'exe': './node_modules/.bin/eslint',
-    \ 'args': ['--no-color', '-f', 'compact'],
-    \ 'errorformat': '%f: line %l\, col %c\, %m',
-    \ }
-
-let g:neomake_javascript_enabled_makers = ['eslint']
-
-"function! TabsOrSpaces()
-"    " Determines whether to use spaces or tabs on the current buffer.
-"    if getfsize(bufname("%")) > 256000
-"        " File is very large, just use the default.
-"        return
-"    endif
-"
-"    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
-"    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
-"
-"    if numTabs > numSpaces
-"        setlocal noexpandtab
-"    endif
-"endfunction
-"
-"" Call the function after opening a buffer
-"autocmd BufReadPost * call TabsOrSpaces()
 
 """ ag command suffix, [options]
 ""function! FzfGitCheckouRecentHandler(lines)
