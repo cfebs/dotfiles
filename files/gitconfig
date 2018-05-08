@@ -6,6 +6,7 @@
     pull = pull --ff-only
     pase = pull --rebase
     lg = log
+    l = log --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
     lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log \"$@\" --first-parent --no-merges --stat $(git merge-base master $this_branch)..$this_branch; }; f"
     dc = diff --cached
     d = diff
@@ -25,6 +26,10 @@
     rlccc = !git reflog | grep checkout | head -80
     ru = remote update
     tagdates = for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags
+    set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+    forcepush = push --force-with-lease
+    reblast = rebase -i HEAD^^
+    pushoriginup = !git push -u origin `git symbolic-ref --short HEAD`
 [color]
 	ui = true
 [push]
@@ -35,3 +40,6 @@
 	filemode = true
 [rerere]
 	enabled = true
+[user]
+	email = collin@vimeo.com
+	name = Collin Lefeber

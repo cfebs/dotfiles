@@ -28,7 +28,11 @@ Plug 'tweekmonster/fzf-filemru'
 Plug 'digitaltoad/vim-pug'
 Plug 'cfebs/vim-gh-line'
 Plug 'posva/vim-vue'
+Plug 'rust-lang/rust.vim'
 Plug 'lambdatoast/elm.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'hashivim/vim-terraform'
+
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -40,6 +44,8 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""
 set nocp
 filetype plugin indent on
+
+set guicursor=
 
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
@@ -302,6 +308,11 @@ let g:breeze_active_filetypes = "*.html,*.htm,*.xhtml,*.xml,*.phtml"
 
 "" Fugitive
 nmap <silent> <leader>gs :Gstatus<cr>
+nmap <silent> <leader>gf :Gdiff<cr>
+nmap <silent> <leader>gd :Git diff<cr>
+nmap <silent> <leader>gc :Git diff --cached<cr>
+nmap <silent> <leader>go :Git commit<cr>
+set diffopt+=vertical
 
 "" Gitv
 let g:Gitv_DoNotMapCtrlKey = 1
@@ -334,7 +345,7 @@ endfunction
 
 function! InsertLogger()
     if (&ft == 'php')
-        normal o\ScribeLogger::log('LOGGER', []);
+        normal osyslog(LOG_INFO, json_encode([]));
         normal F[
         normal 1l
         startinsert
@@ -398,3 +409,5 @@ let g:gh_line_map_default = 0
 let g:gh_line_map = '<leader>gh'
 let g:gh_open_command = 'xdg-open '
 let g:gh_use_canonical = 1
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0

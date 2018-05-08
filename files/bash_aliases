@@ -10,6 +10,25 @@ alias makej="make -j$(getmakej)"
 alias weather='curl http://wttr.in/'
 alias tmux="TERM=screen-256color-bce tmux"
 
+alias tm="tmux"
+alias tmn="tmux new-session -s"
+
+alias sshno="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null"
+alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes"
+
+tma() {
+    tmux attach -t $(tmux ls | fzf | cut -d: -f1)
+}
+
+tmnd() {
+    tmux new-session -s $(pwd)
+}
+
+sshscreen() {
+    # ssh's to the box and runs screen attach
+    ssh -t $1 screen -Rad
+}
+
 # Quick nav
 alias 1="cd ../"
 alias 2="cd ../../"
@@ -40,7 +59,7 @@ alias lh='ls --hide="*.pyc"'
 alias l='ls'
 alias lsat='ls -at'
 
-alias vim=nvim
+hash nvim 2>&1 1>/dev/null && alias vim=nvim
 alias vi=vim
 alias v=vim
 alias svi='sudo vi'
@@ -49,6 +68,10 @@ alias edit='vim'
 
 alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
 alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
+
+# -index_interval duration
+#   interval of indexing; 0 for default (5m), negative to only index once at startup
+alias localgodoc="godoc -http=:6060 -index -play -index_interval -1m"
 
 alias rm='rm'
 # do not delete / or prompt if deleting more than 3 files at a time #
@@ -75,7 +98,7 @@ alias clipboard='xclip -se c'
 alias upgrade='sudo apt-get update; sudo apt-get upgrade'
 alias sag='sudo apt-get'
 
-alias agi='ag -i'
+alias agi='ag -i --ignore "*.min.js" --ignore "web/assets/fonts/" --ignore "web/assets/js/vendor/" --ignore "web_portfolio/assets/js/jquery*.js"'
 
 ## Functions
 
@@ -179,6 +202,8 @@ __my_journal() {
     return 0;
 }
 
+alias j="__my_journal"
+
 dodat() {
     # dodat cmd src_file relative_target
     # dodat cp /tmp/dir/file.txt new_file.txt
@@ -244,3 +269,64 @@ SCRIPT
 )
     python -c "$pyscript"
 }
+
+set_title()
+{
+    ORIG=$PS1
+    TITLE="\e]2;$*\a"
+    PS1=${ORIG}${TITLE}
+}
+
+pssh() {
+    # $1 some string to eval 'pweb{1..10}'
+    # $2 cmd
+    # Usage: pssh 'pweb{1..10}' 'hostname'
+    echo "Running on $(eval echo $1)..."
+    sleep 0.7
+    parallel-ssh -O StrictHostKeyChecking=no -i -H "$(eval echo $1)" $2
+}
+
+alias sshvpn="ssh -c 3des-cbc"
+
+knownhostsrm() {
+    ssh-keygen -f $HOME/.ssh/known_hosts -R $1
+    for ip in $(dig +short $1)
+    do
+        ssh-keygen -f $HOME/.ssh/known_hosts -R $ip
+    done
+}
+
+sshtun() {
+    # $1 hostname
+    # $2 host port
+    # $3 local port
+    if [ $# -lt 3 ]
+    then
+        echo "\$1 hostname, \$2 host port, \$3 local port"
+        return 1
+    fi
+    ssh -v "$1" -L "$3:$1:$2" -N
+}
+
+socksproxy() {
+    if [ $# -lt 2 ]
+    then
+        echo "Usage: socksproxy localport user@host [sshport]"
+        echo "    \$1: localport"
+        echo "    \$2: login"
+        echo "    \$3: sshport (default 22)"
+        return 1
+    fi
+
+    sshport=${3-22}
+
+    echo "localport: $1, auth: $2, sshport: $sshport"
+    ssh -v -N -p "$sshport" -D "0.0.0.0:$1" "$2"
+}
+
+lookupip() {
+    curl "https://tools.keycdn.com/geo.json?host=$1" | jq .
+}
+
+alias randpass="cat /dev/urandom | head -c 15 | base64"
+alias proxydrop="socksproxy 9999 collin@proxydrop 222"
