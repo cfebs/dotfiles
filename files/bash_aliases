@@ -95,7 +95,7 @@ alias ln='ln -i'
 
 alias clipboard='xclip -se c'
 
-alias upgrade='sudo apt-get update; sudo apt-get upgrade'
+alias upgrade='sudo apt update && sudo apt upgrade -y'
 alias sag='sudo apt-get'
 
 alias agi='ag -i --ignore "*.min.js" --ignore "web/assets/fonts/" --ignore "web/assets/js/vendor/" --ignore "web_portfolio/assets/js/jquery*.js"'
