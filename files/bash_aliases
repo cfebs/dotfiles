@@ -330,3 +330,10 @@ lookupip() {
 
 alias randpass="cat /dev/urandom | head -c 15 | base64"
 alias proxydrop="socksproxy 9999 collin@proxydrop 222"
+
+rubycheck() {
+    echo "Checking .rb"
+    find . -type f -name '*.rb' -exec ruby -c {} \;
+    echo "Checking .erb"
+    find . -type f -name '*.erb' -exec sh -c "erb -x -T '-' {} | ruby -c" \;
+}
