@@ -90,4 +90,12 @@ else
     wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/src/etc/git-completion.bash
 fi
 
+# git completion 2.17 and prompt
+if [ -f ~/src/etc/git-completion217.bash ]
+then
+    echo "Looks like git completion 217 is already installed"
+else
+    wget https://raw.githubusercontent.com/git/git/v2.17.1/contrib/completion/git-completion.bash -O ~/src/etc/git-completion217.bash
+fi
+
 echo "Done with getting utils"

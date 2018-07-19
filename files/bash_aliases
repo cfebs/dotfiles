@@ -81,11 +81,20 @@ TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $T
 TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm -I $TEST_FILE 2> /dev/null && \
     alias rm='rm -I'
 
-if [ -f ~/src/etc/git-completion.bash ]
-then
-    . ~/src/etc/git-completion.bash
-    alias g="git"
-    __git_complete g _git
+if git --version | grep 2.17.1 2>&1 1>/dev/null; then
+    if [ -f ~/src/etc/git-completion217.bash ]
+    then
+        . ~/src/etc/git-completion217.bash
+        alias g="git"
+        __git_complete g _git
+    fi
+else
+    if [ -f ~/src/etc/git-completion.bash ]
+    then
+        . ~/src/etc/git-completion.bash
+        alias g="git"
+        __git_complete g _git
+    fi
 fi
 
 # confirmation #
@@ -333,7 +342,12 @@ alias proxydrop="socksproxy 9999 collin@proxydrop 222"
 
 rubycheck() {
     echo "Checking .rb"
-    find . -type f -name '*.rb' -exec ruby -c {} \;
+    find . -type f -name '*.rb' -exec ruby -c {} \; > /dev/null
     echo "Checking .erb"
-    find . -type f -name '*.erb' -exec sh -c "erb -x -T '-' {} | ruby -c" \;
+    find . -type f -name '*.erb' -exec sh -c "erb -x -T '-' {} | ruby -c" \; > /dev/null
+    echo "Done"
+}
+
+genpassword() {
+    < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
 }

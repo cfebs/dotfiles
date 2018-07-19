@@ -38,6 +38,8 @@ Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'ipod825/vim-netranger'
+Plug 'w0rp/ale'
+
 
 
 set fileformat=unix
@@ -168,6 +170,7 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
   autocmd! BufRead,BufNewFile *.fir,*.jhtml set ft=html
   autocmd! BufRead,BufNewFile *.jade set ft=javascript.jsx
+  autocmd BufEnter term://* startinsert
 augroup end
 
 function! SetLocalTabSize()
@@ -419,3 +422,18 @@ let g:gh_open_command = 'xdg-open '
 let g:gh_use_canonical = 1
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+
+"""" Ale
+
+" Do not lint or fix minified files.
+let g:ale_pattern_options = {
+\ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
+\ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
+\ '\.php$': {'ale_linters': [  ], 'ale_fixers': []},
+\}
+" If you configure g:ale_pattern_options outside of vimrc, you need this.
+let g:ale_pattern_options_enabled = 1
+
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
