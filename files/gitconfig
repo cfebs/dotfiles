@@ -7,7 +7,7 @@
     pase = pull --rebase
     lg = log
     l = log --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
-    lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log \"$@\" --first-parent --no-merges --stat $(git merge-base master $this_branch)..$this_branch; }; f"
+    lgpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git log \"$@\" --first-parent --no-merges --stat $(git merge-base origin/master $this_branch)..$this_branch; }; f"
     dc = diff --cached
     d = diff
     dpr = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git diff \"$@\" $(git merge-base master $this_branch)...$this_branch; }; f"

@@ -7,7 +7,6 @@ getmakej() {
 export EDITOR='vim'
 
 alias makej="make -j$(getmakej)"
-alias weather='curl http://wttr.in/'
 alias tmux="TERM=screen-256color-bce tmux"
 
 alias tm="tmux"
@@ -27,6 +26,12 @@ tmnd() {
 sshscreen() {
     # ssh's to the box and runs screen attach
     ssh -t $1 screen -Rad
+}
+
+wttr()
+{
+    # change Paris to your default location
+    curl -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-11211?2}"
 }
 
 # Quick nav
@@ -335,6 +340,19 @@ socksproxy() {
 
 lookupip() {
     curl "https://tools.keycdn.com/geo.json?host=$1" | jq .
+}
+
+helpme() {
+    export LESS=-RXFi
+    export LESS_TERMCAP_mb=$(printf "\e[1;31m")
+    export LESS_TERMCAP_md=$(printf "\e[1;31m")
+    export LESS_TERMCAP_me=$(printf "\e[0m")
+    export LESS_TERMCAP_se=$(printf "\e[0m")
+    export LESS_TERMCAP_so=$(printf "\e[1;44;33m")
+    export LESS_TERMCAP_ue=$(printf "\e[0m")
+    export LESS_TERMCAP_us=$(printf "\e[1;32m")
+
+    tldr "$@" && env man "$@"
 }
 
 alias randpass="cat /dev/urandom | head -c 15 | base64"
