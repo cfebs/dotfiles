@@ -88,9 +88,11 @@ _create_dot_file() {
 
 _setup_neovim() {
     # Link .vim* -> .nvim*
+    mkdir -p $HOME/.config/nvim
 
     ln -sf ~/.vim ~/.nvim
     ln -sf ~/.vimrc ~/.nvimrc
+    ln -sf ~/.vimrc ~/.config/nvim/init.vim
 }
 
 _trim_backups() {
