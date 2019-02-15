@@ -369,3 +369,9 @@ rubycheck() {
 genpassword() {
     < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
 }
+
+wgetfullsite() {
+    wget --recursive --no-clobber --page-requisites --adjust-extension --span-hosts --convert-links --no-parent "$1"
+}
+
+alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'

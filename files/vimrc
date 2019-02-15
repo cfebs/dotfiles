@@ -41,6 +41,10 @@ Plug 'junegunn/goyo.vim'
 Plug 'ipod825/vim-netranger'
 Plug 'w0rp/ale'
 Plug 'junegunn/goyo.vim'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'fgsch/vim-varnish'
+Plug 'maksimr/vim-jsbeautify'
+
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -70,6 +74,7 @@ set scrolloff=3
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
 set shell=bash
+"set shellcmdflag=-ic
 set nonu
 set mouse-=a
 
@@ -103,7 +108,8 @@ set showmatch
 set t_Co=256   " 256 colors
 "set t_Co=16
 " Usually term not set up for solarized
-set background=dark
+"set background=dark
+set background=light
 colorscheme solarized
 "colorscheme railscasts
 "colorscheme desert
@@ -429,7 +435,11 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 let g:ale_pattern_options = {
 \ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
-\ '\.php$': {'ale_linters': [  ], 'ale_fixers': []},
+\ '\.php$': {'ale_linters': [ 'php' ], 'ale_fixers': []},
+\ '\.js$': {'ale_linters': [ ], 'ale_fixers': []},
+\ '\.go$': {'ale_linters': [ 'gofmt', 'gobuild' ], 'ale_fixers': []},
+\ '\.py$': {'ale_linters': [ ], 'ale_fixers': []},
+\ '\.phtml$': {'ale_linters': [ 'prettier' ], 'ale_fixers': []},
 \}
 " If you configure g:ale_pattern_options outside of vimrc, you need this.
 let g:ale_pattern_options_enabled = 1
