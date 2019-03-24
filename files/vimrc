@@ -4,7 +4,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'w0rp/ale'
 Plug 'craigemery/vim-autotag'
 Plug 'kchmck/vim-coffee-script'
 Plug 'groenewege/vim-less'
@@ -44,7 +43,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'fgsch/vim-varnish'
 Plug 'maksimr/vim-jsbeautify'
-
+Plug 'tpope/vim-vinegar'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -201,7 +200,7 @@ endif
 nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
 nnoremap <leader>o :only<cr>
-nnoremap <leader>c :clo<cr>
+nnoremap <leader>x :clo<cr>
 imap <c-c> <esc>
 
 
@@ -431,7 +430,6 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
 """" Ale
 
-" Do not lint or fix minified files.
 let g:ale_pattern_options = {
 \ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
@@ -441,16 +439,10 @@ let g:ale_pattern_options = {
 \ '\.py$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.phtml$': {'ale_linters': [ 'prettier' ], 'ale_fixers': []},
 \}
+
 " If you configure g:ale_pattern_options outside of vimrc, you need this.
 let g:ale_pattern_options_enabled = 1
-
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
-let g:ale_linters_explicit = 1
-
-" In ~/.vim/vimrc, or somewhere similar.
-let g:ale_linters = {
-\   'rust': ['cargo'],
-\   'go': ['gofmt'],
-\}
+let g:ale_history_log_output = 1
