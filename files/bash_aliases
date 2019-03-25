@@ -376,3 +376,11 @@ wgetfullsite() {
 
 alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
 alias remoteirc="mosh no.city -- screen -rad weechat"
+
+aws-mfa-vimeo() {
+    eval $(AWS_MFA_ARN="$AWS_MFA_ARN" AWS_PROFILE=vimeo $HOME/src/vimeo/ops/aws/aws-mfa.py)
+}
+
+aws-mfa-vhx-legacy() {
+    eval $(AWS_MFA_ARN="$AWS_VHX_LEGACY_MFA_ARN" AWS_PROFILE=vhx-legacy $HOME/src/vimeo/ops/aws/aws-mfa.py)
+}

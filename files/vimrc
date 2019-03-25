@@ -21,7 +21,6 @@ Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -32,12 +31,15 @@ Plug 'posva/vim-vue'
 Plug 'rust-lang/rust.vim'
 Plug 'lambdatoast/elm.vim'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'hashivim/vim-terraform'
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'ipod825/vim-netranger'
+"Plug 'ipod825/vim-netranger'
+"Plug 'mcchrish/nnn.vim'
+Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 Plug 'junegunn/goyo.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
@@ -107,8 +109,8 @@ set showmatch
 set t_Co=256   " 256 colors
 "set t_Co=16
 " Usually term not set up for solarized
-"set background=dark
-set background=light
+set background=dark
+"set background=light
 colorscheme solarized
 "colorscheme railscasts
 "colorscheme desert
@@ -175,6 +177,7 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.phtml,*.firt set ft=phtml
   autocmd! BufRead,BufNewFile *.fir,*.jhtml set ft=html
   autocmd! BufRead,BufNewFile *.jade set ft=javascript.jsx
+  autocmd! BufRead,BufNewFile *.tsx,*.jsx set ft=typescript.tsx
   autocmd BufEnter term://* startinsert
 augroup end
 
@@ -445,4 +448,3 @@ let g:ale_pattern_options_enabled = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
-let g:ale_history_log_output = 1

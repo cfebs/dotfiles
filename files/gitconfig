@@ -30,7 +30,7 @@
     forcepush = push --force-with-lease
     reblast = rebase -i HEAD^^
     fixhead = !git commit --fixup=HEAD && git rebase -i --autosquash HEAD^^
-    pushoriginup = !git push -u origin `git symbolic-ref --short HEAD`
+    pushoriginup = "!f() { this_branch=$(git symbolic-ref --short HEAD); [ \"${this_branch}\" = \"master\" ] && echo ERROR: This is master && exit 1; git push -u origin ${this_branch}; }; f"
     rebrase = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git rebase -i $(git merge-base master $this_branch origin/master); }; f"
 [color]
 	ui = true
@@ -45,3 +45,6 @@
 [user]
 	email = collin@vimeo.com
 	name = Collin Lefeber
+[hub]
+	host = github.vimeows.com
+	protocol = ssh
