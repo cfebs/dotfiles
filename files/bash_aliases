@@ -384,3 +384,5 @@ aws-mfa-vimeo() {
 aws-mfa-vhx-legacy() {
     eval $(AWS_MFA_ARN="$AWS_VHX_LEGACY_MFA_ARN" AWS_PROFILE=vhx-legacy $HOME/src/vimeo/ops/aws/aws-mfa.py)
 }
+
+alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"

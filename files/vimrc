@@ -37,15 +37,14 @@ Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 Plug 'junegunn/goyo.vim'
-"Plug 'ipod825/vim-netranger'
-"Plug 'mcchrish/nnn.vim'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
-Plug 'junegunn/goyo.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'fgsch/vim-varnish'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'tpope/vim-vinegar'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'Yggdroot/indentLine'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -435,16 +434,20 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
 let g:ale_pattern_options = {
 \ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
+\ '\.go$': {'ale_linters': [ 'gofmt', 'gobuild' ], 'ale_fixers': ['goimports']},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
 \ '\.php$': {'ale_linters': [ 'php' ], 'ale_fixers': []},
 \ '\.js$': {'ale_linters': [ ], 'ale_fixers': []},
-\ '\.go$': {'ale_linters': [ 'gofmt', 'gobuild' ], 'ale_fixers': []},
 \ '\.py$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.phtml$': {'ale_linters': [ 'prettier' ], 'ale_fixers': []},
 \}
+
 
 " If you configure g:ale_pattern_options outside of vimrc, you need this.
 let g:ale_pattern_options_enabled = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+
+let g:ale_history_log_output = 1
