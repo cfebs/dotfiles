@@ -20,7 +20,7 @@
     slistt = stash list -40
     slisttt = stash list -80
     sapply = "!f() { git stash apply stash@{$1}; }; f"
-    sshow = "!f() { git show stash@{$1}; }; f"
+    sshow = "!f() { git show -p stash@{$1}; }; f"
     rlc = !git reflog | grep checkout | head -15
     rlcc = !git reflog | grep checkout | head -40
     rlccc = !git reflog | grep checkout | head -80

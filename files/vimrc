@@ -19,12 +19,11 @@ Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'tweekmonster/fzf-filemru'
+Plug 'lvht/mru'
 Plug 'digitaltoad/vim-pug'
 Plug 'cfebs/vim-gh-line'
 Plug 'posva/vim-vue'
@@ -45,6 +44,7 @@ Plug 'maksimr/vim-jsbeautify'
 Plug 'tpope/vim-vinegar'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'Yggdroot/indentLine'
+Plug 'fatih/vim-go'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -170,6 +170,10 @@ augroup vimrcEx
   "" 2 spaces
   autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber,pug setlocal ai sw=2 sts=2 et
 
+  autocmd FileType phtml setlocal ai et sw=4 sts=4 tabstop=4
+  autocmd FileType go setlocal noexpandtab ai sw=4 sts=4 tabstop=4
+  autocmd! FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+
   autocmd! BufRead,BufNewFile *.jade set ft=pug
   autocmd! BufRead,BufNewFile *.es6 set ft=javascript.jsx
   autocmd! BufRead,BufNewFile *.sass set ft=sass
@@ -177,6 +181,7 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.fir,*.jhtml set ft=html
   autocmd! BufRead,BufNewFile *.jade set ft=javascript.jsx
   autocmd! BufRead,BufNewFile *.tsx,*.jsx set ft=typescript.tsx
+
   autocmd BufEnter term://* startinsert
 augroup end
 
@@ -223,6 +228,14 @@ nnoremap <leader>eba :vsp ~/.bash_aliases<cr>
 
 nnoremap <S-h> gT
 nnoremap <S-l> gt
+tnoremap <S-h> <C-\><C-n>gT
+tnoremap <S-l> <C-\><C-n>gt
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-l> <C-\><C-n><C-w>l
+tnoremap <Esc> <C-\><C-n>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -282,11 +295,11 @@ if executable('ag')
   "let g:ctrlp_use_caching = 0
 endif
 
-command! FZFMru call fzf#run({
-\ 'source':  reverse(s:all_files()),
-\ 'sink':    'edit',
-\ 'options': '-m -x +s',
-\ 'down':    '40%' })
+"command! FZFMru call fzf#run({
+"\ 'source':  s:all_files(),
+"\ 'sink':    'edit',
+"\ 'options': '-m -x +s',
+"\ 'down':    '40%' })
 
 function! s:all_files()
   return extend(
@@ -298,28 +311,27 @@ endfunction
 "" fzf
 nmap <silent> <Leader>t :Files<CR>
 nmap <silent> <Leader>f :GitFiles<CR>
-"nmap <silent> <Leader>d :CtrlPDir<CR>
 nmap <silent> <Leader>b :Buffers<CR>
-nmap <silent> <Leader>m :CtrlPMRU<CR>
+nmap <silent> <Leader>m :History<CR>
 
 "" ctrlp
 "nmap <silent> <Leader>f :CtrlP<CR>
 "nmap <silent> <Leader>d :CtrlPDir<CR>
 "nmap <silent> <Leader>b :CtrlPBuffer<CR>
 "nmap <silent> <Leader>m :CtrlPMRU<CR>
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_max_files = 0
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
-  \ 'file': '\v\.(exe|so|dll|pyc)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+"let g:ctrlp_working_path_mode = ''
+"let g:ctrlp_max_files = 0
+"let g:ctrlp_custom_ignore = {
+"  \ 'dir':  '\v[\/]_site|\.(git|hg|svn)|node_modules|source_maps$',
+"  \ 'file': '\v\.(exe|so|dll|pyc)$',
+"  \ 'link': 'some_bad_symbolic_links',
+"  \ }
 
 "" Tabularize
-if exists(":Tabularize")
- nmap <Leader>a= :Tabularize /=<CR>
- nmap <Leader>a: :Tabularize /:\zs<CR>
-endif
+"if exists(":Tabularize")
+" nmap <Leader>a= :Tabularize /=<CR>
+" nmap <Leader>a: :Tabularize /:\zs<CR>
+"endif
 
 "" Breeze
 let g:breeze_active_filetypes = "*.html,*.htm,*.xhtml,*.xml,*.phtml"
@@ -432,14 +444,17 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
 """" Ale
 
+let g:ale_python_pylint_executable = "find-pylint.sh"
 let g:ale_pattern_options = {
+\ '\.sql$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
-\ '\.go$': {'ale_linters': [ 'gofmt', 'gobuild' ], 'ale_fixers': ['goimports']},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
-\ '\.php$': {'ale_linters': [ 'php' ], 'ale_fixers': []},
+\ '\.php$': {'ale_linters': [ 'php', 'psalm' ], 'ale_fixers': [ 'php_cs_fixer' ]},
 \ '\.js$': {'ale_linters': [ ], 'ale_fixers': []},
-\ '\.py$': {'ale_linters': [ ], 'ale_fixers': []},
+\ '\.go$': {'ale_linters': [ 'govet', 'gofmt', 'gobuild' ], 'ale_fixers': ['gofmt', 'goimports']},
+\ '\.py$': {'ale_linters': [ 'pylint' ], 'ale_fixers': []},
 \ '\.phtml$': {'ale_linters': [ 'prettier' ], 'ale_fixers': []},
+\ '\.tf$': {'ale_linters': ['terraform'], 'ale_fixers': ['terraform']},
 \}
 
 
@@ -451,3 +466,11 @@ let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1
 
 let g:ale_history_log_output = 1
+let g:ale_history_log_output = 1
+
+
+nnoremap <leader>a :ALEFix<cr>
+
+" let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_fmt_fail_silently = 1
+let g:go_metalinter_enabled = []

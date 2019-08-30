@@ -13,7 +13,7 @@ alias tm="tmux"
 alias tmn="tmux new-session -s"
 
 alias sshno="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null"
-alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes"
+alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes -n"
 
 tma() {
     tmux attach -t $(tmux ls | fzf | cut -d: -f1)
@@ -385,4 +385,14 @@ aws-mfa-vhx-legacy() {
     eval $(AWS_MFA_ARN="$AWS_VHX_LEGACY_MFA_ARN" AWS_PROFILE=vhx-legacy $HOME/src/vimeo/ops/aws/aws-mfa.py)
 }
 
+<<<<<<< HEAD
 alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
+=======
+aws-mfa-pci() {
+    eval $(AWS_MFA_ARN="$AWS_PCI_MFA_ARN" AWS_PROFILE=pci $HOME/src/vimeo/ops/aws/aws-mfa.py)
+}
+
+alias digit="dig +noall +answer"
+alias diggoog="dig +noall +answer @8.8.8.8"
+alias digiac="dig +noall +answer @192.168.200.29"
+>>>>>>> Update!
