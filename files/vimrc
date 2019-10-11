@@ -86,6 +86,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 nnoremap ; :
 
 "" Markdown
+let g:markdown_syntax_conceal = 0
 nmap <leader>1 VypVr=
 nmap <leader>2 VypVr-
 nmap <leader>3 I### <Esc>
@@ -170,6 +171,7 @@ augroup vimrcEx
   "" 2 spaces
   autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber,pug setlocal ai sw=2 sts=2 et
 
+  autocmd FileType tsv setlocal ai noexpandtab sw=4 sts=4 tabstop=4
   autocmd FileType phtml setlocal ai et sw=4 sts=4 tabstop=4
   autocmd FileType go setlocal noexpandtab ai sw=4 sts=4 tabstop=4
   autocmd! FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
@@ -181,6 +183,7 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.fir,*.jhtml set ft=html
   autocmd! BufRead,BufNewFile *.jade set ft=javascript.jsx
   autocmd! BufRead,BufNewFile *.tsx,*.jsx set ft=typescript.tsx
+  autocmd! BufRead,BufNewFile *.tsv set ft=tsv
 
   autocmd BufEnter term://* startinsert
 augroup end
@@ -449,7 +452,7 @@ let g:ale_pattern_options = {
 \ '\.sql$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.rb$': {'ale_linters': [ 'ruby' ], 'ale_fixers': []},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
-\ '\.php$': {'ale_linters': [ 'php', 'psalm' ], 'ale_fixers': [ 'php_cs_fixer' ]},
+\ '\.php$': {'ale_linters': [ 'php', 'psalm' ], 'ale_fixers': [ ]},
 \ '\.js$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.go$': {'ale_linters': [ 'govet', 'gofmt', 'gobuild' ], 'ale_fixers': ['gofmt', 'goimports']},
 \ '\.py$': {'ale_linters': [ 'pylint' ], 'ale_fixers': []},
@@ -474,3 +477,5 @@ nnoremap <leader>a :ALEFix<cr>
 " let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_fmt_fail_silently = 1
 let g:go_metalinter_enabled = []
+
+let g:vim_json_syntax_conceal = 0

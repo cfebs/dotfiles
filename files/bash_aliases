@@ -385,9 +385,7 @@ aws-mfa-vhx-legacy() {
     eval $(AWS_MFA_ARN="$AWS_VHX_LEGACY_MFA_ARN" AWS_PROFILE=vhx-legacy $HOME/src/vimeo/ops/aws/aws-mfa.py)
 }
 
-<<<<<<< HEAD
 alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
-=======
 aws-mfa-pci() {
     eval $(AWS_MFA_ARN="$AWS_PCI_MFA_ARN" AWS_PROFILE=pci $HOME/src/vimeo/ops/aws/aws-mfa.py)
 }
@@ -395,4 +393,27 @@ aws-mfa-pci() {
 alias digit="dig +noall +answer"
 alias diggoog="dig +noall +answer @8.8.8.8"
 alias digiac="dig +noall +answer @192.168.200.29"
->>>>>>> Update!
+
+alias gpglist="gpg --list-secret-keys --keyid-format LONG"
+gpgexport() {
+    id="$1"
+    echo "Using key id $id, listing key"
+    gpg --list-keys "$id"
+    rc=$?
+    [ $rc != 0 ] && echo "Bad id" && return 1
+
+    echo "Look ok? Ctrl-C to exit, enter to continue"
+    read a
+
+    dir=$(mktemp -d)
+    echo "Create temp dir $dir, moving there"
+    sleep 1
+    cd $dir
+    echo "Exporting"
+    gpg --armor --export "$id" > pub.asc
+    gpg --armor --export-secret-keys "$id" > priv.asc
+    gpg --export-ownertrust trust > trust
+
+    echo "Done"
+    ls -lat .
+}
