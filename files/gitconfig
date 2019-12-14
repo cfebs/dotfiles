@@ -48,3 +48,5 @@
 [hub]
 	host = github.vimeows.com
 	protocol = ssh
+[url "git@github.vimeows.com:"]
+	insteadOf = https://github.vimeows.com

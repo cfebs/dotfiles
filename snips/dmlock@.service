@@ -1,0 +1,17 @@
+#sudo systemctl enable dmlock@collin
+#/etc/systemd/system/dmlock@.service
+[Unit]
+Description=Lock X session using dm lock for user %i
+Before=sleep.target
+
+[Service]
+User=%i
+Environment=DISPLAY=:0
+# required, check this in your user's env
+Environment=XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+ExecStartPre=/usr/bin/xset dpms force suspend
+ExecStart=/usr/bin/dm-tool lock
+
+[Install]
+WantedBy=sleep.target
+

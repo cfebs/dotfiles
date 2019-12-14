@@ -36,7 +36,6 @@ Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'fgsch/vim-varnish'
@@ -169,7 +168,7 @@ augroup vimrcEx
   "" 4 spaces
   autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
   "" 2 spaces
-  autocmd FileType coffee,ruby,haml,eruby,yaml,html,sass,cucumber,pug setlocal ai sw=2 sts=2 et
+  autocmd FileType coffee,ruby,haml,eruby,html,sass,cucumber,pug setlocal ai sw=2 sts=2 et
 
   autocmd FileType tsv setlocal ai noexpandtab sw=4 sts=4 tabstop=4
   autocmd FileType phtml setlocal ai et sw=4 sts=4 tabstop=4
