@@ -13,8 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-#font pango:monospace 8
-font pango:monospace 11
+font pango:monospace 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -160,9 +159,10 @@ bar {
 exec --no-startup-id nm-applet
 exec nitrogen --restore
 exec dunst
-exec xrandr --dpi 120
+#exec xrandr --dpi 120
+exec --no-startup-id xss-lock -l -- i3lock -c 111111
 
-bindsym Ctrl+Mod1+Delete exec i3lock -c 222222
+bindsym Ctrl+Mod1+Delete exec i3lock -c 111111
 bindsym $mod+n workspace next
 bindsym $mod+p workspace prev
 bindsym Mod1+Shift+3 exec flameshot gui
