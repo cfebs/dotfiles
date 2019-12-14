@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+FILES_HOME="$DIR/home"
+FILES_ROOT="$DIR/files"
+DRY_RUN=0
+
+usage() {
+    echo "Usage: $0 [-d|-dryrun]" 1>&2
+    echo "" 1>&2
+    echo "Will link files to / and \$HOME" 1>&2
+}
+
+PARAMS=""
+while (( "$#" )); do
+  case "$1" in
+    -h|--help|-help)
+      usage
+      exit 0
+      ;;
+    -d|-dryrun)
+      DRY_RUN=1
+      shift 1
+      ;;
+    #-d|-flag-with-argument)
+    #  FARG=$2
+    #  shift 2
+    #  ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+# set positional arguments in their proper place
+eval set -- "$PARAMS"
+
+echo "Using home: $HOME" 1>&2
+if [ $DRY_RUN -eq 1 ]; then
+    echo "Dry run set!" 1>&2
+fi
+
+confirm() {
+    read -p "$1 (y/n)?" choice
+    case "$choice" in
+      y|Y ) return 0;;
+      n|N ) return 1;;
+      * ) return 1;;
+    esac
+}
+
+linkfiles() {
+    # Links paths in FILES_ROOT
+    # ex. files/etc/resolv.conf -> /etc/resolv.conf
+    find $FILES_ROOT -type f | while read -r file; do
+        syspath=${file#$FILES_ROOT}
+        echo "INFO: linking source: $file to dst: $syspath" 1>&2
+
+        syspath_dir=$(dirname "$syspath")
+        if [ ! -d "$syspath_dir" ]; then
+            echo "INFO: directory didn't exist, making dir $syspath_dir" 1>&2
+            [ $DRY_RUN -eq 0 ] && sudo mkdir -p $syspath_dir
+        fi
+
+        if [ $DRY_RUN -eq 0 ]; then
+            sudo ln -sf $file $syspath
+            rc=$?
+            if [ $rc -gt 0 ]; then
+                echo "ERROR: link error occurred" 1>&2
+            fi
+        fi
+    done
+
+    # Links paths in FILES_HOME
+    # ex. home/.config/blah -> $HOME/.config/blah
+    find $FILES_HOME -type f | while read -r file; do
+        syspath="${HOME}${file#$FILES_HOME}"
+        echo "INFO: linking source: $file to dst: $syspath" 1>&2
+
+        syspath_dir=$(dirname "$syspath")
+        if [ ! -d "$syspath_dir" ]; then
+            echo "INFO: directory didn't exist, making dir $syspath_dir" 1>&2
+            [ $DRY_RUN -eq 0 ] && mkdir -p $syspath_dir
+        fi
+
+        if [ $DRY_RUN -eq 0 ]; then
+            ln -sf $file $syspath
+            rc=$?
+            if [ $rc -gt 0 ]; then
+                echo "ERROR: link error occurred" 1>&2
+            fi
+        fi
+    done
+}
+
+packages() {
+    echo "INFO: installing non gui packages" 1>&2
+    # Note: pacman -Qqe
+    # should give all explicitly installed pkgs
+    if [ $DRY_RUN -eq 0 ]; then
+        sudo pacman --noconfirm -S base-devel
+        sudo pacman --noconfirm -S wireless_tools \
+            openssh \
+            vi \
+            vim \
+            bind-tools \
+            curl \
+            wget \
+            git \
+            socat \
+            gnu-netcat \
+            xclip
+    fi
+}
+
+linkfiles
+packages
