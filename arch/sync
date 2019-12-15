@@ -8,7 +8,7 @@ DRY_RUN=0
 usage() {
     echo "Usage: $0 [-d|-dryrun]" 1>&2
     echo "" 1>&2
-    echo "Will link files to / and \$HOME" 1>&2
+    echo "Will link files to / and \$HOME, install packages" 1>&2
 }
 
 PARAMS=""
@@ -103,24 +103,27 @@ linkfiles() {
 }
 
 packages() {
-    echo "INFO: installing non gui packages" 1>&2
+    echo "INFO: installing essential non gui packages" 1>&2
     # Note: pacman -Qqe
     # should give all explicitly installed pkgs
-    if [ $DRY_RUN -eq 0 ]; then
-        sudo pacman --noconfirm -S base-devel
-        sudo pacman --noconfirm -S wireless_tools \
-            openssh \
-            vi \
-            vim \
-            bind-tools \
-            curl \
-            wget \
-            git \
-            socat \
-            gnu-netcat \
-            xclip
+    pre_cmd=""
+    if [ $DRY_RUN -eq 1 ]; then
+        pre_cmd="echo INFO: would run: "
     fi
+
+    $pre_cmd sudo pacman --noconfirm -S base-devel
+    $pre_cmd sudo pacman --noconfirm -S wireless_tools \
+        openssh \
+        vi \
+        vim \
+        bind-tools \
+        curl \
+        wget \
+        git \
+        socat \
+        gnu-netcat \
+        xclip
 }
 
 linkfiles
-packages
+#packages
