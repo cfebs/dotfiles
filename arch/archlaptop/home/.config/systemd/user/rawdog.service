@@ -1,0 +1,10 @@
+[Unit]
+Description=Rawdog Oneshot Updater
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rawdog -Wuw
+
+[Install]
+WantedBy=default.target
+

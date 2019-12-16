@@ -1,0 +1,10 @@
+[Unit]
+Description=Rawdog Oneshot Updater Timer
+
+[Timer]
+Persistent=true
+OnCalendar=hourly
+
+[Install]
+WantedBy=timers.target
+

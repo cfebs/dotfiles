@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-FILES_HOME="$DIR/home"
-FILES_ROOT="$DIR/files"
 DRY_RUN=0
+LINK_MODE=0
 
 usage() {
-    echo "Usage: $0 [-d|-dryrun]" 1>&2
+    echo "Usage: $0 [-d|-dryrun] [-l|-link] <src dir>" 1>&2
     echo "" 1>&2
-    echo "Will link files to / and \$HOME, install packages" 1>&2
+    echo "Will link files from <src dir> to / and \$HOME" 1>&2
+    echo "" 1>&2
+    echo "Options:" 1>&2
+    echo "  -l|-link        Use links instead of copying" 1>&2
+    echo "  -d|-dryrun      Dry run" 1>&2
 }
 
 PARAMS=""
@@ -20,6 +23,10 @@ while (( "$#" )); do
       ;;
     -d|-dryrun)
       DRY_RUN=1
+      shift 1
+      ;;
+    -l|-link)
+      LINK_MODE=1
       shift 1
       ;;
     #-d|-flag-with-argument)
@@ -49,6 +56,16 @@ if [ $DRY_RUN -eq 1 ]; then
     echo "Dry run set!" 1>&2
 fi
 
+SRC="$1"
+if [ ! -d "$SRC" ]; then
+    echo "Expected a source dir to be given"
+    usage
+    exit 1
+fi
+
+FILES_HOME="$SRC/home"
+FILES_ROOT="$SRC/files"
+
 confirm() {
     read -p "$1 (y/n)?" choice
     case "$choice" in
@@ -58,72 +75,97 @@ confirm() {
     esac
 }
 
+putfile() {
+    # ex. /src/dots/files/etc/resolv.conf, /src/dots/home/.bashrc
+    local src="$1"
+    # ex. /src/dots/files, /src/dots/home
+    local root="$2"
+    local dest="${file#$root}"
+    local cmd_prefix=""
+
+    if [ "$(basename "$root")" == "home" ]; then
+        dest="$HOME/$dest"
+    else
+        sudo cat /dev/null
+        rc=$?
+        if [ $rc -gt 0 ]; then
+            echo "Did not auth with sudo" 1>&2
+            exit 1
+        fi
+        cmd_prefix="sudo $cmd_prefix"
+    fi
+
+    if [ $DRY_RUN -eq 1 ]; then
+        cmd_prefix="echo INFO: Would have run: $cmd_prefix"
+    fi
+
+    local dest_dir="$(dirname $dest)"
+
+    if [ ! -d "$dest_dir" ]; then
+        echo "INFO: directory didn't exist, making dir $dest_dir" 1>&2
+        $cmd_prefix mkdir -p $dest_dir
+    fi
+
+    if [ -e "$dest" ]; then
+        diffcontent="$(diff "$dest" "$src")"
+        rc=$?
+        if [ $rc -gt 0 ]; then
+            echo "INFO: diff detected, check $src $dest"
+            echo "$diffcontent"
+        fi
+    fi
+
+    if [ $LINK_MODE -eq 1 ]; then
+        echo "INFO: linking source: $src to dst: $dest" 1>&2
+        $cmd_prefix ln -sf $src $dest
+    else
+        if [ -L $dest ]; then
+            echo "INFO: existing link, will remove" 1>&2
+            $cmd_prefix unlink $dest
+        fi
+        echo "INFO: copying source: $src to dst: $dest" 1>&2
+        $cmd_prefix cp -f $src $dest
+    fi
+}
+
 linkfiles() {
     # Links paths in FILES_ROOT
     # ex. files/etc/resolv.conf -> /etc/resolv.conf
     find $FILES_ROOT -type f | while read -r file; do
-        syspath=${file#$FILES_ROOT}
-        echo "INFO: linking source: $file to dst: $syspath" 1>&2
-
-        syspath_dir=$(dirname "$syspath")
-        if [ ! -d "$syspath_dir" ]; then
-            echo "INFO: directory didn't exist, making dir $syspath_dir" 1>&2
-            [ $DRY_RUN -eq 0 ] && sudo mkdir -p $syspath_dir
-        fi
-
-        if [ $DRY_RUN -eq 0 ]; then
-            sudo ln -sf $file $syspath
-            rc=$?
-            if [ $rc -gt 0 ]; then
-                echo "ERROR: link error occurred" 1>&2
-            fi
-        fi
+        putfile "$file" "$FILES_ROOT"
     done
 
     # Links paths in FILES_HOME
     # ex. home/.config/blah -> $HOME/.config/blah
     find $FILES_HOME -type f | while read -r file; do
-        syspath="${HOME}${file#$FILES_HOME}"
-        echo "INFO: linking source: $file to dst: $syspath" 1>&2
-
-        syspath_dir=$(dirname "$syspath")
-        if [ ! -d "$syspath_dir" ]; then
-            echo "INFO: directory didn't exist, making dir $syspath_dir" 1>&2
-            [ $DRY_RUN -eq 0 ] && mkdir -p $syspath_dir
-        fi
-
-        if [ $DRY_RUN -eq 0 ]; then
-            ln -sf $file $syspath
-            rc=$?
-            if [ $rc -gt 0 ]; then
-                echo "ERROR: link error occurred" 1>&2
-            fi
-        fi
+        putfile "$file" "$FILES_HOME"
     done
 }
 
-packages() {
-    echo "INFO: installing essential non gui packages" 1>&2
-    # Note: pacman -Qqe
-    # should give all explicitly installed pkgs
-    pre_cmd=""
-    if [ $DRY_RUN -eq 1 ]; then
-        pre_cmd="echo INFO: would run: "
-    fi
-
-    $pre_cmd sudo pacman --noconfirm -S base-devel
-    $pre_cmd sudo pacman --noconfirm -S wireless_tools \
-        openssh \
-        vi \
-        vim \
-        bind-tools \
-        curl \
-        wget \
-        git \
-        socat \
-        gnu-netcat \
-        xclip
-}
+# An idea
+#packages() {
+#    echo "INFO: installing essential non gui packages" 1>&2
+#    # Note: pacman -Qqe
+#    # should give all explicitly installed pkgs
+#    pre_cmd=""
+#    if [ $DRY_RUN -eq 1 ]; then
+#        pre_cmd="echo INFO: would run: "
+#    fi
+#
+#    $pre_cmd sudo pacman --noconfirm -S base-devel
+#    $pre_cmd sudo pacman --noconfirm -S wireless_tools \
+#        openssh \
+#        vi \
+#        vim \
+#        bind-tools \
+#        curl \
+#        wget \
+#        git \
+#        socat \
+#        gnu-netcat \
+#        xclip
+#}
 
 linkfiles
-#packages
+echo "INFO: reloading systemd --user daemon" 1>&2
+systemctl --user daemon-reload
