@@ -5,8 +5,9 @@ Just use this remote as a git repo in `$HOME`
 ```
 cd $HOME
 git init .
-git remote add origin $REPO_URL
-git reset --hard origin main
+git remote add origin git@github.com:cfebs/dotfiles.git
+git fetch
+git checkout -f main
 ```
 
 Add new files with `git add -f ...`
