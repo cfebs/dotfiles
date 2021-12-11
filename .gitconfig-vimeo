@@ -1,0 +1,6 @@
+[user]
+	email = collin@vimeo.com
+	name = Collin Lefeber
+    signingkey = 02A351A05D30AFB62127FF5E284D659F3B003823
+[commit]
+    gpgsign = true

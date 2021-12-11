@@ -1,0 +1,78 @@
+#!/usr/bin/env sh
+
+# Put stuff that can be shared between bash, zsh here
+
+if hash lsd 1>/dev/null 2>&1; then
+    alias ls='lsd'
+else
+    alias ls='ls --color=auto'
+fi
+
+# export PATH="$HOME/go/bin:$HOME/.local/bin/:$HOME/.cargo/bin:$HOME/bin:$HOME/src/Nim/bin:$HOME/.luarocks/bin:$PATH"
+prepend_path "$HOME/go/bin"
+prepend_path "$HOME/.local/bin"
+prepend_path "$HOME/.cargo/bin"
+prepend_path "$HOME/bin"
+prepend_path "$HOME/src/Nim/bin"
+prepend_path "$HOME/.luarocks/bin"
+
+[ -n "$TMUX" ] && export TERM=screen-256color
+export TERMINAL=alacritty
+export QT_QPA_PLATFORMTHEME=gtk2
+
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+
+GCLOUD_SDK_PATH="$HOME/google-cloud-sdk"
+if [ -n "$ZSH_VERSION" ]; then
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f "$GCLOUD_SDK_PATH/path.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/path.zsh.inc"; fi
+
+    # The next line enables shell command completion for gcloud.
+    if [ -f "$GCLOUD_SDK_PATH/completion.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/completion.zsh.inc"; fi
+else
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f "$GCLOUD_SDK_PATH/path.bash.inc" ]; then . "$GCLOUD_SDK_PATH/path.bash.inc"; fi
+
+    # The next line enables shell command completion for gcloud.
+    if [ -f "$GCLOUD_SDK_PATH/completion.bash.inc" ]; then . "$GCLOUD_SDK_PATH/completion.bash.inc"; fi
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f '~/google-cloud-sdk/path.bash.inc' ]; then . '~/google-cloud-sdk/path.bash.inc'; fi
+
+    # The next line enables shell command completion for gcloud.
+    if [ -f '~/google-cloud-sdk/completion.bash.inc' ]; then . '~/google-cloud-sdk/completion.bash.inc'; fi
+fi
+
+if which rbenv 1>/dev/null 2>&1; then
+    eval "$(rbenv init -)"
+fi
+
+if which ruby >/dev/null && which gem >/dev/null; then
+    prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
+fi
+
+if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
+    source /usr/share/nvm/init-nvm.sh
+else
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
+if [[ -e $HOME/.ghcup/bin ]]; then
+    prepend_path "$HOME/.ghcup/bin"
+fi
+
+if [[ -e $HOME/.cabal/bin ]]; then
+    prepend_path "$HOME/.cabal/bin"
+fi
+
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+
+if [ -f $HOME/src/vimeo/etcutl/vimeo-functions.sh ]; then
+    . $HOME/src/vimeo/etcutl/vimeo-functions.sh
+
+    prepend_path "$HOME/src/vimeo/etcutl/bin"
+    prepend_path "$HOME/src/vimeo/etcutl/agignore"
+fi
+
+eval $(keychain --agents gpg,ssh --eval --quiet $(grep -r -l -i 'BEGIN.*PRIVATE KEY' ~/.ssh))

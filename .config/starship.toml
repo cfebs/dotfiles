@@ -1,0 +1,41 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+# slightly higher cmd timeout time
+command_timeout = 750
+
+# Replace the "❯" symbol in the prompt with "➜"
+[character]                            # The name of the module we are configuring is "character"
+success_symbol = "[❯](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+error_symbol = "[❯](bold red)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+
+[cmd_duration]
+show_milliseconds = true
+
+[git_status]
+format = '([\[$conflicted$deleted$renamed$modified$staged$untracked$ahead_behind\]]($style) )'
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[ruby]
+disabled = true
+
+[nodejs]
+disabled = false
+
+[python]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[aws]
+disabled = true
+
+[java]
+disabled = true
+
+[php]
+disabled = true

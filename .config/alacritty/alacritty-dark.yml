@@ -1,0 +1,90 @@
+font:
+  #size: 14
+  normal:
+    family: 'JetBrains Mono'
+
+# 3024
+colors:
+  # Default colors
+  primary:
+    background: '0x090300'
+    foreground: '0xa5a2a2'
+
+  # Normal colors
+  normal:
+    black:   '0x090300'
+    red:     '0xdb2d20'
+    green:   '0x01a252'
+    yellow:  '0xfded02'
+    blue:    '0x01a0e4'
+    magenta: '0xa16a94'
+    cyan:    '0xb5e4f4'
+    white:   '0xa5a2a2'
+
+  # Bright colors
+  bright:
+    black:   '0x5c5855'
+    red:     '0xdb2d20'
+    green:   '0x01a252'
+    yellow:  '0xfded02'
+    blue:    '0x01a0e4'
+    magenta: '0xa16a94'
+    cyan:    '0xb5e4f4'
+    white:   '0xf7f7f7'
+
+# XTerm's default colors
+#colors:
+#  # Default colors
+#  primary:
+#    background: '0x000000'
+#    foreground: '0xffffff'
+#  # Normal colors
+#  normal:
+#    black:   '0x000000'
+#    red:     '0xcd0000'
+#    green:   '0x00cd00'
+#    yellow:  '0xcdcd00'
+#    blue:    '0x0000ee'
+#    magenta: '0xcd00cd'
+#    cyan:    '0x00cdcd'
+#    white:   '0xe5e5e5'
+#
+#  # Bright colors
+#  bright:
+#    black:   '0x7f7f7f'
+#    red:     '0xff0000'
+#    green:   '0x00ff00'
+#    yellow:  '0xffff00'
+#    blue:    '0x5c5cff'
+#    magenta: '0xff00ff'
+#    cyan:    '0x00ffff'
+#    white:   '0xffffff'
+
+# Colors (Blood Moon)
+#colors:
+#  # Default colors
+#  primary:
+#    background: '0x10100E'
+#    foreground: '0xC6C6C4'
+#
+#  # Normal colors
+#  normal:
+#    black:   '0x10100E'
+#    red:     '0xC40233'
+#    green:   '0x009F6B'
+#    yellow:  '0xFFD700'
+#    blue:    '0x0087BD'
+#    magenta: '0x9A4EAE'
+#    cyan:    '0x20B2AA'
+#    white:   '0xC6C6C4'
+#
+#  # Bright colors
+#  bright:
+#    black:   '0x696969'
+#    red:     '0xFF2400'
+#    green:   '0x03C03C'
+#    yellow:  '0xFDFF00'
+#    blue:    '0x007FFF'
+#    magenta: '0xFF1493'
+#    cyan:    '0x00CCCC'
+#    white:   '0xFFFAFA'
