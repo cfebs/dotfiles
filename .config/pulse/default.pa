@@ -1,0 +1,7 @@
+.include /etc/pulse/default.pa
+
+# create a sink for game output that can be used by OBS
+load-module module-null-sink sink_name=GameSink
+update-sink-proplist GameSink device.description=GameSink
+update-source-proplist GameSink.monitor device.description=GameSinkMonitor
+load-module module-loopback source="GameSink.monitor" sink=0

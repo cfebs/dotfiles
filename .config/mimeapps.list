@@ -1,0 +1,26 @@
+# This is managed by ansible
+# Notes:
+#   - get mime type: `file --mime-type -b ./file.pdf`
+
+[Added Associations]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=abiword.desktop;
+application/xhtml+xml=nvim.desktop;
+image/jpeg=ristretto.desktop;sxiv.desktop;feh.desktop;
+image/png=ristretto.desktop;sxiv.desktop;gimp.desktop;
+
+[Default Applications]
+inode/directory=thunar.desktop;
+text/html=google-chrome.desktop;chromium.desktop;
+text/plain=geany.desktop;
+application/pdf=google-chrome.desktop;chromium.desktop;
+video/mkv=vlc.desktop;
+video/mp4=vlc.desktop;google-chrome.desktop;chromium.desktop;
+audio/mp3=vlc.desktop;google-chrome.desktop;chromium.desktop;
+audio/m4a=vlc.desktop;google-chrome.desktop;chromium.desktop;
+audio/ogg=vlc.desktop;google-chrome.desktop;chromium.desktop;
+x-scheme-handler/about=google-chrome.desktop;chromium.desktop;
+x-scheme-handler/http=google-chrome.desktop;chromium.desktop;
+x-scheme-handler/https=google-chrome.desktop;chromium.desktop;
+x-scheme-handler/mailto=google-chrome.desktop;chromium.desktop;
+x-scheme-handler/unknown=google-chrome.desktop;chromium.desktop;
+x-scheme-handler/webcal=google-chrome.desktop;chromium.desktop;

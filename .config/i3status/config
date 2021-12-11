@@ -1,0 +1,85 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+    colors = true
+    interval = 5
+    separator = "  "
+}
+
+#order += "ipv6"
+order += "read_file PACMANUPG"
+order += "read_file WTTR"
+order += "disk /"
+#order += "wireless _first_"
+order += "path_exists VPN"
+#order += "ethernet _first_"
+order += "battery all"
+order += "load"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+wireless _first_ {
+    format_up = "W: %ip"
+    format_down = "W: down"
+}
+
+#ethernet _first_ {
+#        # if you use %speed, i3status requires root privileges
+#        format_up = "E: %ip (%speed)"
+#        format_down = "E: down"
+#}
+
+battery all {
+    format_down = ""
+    format = "%status %percentage"
+}
+
+tztime local {
+    format = "%Y-%m-%d %H:%M:%S"
+}
+
+load {
+    format = "﬙ %1min"
+}
+
+disk "/" {
+    format = " %avail"
+}
+
+volume master {
+    format = "♪ %volume"
+    format_muted = "♪: muted (%volume)"
+    device = "default"
+}
+
+path_exists VPN {
+    format = " vpn"
+    format_down = ""
+    # path exists when a VPN tunnel launched by nmcli/nm-applet is active
+    path = "/proc/sys/net/ipv4/conf/tun0"
+}
+
+memory {
+        format = " %available"
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
+}
+
+read_file WTTR {
+    color_good = "#FFFFFF"
+    path = "/tmp/wttrbar.txt"
+    format_bad = ""
+}
+
+read_file PACMANUPG {
+    color_good = "#FFFFFF"
+    path = "/tmp/pacman-bar.txt"
+    format_bad = ""
+}

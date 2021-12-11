@@ -20,10 +20,6 @@ out.split.each do |l|
     next
   end
 
-  if real_path.include?('arch-i3-desktop')
-    next
-  end
-
   if real_path.include?('ansibles')
     puts real_path
     if doit
