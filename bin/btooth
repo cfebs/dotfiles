@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# A bluetooth helper for my devices
+
+device="$1"
+action="$2"
+
+device_names=()
+device_macs=()
+
+# add new devices in pairs
+device_names+=("sony")
+device_macs+=("CC:98:8B:B6:B3:3B")
+
+usage() {
+    echo -e "Usage $(basename "$0") <device_name> <on|off|pair>\n" 1>&2
+    echo "Devices:" 1>&2
+    for i in "${!device_names[@]}"; do
+        echo "* name: ${device_names[$i]}, mac: ${device_macs[$i]}"
+    done
+}
+
+if [[ -z "$device" ]] || [[ -z "$action" ]]; then
+    usage
+    exit 0
+fi
+
+device_mac=""
+for i in "${!device_names[@]}"; do
+    if [[ "${device_names[$i]}" == "$device" ]]; then
+        device_mac="${device_macs[$i]}"
+        break
+    fi
+done
+
+if [[ -z "$device_mac" ]]; then
+    echo "Could not find MAC for $device" 1>&2
+    exit 1
+fi
+
+echo "Using MAC $device_mac for $device" 1>&2
+
+if [[ "$action" == "pair" ]]; then
+    scanned="$(timeout 15s bluetoothctl scan on)";
+    if ! echo "$scanned" | grep --color=auto -q "$device_mac"; then
+        echo "Could not find $device_name $device_mac in scan. Is it in pairing mode?" 1>&2
+        exit 1;
+    fi;
+
+    bluetoothctl pair "$device_mac"
+    bluetoothctl trust "$device_mac"
+
+    exit
+
+elif [[ "$action" == "on" ]]; then
+    bluetoothctl connect "$device_mac"
+
+elif [[ "$action" == "off" ]]; then
+    bluetoothctl disconnect "$device_mac"
+fi
+
+echo "Done" 2>&1

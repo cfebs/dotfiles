@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""
+A date helper
+"""
+
+import sys
+import time
+from datetime import datetime
+
+if len(sys.argv) <= 1:
+    print(time.time())
+    sys.exit(0)
+
+arg = sys.argv[1]
+arg_float = None
+try:
+    arg_float = float(arg)
+except ValueError:
+    pass
+
+if arg_float:
+    print(">> Looks like float, using datetime.fromtimestamp", file=sys.stderr)
+    dt = datetime.fromtimestamp(arg_float)
+    print(dt)
+    sys.exit(0)
+
+print(">> Could not identify format of argument", file=sys.stderr)
+sys.exit(1)
