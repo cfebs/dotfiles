@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+port=${1-8181}
+addr=${2-0.0.0.0}
+
+echo "Starting python http on ${addr}:${port}. Override defaults with positional args: <port> <addr>" 1>&2
+if python3 --version &> /dev/null; then
+    echo "Using Python 3" 1>&2
+    python3 -m http.server --bind "$addr" "$port"
+else
+    echo "Using Python 2" 1>&2
+    python -m SimpleHTTPServer "$port"
+fi

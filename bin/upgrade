@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+
+run_upgrade_pkgs() {
+    (
+    set -e
+    # elevate with a noop
+    sudo cat /dev/null
+
+    if grep -q DISTRIB_ID=Arch /etc/lsb-release; then
+        echo ">> Upgrading archlinux" 1>&2
+        if which flatpak 1>/dev/null 2>&1; then
+            echo ">> Upgrading flatpack" 1>&2
+            sudo flatpak update
+            sudo flatpak uninstall --unused
+        fi
+
+        if which snap 1>/dev/null 2>&1; then
+            echo ">> Upgrading snaps" 1>&2
+            sudo snap refresh
+        fi
+
+        if which paru 1>/dev/null 2>&1; then
+            echo ">> Upgrading paru" 1>&2
+            paru && run_pacman_bar
+        elif which yay 1>/dev/null 2>&1; then
+            echo ">> Upgrading yay" 1>&2
+            yay && run_pacman_bar
+        else
+            echo ">> Upgrading pacman" 1>&2
+            pacman -Syu && run_pacman_bar
+        fi
+
+        if which paccache 1>/dev/null 2>&1; then
+            echo ">> Running paccache cleanup" 1>&2
+            sudo paccache -r -k 4
+        fi
+
+
+        if which pacdiff 1>/dev/null 2>&1; then
+            echo ">> Running pacdiff" 1>&2
+            if which meld 1>/dev/null 2>&1; then
+                DIFFPROG=/usr/bin/meld sudo -E pacdiff
+            elif which vimdiff 1>/dev/null 2>&1; then
+                DIFFPROG=/usr/bin/vimdiff sudo -E pacdiff
+            else
+                echo ">> ERROR: no good diff programs" 1>&2
+                return 1
+            fi
+        fi
+    fi
+
+    if which apt 1>/dev/null 2>&1; then
+        echo ">> Upgrading apt" 1>&2
+        apt update && sudo apt upgrade -y
+    fi
+
+    )
+    rc=$?
+    echo ">> ${FUNCNAME[0]} function returned with code $?"
+    return $rc
+}
+
+run_pacman_bar() {
+    echo ">> Running pacman-bar service"
+    systemctl start --user pacman-bar.service
+    return 0
+}
+
+run_ansible() {
+    (
+    set -e
+    if ! which git 1>/dev/null 2>&1; then
+        return 0;
+    fi
+
+    if [[ ! -d "$HOME/src/ansibles" ]]; then
+        return 0;
+    fi
+
+    echo ">> Checking for ansible run"
+    pushd "$HOME/src/ansibles" 1>/dev/null
+    if [[ ! -z "$(git status --untracked-files=no --porcelain)" ]]; then
+        echo ">> WARNING: Ansible git not clean, not running"
+        return 0
+    fi
+
+    echo ">> Running ansible"
+    git pull
+    sudo make this-no-become
+
+    echo ">> Updating vim plugins"
+    # Vim update plugins:
+    # - Plug
+    # - vim-go
+    if which nvim 1>/dev/null 2>&1; then
+        (
+            nvim +PlugInstall +PlugUpdate +qall;
+            nvim +GoInstallBinaries +qall;
+            exit 0;
+        )
+    elif which vim 1>/dev/null 2>&1; then
+        (
+            vim +PlugInstall +PlugUpdate +qall;
+            vim +GoInstallBinaries +qall;
+            exit 0;
+        )
+    fi
+
+    popd 1>/dev/null
+    )
+    rc=$?
+    echo ">> ${FUNCNAME[0]} function returned with code $?"
+    return $rc
+}
+
+main() {
+    run_upgrade_pkgs || return $?
+    run_ansible || return $?
+
+}
+
+main
+rc=$?
+echo ">> Finished with code $rc" 1>&2

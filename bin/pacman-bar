@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+FILE_OUT="/tmp/pacman-bar.txt"
+res="$(checkupdates | grep -q '^linux')"
+rc=$?
+
+if [[ "$rc" != "0" ]]; then
+    truncate -s0 "$FILE_OUT"
+    echo "Removing $FILE_OUT, return code $rc" 1>&2
+    exit 0
+fi
+
+echo "🆙" > "$FILE_OUT"
+
+echo "Wrote $FILE_OUT" 1>&2
+exit 0

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+LOCATION="Brooklyn NY"
+FILE_OUT="/tmp/wttrbar.txt"
+res="$(curl -m10 -sL "https://wttr.in/$LOCATION?m&format=%c%f+%l")"
+rc=$?
+
+if [[ "$rc" != "0" ]]; then
+    truncate -s0 "$FILE_OUT"
+    echo "Removing $FILE_OUT, return code $rc" 1>&2
+    exit 0
+fi
+
+if echo "$res" | grep -q 'weather report for the default city'; then
+    echo "No weather data" > "$FILE_OUT"
+    exit 0
+fi
+
+echo "$res" > "$FILE_OUT"
+
+echo "Wrote $FILE_OUT"
+exit 0
