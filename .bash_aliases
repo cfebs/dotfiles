@@ -36,6 +36,10 @@ alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/
 alias k9s="/bin/k9s --readonly"
 alias k9sw="/bin/k9s --write"
 
+binz() {
+    find ${PATH//:/" "} -executable -printf "%f\n" 2>/dev/null | sort | uniq | fzf
+}
+
 iscmd() {
     # does the command exist
     [ -x "$(command -v "$1")" ] || declare -F "$1" &>/dev/null
