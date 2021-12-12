@@ -4,6 +4,7 @@ getmakej() {
     echo $(($(nproc) + 1));
 }
 
+alias ll="ls -la"
 alias tailcat="tail -n +1"
 alias dok="docker"
 alias dokc="docker-compose"
