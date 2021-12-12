@@ -5,6 +5,7 @@ Just use this remote as a git repo in `$HOME`
 ```
 cd $HOME
 git init .
+git config advice.addIgnoredFile false
 git remote add origin git@github.com:cfebs/dotfiles.git
 git fetch
 git checkout -f main
