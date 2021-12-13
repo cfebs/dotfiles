@@ -42,7 +42,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+d exec dmenu_run
 
 # set monitors
-exec --no-startup-id /home/collin/.screenlayout/2monitor.sh
+exec --no-startup-id /home/collin/.screenlayout/active.sh
 #exec --no-startup-id xrandr --dpi 112
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
