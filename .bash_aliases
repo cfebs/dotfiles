@@ -21,6 +21,7 @@ alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -o
 alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
 alias alacritty-dark="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml"
 
+alias ixio="curl -F 'f:1=<-' ix.io"
 alias gistdiff="gist -f diff.diff"
 
 alias somafm="~/.yarn/bin/somafm"
