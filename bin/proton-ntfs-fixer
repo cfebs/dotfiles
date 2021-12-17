@@ -20,7 +20,7 @@ game_library="$1"
 local_path="$2"
 default_local_path="$HOME/SteamCompat"
 
-if pgrep -f steam 1>/dev/null 2>/dev/null; then
+if pgrep -f Steam 1>/dev/null 2>/dev/null; then
     echoerr "ERROR: Steam is currently running, exiting"
     exit 1
 fi
@@ -39,6 +39,11 @@ fi
 if [[ ! -d "$local_path" ]]; then
     echoerr "ERROR: no local path"
     usage
+    exit 1
+fi
+
+if [[ ! -d "${game_library}/steamapps" ]]; then
+    echoerr "ERROR ${game_library} does not appear to be a steam dir, no steamapps sub dir found"
     exit 1
 fi
 
