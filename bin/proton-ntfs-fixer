@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# https://wiki.archlinux.org/title/Steam/Troubleshooting#Steam_Library_in_NTFS_partition
+# Note that moving proton versions can be done with steam UI, this script just prompts when it finds
+# them on NTFS
+
+echoerr() {
+    echo "$@" 1>&2
+}
+
+usage() {
+    echoerr "Usage $0 <ntfs_game_library_path> [local_path]"
+    echoerr ""
+    echoerr "Takes steps to fix steam library problems with NTFS"
+    echoerr "1) Moves steamapps/compatdata to local disk and re-links to ntfs drive"
+    echoerr "2) Finds proton dirs in ntfs_game_library_path and prompts to move to local library"
+}
+
+game_library="$1"
+local_path="$2"
+default_local_path="$HOME/SteamCompat"
+
+if pgrep -f steam 1>/dev/null 2>/dev/null; then
+    echoerr "ERROR: Steam is currently running, exiting"
+    exit 1
+fi
+
+if [[ -z "$local_path" ]]; then
+    local_path="$default_local_path"
+    mkdir -p "$local_path"
+fi
+
+if [[ ! -d "$game_library" ]]; then
+    echoerr "ERROR: no game library path"
+    usage
+    exit 1
+fi
+
+if [[ ! -d "$local_path" ]]; then
+    echoerr "ERROR: no local path"
+    usage
+    exit 1
+fi
+
+compat_data_path="${game_library}/steamapps/compatdata"
+
+if [[ -d "$compat_data_path" ]]; then
+    if [[ -L "$compat_data_path" ]]; then
+        echoerr "OK $compat_data_path already linked"
+    else
+        echoerr "Moving compat data path"
+        mv "$compat_data_path" "${local_path}/compatdata"
+        echoerr "Linking compat data path"
+        ln -s "${local_path}/compatdata" "$compat_data_path"
+    fi
+else
+    echoerr "Skipping compat data link, not found in steam library path $compat_data_path"
+fi
+
+for dir in $game_library/steamapps/common/Proton*/; do
+    if [[ ! -d "$dir" ]]; then
+        continue
+    fi
+    echoerr "ERROR Found proton dir $dir, move this to your local steam library"
+done
+
+echoerr "Done"
