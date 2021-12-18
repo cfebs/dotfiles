@@ -540,7 +540,7 @@ vimeo-vpn() {
 }
 
 tunnel-syncthing() {
-    sshtun droplet2 8384 8385
+    ssh -L 8385:127.0.0.1:8384 collin@no.city -N
 }
 
 percent-change() {
