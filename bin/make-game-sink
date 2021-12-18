@@ -1,0 +1,3 @@
+pacmd load-module module-null-sink sink_name=GameSink
+pacmd update-sink-proplist GameSink device.description=GameSink
+pacmd load-module module-loopback source="GameSink.monitor" sink=0
