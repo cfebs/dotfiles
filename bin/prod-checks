@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Quick script to verify my stuff is working
+
+echoerr() { echo "$@" 1>&2; }
+echoinfo() { echoerr ">> INFO: $@"; }
+echosuccess() { echoerr ">> SUCCESS: $@"; }
+echoerror() { echoerr ">> ERROR: $@"; }
+
+check_200_ssl() {
+    url="$1"
+    echoinfo "Checking $url"
+    out="$(curl -m5 -sL -D- -o /dev/null "$url")"
+    if [[ $? == 0 ]]; then
+        echosuccess "$url"
+        return 0
+    fi
+    echoerror "Failed on $url"
+    echoerror "$out"
+    return 1
+}
+
+check_port_response() {
+    addr="$1"
+    port="$2"
+    msg="$3"
+    expect_str="$4"
+
+    resp="$(echo "$msg" | nc -w5 "$addr" "$port")"
+
+    if echo "$resp" | grep -q "$expect_str"; then
+        echosuccess "$addr $port"
+        return 0
+    fi
+
+    echofailure "$addr $port"
+    return 1
+}
+
+check_200_ssl 'https://sahil.is'
+check_200_ssl 'https://niagarasports.net/forum/'
+check_200_ssl 'https://no.city'
+check_200_ssl 'https://yoshisushialbany.com/'
+check_port_response 'no.city' '22' 'hello' 'OpenSSH'
