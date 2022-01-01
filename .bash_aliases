@@ -35,6 +35,8 @@ alias bonsai="cbonsai -li -t 0.35 -M 7"
 
 alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
 
+alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
+
 alias k9s="/bin/k9s --readonly"
 alias k9sw="/bin/k9s --write"
 
@@ -70,8 +72,24 @@ sshscreen() {
 }
 
 wttr() {
-    # change Paris to your default location
-    curl https://wttr.in/"${1:-lga?3}"
+    loc="${1:-lga}"
+    shift
+
+    # View options:
+    # 0                       # only current weather
+    # 1                       # current weather + today's forecast
+    # 2                       # current weather + today's + tomorrow's forecast
+    # A                       # ignore User-Agent and force ANSI output format (terminal)
+    # F                       # do not show the "Follow" line
+    # n                       # narrow version (only day and night)
+    # q                       # quiet version (no "Weather report" text)
+    # Q                       # superquiet version (no "Weather report", no city name)
+    # T                       # switch terminal sequences off (no colors)
+    days="${1:-2}"
+    shift
+
+    # use m, F, n by default
+    curl "https://wttr.in/${loc}?m&F&${days}&n&$@"
 }
 
 # Quick nav
