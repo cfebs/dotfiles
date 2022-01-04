@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+echoerr() { echo "$@" 1>&2; }
+
+xprop -root -spy _NET_ACTIVE_WINDOW | while :
+do
+    read line
+    id="$(echo "$line" | awk -F' ' '{print $NF}')"
+    pid="$(xprop -id "$id" _NET_WM_PID | awk -F' ' '{print $NF}')"
+    # echo "windowid: $id, pid: $pid"
+    cmd="$(ps -o cmd fp "$pid" | tail -1)"
+    if echo "$cmd" | grep -q 'firefox -P .*$'; then
+        profile="$(echo "$cmd" | awk -F' ' '{print $NF}')"
+        echo "profile: $profile"
+        echo "$profile" > /tmp/last-firefox-profile
+    fi
+done
