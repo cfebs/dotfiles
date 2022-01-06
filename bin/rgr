@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+echo "rg -l -0 'FIND' | xargs -0 sed -i 's@FIND@REPLACE@g'" 1>&2
