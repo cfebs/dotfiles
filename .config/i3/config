@@ -197,6 +197,7 @@ exec --no-startup-id pasystray
 exec nitrogen --restore
 exec --no-startup-id xss-lock -l -- i3lock -c 111111
 
+bindsym $mod+o exec rofi-firefox-profile
 bindsym $mod+f exec thunar
 bindsym Ctrl+Mod1+Delete exec i3lock -c 111111
 bindsym $mod+n workspace next
