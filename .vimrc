@@ -183,7 +183,7 @@ augroup vimrcEx
   autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
 
   "" 2 spaces
-  autocmd FileType crystal,coffee,ruby,haml,eruby,html,sass,cucumber,pug,haskell setlocal ai sw=2 sts=2 et
+  autocmd FileType crystal,coffee,ruby,haml,eruby,html,sass,cucumber,pug,haskell,vcl setlocal ai sw=2 sts=2 et
 
   autocmd FileType tsv setlocal ai noexpandtab sw=4 sts=4 tabstop=4
   autocmd FileType phtml setlocal ai et sw=4 sts=4 tabstop=4
