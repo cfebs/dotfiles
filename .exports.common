@@ -22,8 +22,11 @@ export QT_QPA_PLATFORMTHEME=gtk2
 
 [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 
+# use a fixed version of kubectl
+alias kubectl="kubectl.1.21"
+
 # TODO temp workarounds until python 3.10 issues are fixed
-export CLOUDSDK_PYTHON=python2
+# export CLOUDSDK_PYTHON=python2
 GCLOUD_SDK_PATH="$HOME/google-cloud-sdk"
 if [ -n "$ZSH_VERSION" ]; then
     # The next line updates PATH for the Google Cloud SDK.
