@@ -36,6 +36,7 @@ alias bonsai="cbonsai -li -t 0.35 -M 7"
 alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
 
 alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
+alias date-now="date +%s"
 
 alias k9s="/bin/k9s --readonly"
 alias k9sw="/bin/k9s --write"
