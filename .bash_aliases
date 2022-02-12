@@ -38,7 +38,7 @@ alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/
 alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
 alias date-now="date +%s"
 
-alias k9s="/bin/k9s --readonly"
+alias k9sr="/bin/k9s --readonly"
 alias k9sw="/bin/k9s --write"
 
 binz() {
