@@ -103,7 +103,7 @@ run_ansible() {
             nvim +GoInstallBinaries +qall;
             exit 0;
         )
-    elif cmd_exists; then
+    elif cmd_exists vim; then
         (
             vim +PlugInstall +PlugUpdate +qall;
             vim +GoInstallBinaries +qall;
