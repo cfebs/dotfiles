@@ -15,7 +15,7 @@ run_upgrade_pkgs() {
     # elevate with a noop
     sudo cat /dev/null
 
-    if grep -q DISTRIB_ID=Arch /etc/lsb-release; then
+    if grep -i -q "DISTRIB_ID=[\"']*Arch" /etc/lsb-release; then
         echoerr ">> Upgrading archlinux"
         if cmd_exists flatpak; then
             echoerr ">> Upgrading flatpack"
