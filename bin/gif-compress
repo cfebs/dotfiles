@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+_usage() {
+    echo "$0 <src_file>" 1>&2
+}
+
+if [[ ! -e "$1" ]]; then
+    echo "ERROR: no input" 1>&2
+    _usage
+    exit 1
+fi
+
+
+ffmpeg -y -i "$1" -filter_complex \
+    "fps=8,scale=360:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=32[p];[s1][p]paletteuse=dither=bayer" -f gif -
