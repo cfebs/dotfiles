@@ -93,7 +93,7 @@ let g:markdown_syntax_conceal = 0
 nmap <leader>1 VypVr=
 nmap <leader>2 VypVr-
 nmap <leader>3 I### <Esc>
-nmap <leader>4 I### <Esc>
+nmap <leader>4 I#### <Esc>
 
 "" Pasting
 nmap <leader>p :setlocal paste! paste?<cr>
