@@ -1,7 +1,7 @@
 ---
 # List of ticker symbols to start app with
 symbols:
-  - VOO
+  - VTI
   - VTSAX
   - VBTLX
 
@@ -38,7 +38,7 @@ update_interval: 30
 #show_x_labels: true
 
 # Start in summary mode
-#summary: true
+summary: true
 
 # Truncate pre market graphing to only 30 minutes prior to markets opening
 #trunc_pre: true
