@@ -21,6 +21,7 @@ Plug 'gcmt/breeze.vim'
 Plug 'gregsexton/gitv'
 Plug 'pangloss/vim-javascript'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'lvht/mru'
 Plug 'digitaltoad/vim-pug'

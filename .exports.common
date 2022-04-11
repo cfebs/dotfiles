@@ -20,7 +20,13 @@ prepend_path "$HOME/.luarocks/bin"
 export TERMINAL=alacritty
 export QT_QPA_PLATFORMTHEME=gtk2
 
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+if [[ -r "/usr/share/z/z.sh" ]]
+then
+    source /usr/share/z/z.sh
+elif [[ -r "$HOME/src/z/z.sh" ]]
+then
+    source "$HOME/src/z/z.sh"
+fi
 
 # use a fixed version of kubectl
 alias kubectl="kubectl.1.21"
