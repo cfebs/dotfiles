@@ -8,7 +8,8 @@ else
     alias ls='ls --color=auto'
 fi
 
-# export PATH="$HOME/go/bin:$HOME/.local/bin/:$HOME/.cargo/bin:$HOME/bin:$HOME/src/Nim/bin:$HOME/.luarocks/bin:$PATH"
+
+[[ -d /usr/local/go/bin ]] && prepend_path /usr/local/go/bin
 prepend_path "$HOME/go/bin"
 prepend_path "$HOME/.local/bin"
 prepend_path "$HOME/.cargo/bin"
@@ -27,6 +28,7 @@ elif [[ -r "$HOME/src/z/z.sh" ]]
 then
     source "$HOME/src/z/z.sh"
 fi
+
 
 # use a fixed version of kubectl
 alias kubectl="kubectl.1.21"
@@ -80,5 +82,11 @@ if [ -f $HOME/src/vimeo/etcutl/vimeo-functions.sh ]; then
     prepend_path "$HOME/src/vimeo/etcutl/bin"
     prepend_path "$HOME/src/vimeo/etcutl/agignore"
 fi
+
+export GO111MODULE=on
+
+# https://github.com/keybase/keybase-issues/issues/2798
+# https://unix.stackexchange.com/questions/257061/gentoo-linux-gpg-encrypts-properly-a-file-passed-through-parameter-but-throws-i/257065#257065
+export GPG_TTY=$(tty)
 
 eval $(keychain --agents gpg,ssh --eval --quiet $(grep -r -l -i 'BEGIN.*PRIVATE KEY' ~/.ssh))
