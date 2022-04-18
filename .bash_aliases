@@ -545,13 +545,17 @@ rss-read() {
     xdg-open ~/.rawdog/output.html
 }
 
-update-pacman-mirrors() {
+pacman-update-mirrors() {
     echo "Starting reflector update" 1>&2
     sudo reflector --connection-timeout 2 -c 'United States' -a 3 -p https -i '\.edu' \
         -f 5 --save /etc/pacman.d/mirrorlist
     rc=$?
     cat /etc/pacman.d/mirrorlist 1>&2
     echo "Done. Exit $rc" 1>&2
+}
+
+pacman-remove-orphans() {
+    pacman -Qtdq | pacman -Rns -
 }
 
 vimeo-vpn() {
