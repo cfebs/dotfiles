@@ -555,7 +555,7 @@ pacman-update-mirrors() {
 }
 
 pacman-remove-orphans() {
-    pacman -Qtdq | pacman -Rns -
+    sudo pacman -Qtdq | sudo pacman -Rns -
 }
 
 vimeo-vpn() {
