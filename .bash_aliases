@@ -566,6 +566,10 @@ tunnel-syncthing() {
     ssh -L 8385:127.0.0.1:8384 collin@no.city -N
 }
 
+socksproxy-laptop() {
+    socksproxy 1137 tennisl1
+}
+
 percent-change() {
 python3 -c 'import sys; z, a, b = sys.argv; r=(float(b) - float(a)) / float(a); print(round(r*100.0, 4),"%change")' $@
 }
