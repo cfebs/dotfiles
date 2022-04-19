@@ -25,7 +25,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'lvht/mru'
 Plug 'digitaltoad/vim-pug'
-Plug 'cfebs/vim-gh-line'
+Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
 Plug 'posva/vim-vue'
 Plug 'rust-lang/rust.vim'
 Plug 'lambdatoast/elm.vim'
@@ -417,8 +417,8 @@ set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 let g:gh_line_map_default = 0
 let g:gh_line_map = '<leader>gh'
-let g:gh_open_command = 'xdg-open '
 let g:gh_use_canonical = 1
+let g:gh_echo_only = 1
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
