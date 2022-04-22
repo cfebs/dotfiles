@@ -122,6 +122,12 @@ if hash nvim 2>&1 1>/dev/null; then
     alias vim=nvim
 fi
 
+# ubuntu installs this as a bin called gist-paste, weird
+# https://github.com/defunkt/gist
+if hash gist-paste 2>&1 1>/dev/null; then
+    alias gist=gist-paste
+fi
+
 alias vi=$EDITOR
 alias v=$EDITOR
 alias svi="sudo $EDITOR"
