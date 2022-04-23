@@ -14,6 +14,10 @@ run_upgrade_pkgs() {
     set -e
     # elevate with a noop
     sudo cat /dev/null
+    if [[ $? != 0 ]]; then
+        echoerr ">> No sudo. Exiting..."
+        exit 1
+    fi
 
     if grep -i -q "DISTRIB_ID=[\"']*Arch" /etc/lsb-release; then
         echoerr ">> Upgrading archlinux"
