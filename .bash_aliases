@@ -117,14 +117,14 @@ alias l='ls'
 alias lsat='ls -at'
 
 export EDITOR='vim'
-if hash nvim 2>&1 1>/dev/null; then
+if hash nvim 1>/dev/null 2>&1; then
     export EDITOR='nvim'
     alias vim=nvim
 fi
 
 # ubuntu installs this as a bin called gist-paste, weird
 # https://github.com/defunkt/gist
-if hash gist-paste 2>&1 1>/dev/null; then
+if hash gist-paste 1>/dev/null 2>&1; then
     alias gist=gist-paste
 fi
 
