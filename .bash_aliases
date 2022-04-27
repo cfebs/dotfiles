@@ -569,7 +569,7 @@ vimeo-vpn() {
 }
 
 tunnel-syncthing() {
-    ssh -L 8385:127.0.0.1:8384 collin@no.city -N
+    ssh -L 8385:127.0.0.1:8384 collin@droplet2 -N
 }
 
 socksproxy-laptop() {
