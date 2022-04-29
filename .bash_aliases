@@ -1,7 +1,7 @@
 #!/bin/bash
 
 getmakej() {
-    echo $(($(nproc) + 1));
+    echo $(($(nproc) - 1));
 }
 
 alias ll="ls -la"
@@ -572,8 +572,12 @@ tunnel-syncthing() {
     ssh -L 8385:127.0.0.1:8384 collin@droplet2 -N
 }
 
-socksproxy-laptop() {
-    socksproxy 1137 tennisl1
+proxy-laptop() {
+    # socks proxy
+    # few ports for dev
+    ssh -v -N \
+        -D localhost:1137 tennisl1 \
+        -L 3000:localhost:3000 tennisl1
 }
 
 percent-change() {
