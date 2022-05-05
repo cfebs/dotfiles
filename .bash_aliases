@@ -38,8 +38,8 @@ alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/
 alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
 alias date-now="date +%s"
 
-alias k9sr="/bin/k9s --readonly"
-alias k9sw="/bin/k9s --write"
+alias k9sr="k9s --readonly"
+alias k9sw="k9s --write"
 
 binz() {
     find ${PATH//:/" "} -executable -printf "%f\n" 2>/dev/null | sort | uniq | fzf

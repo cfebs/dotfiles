@@ -8,6 +8,10 @@ else
     alias ls='ls --color=auto'
 fi
 
+if [[ -e "$HOME/homebrew/bin/brew" ]]; then
+    eval "$($HOME/homebrew/bin/brew shellenv)"
+fi
+
 
 [[ -d /usr/local/go/bin ]] && prepend_path /usr/local/go/bin
 prepend_path "$HOME/go/bin"
