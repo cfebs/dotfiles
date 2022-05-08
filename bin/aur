@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+action="$1"
+
+_usage() {
+    echo "Usage: $(basename $0) upgrade|search|install"
+}
+
+_log() {
+    echo ">> $@" 1>&2
+}
+
+_confirm() {
+    read -p ">> Confirm: $1 (Y/n)" -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        return 0
+    fi
+    return 1
+}
+
+_upgrade_pkg() {
+    dir="$1"
+    _log "Upgrading $dir"
+    cd $dir
+    def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
+
+    git fetch
+    local_rev="$(git rev-parse HEAD)"
+    remote_rev="$(git rev-parse "origin/$def_branch")"
+    if [[ -z "$local_rev" ]]; then
+        _log "Failed to get local rev for $def_branch"
+        return 1
+    fi
+    if [[ -z "$remote_rev" ]]; then
+        _log "Failed to get remote rev for origin/$def_branch"
+        return 1
+    fi
+
+    if [[ "$local_rev" == "$remote_rev" ]]; then
+        _log "Nothing to do! Local rev equals remote rev."
+        return 0
+    fi
+
+    _log "Showing diff for review"
+    sleep 0.75
+    git diff HEAD..origin/master
+    if ! _confirm "upgrade $dir"; then
+        _log "Not confirmed. Skipping"
+        return 0
+    fi
+
+    git reset
+    git checkout "$def_branch"
+    git pull
+    makepkg -si
+}
+
+if [[ "$action" == "upgrade" ]]; then
+    _log "Starting upgrade"
+    for d in $HOME/aur/*/; do
+        _upgrade_pkg "$d"
+    done
+
+    exit 0
+fi
+
+if [[ "$action" == "search" ]]; then
+    # {
+    #   "Description": "Feature packed AUR helper",
+    #   "FirstSubmitted": 1603068527,
+    #   "ID": 927488,
+    #   "LastModified": 1624884796,
+    #   "Maintainer": "Morganamilo",
+    #   "Name": "paru-git",
+    #   "NumVotes": 18,
+    #   "OutOfDate": null,
+    #   "PackageBase": "paru-git",
+    #   "PackageBaseID": 158892,
+    #   "Popularity": 0.361562,
+    #   "URL": "https://github.com/morganamilo/paru",
+    #   "URLPath": "/cgit/aur.git/snapshot/paru-git.tar.gz",
+    #   "Version": "1.7.3.r22.g1ed1f29-1"
+    # },
+
+    query="$2"
+    _log "Searching aur for: $query"
+    curl -sL -G --data-urlencode "arg=$query" 'https://aur.archlinux.org/rpc/?v=5&type=search' \
+        | jq -r '.results[] | "name: \(.Name), votes: \(.NumVotes), modified: \(.LastModified |  strftime("%Y-%m-%d"))"'
+
+    exit 0
+fi
+
+if [[ "$action" == "install" ]]; then
+    pkg="$2"
+    _log "Installing $pkg"
+    cd "$HOME/aur"
+    git clone "https://aur.archlinux.org/${pkg}.git"
+    rc=$?
+    if [[ $rc != 0 ]]; then
+        _log "Failed to clone with return status $rc"
+        exit 1
+    fi
+
+    cd "${pkg}"
+    git pull
+    makepkg -si
+fi
+
+_usage
