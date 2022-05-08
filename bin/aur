@@ -22,7 +22,8 @@ _confirm() {
 
 _upgrade_pkg() {
     dir="$1"
-    _log "Upgrading $dir"
+    pkg="$(basename "$dir")"
+    _log "Upgrading $pkg"
     cd $dir
     def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
 
@@ -55,6 +56,7 @@ _upgrade_pkg() {
     git checkout "$def_branch"
     git pull
     makepkg -si
+    pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
 }
 
 if [[ "$action" == "upgrade" ]]; then
@@ -105,7 +107,9 @@ if [[ "$action" == "install" ]]; then
 
     cd "${pkg}"
     git pull
+
     makepkg -si
+    pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
 fi
 
 _usage
