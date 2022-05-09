@@ -60,6 +60,8 @@ _upgrade_pkg() {
 }
 
 if [[ "$action" == "upgrade" ]]; then
+    mkdir -p "$HOME/aur"
+
     _log "Starting upgrade"
     for d in $HOME/aur/*/; do
         _upgrade_pkg "$d"
@@ -95,21 +97,26 @@ if [[ "$action" == "search" ]]; then
 fi
 
 if [[ "$action" == "install" ]]; then
+    mkdir -p "$HOME/aur"
+
     pkg="$2"
     _log "Installing $pkg"
     cd "$HOME/aur"
-    git clone "https://aur.archlinux.org/${pkg}.git"
-    rc=$?
-    if [[ $rc != 0 ]]; then
-        _log "Failed to clone with return status $rc"
-        exit 1
+    if [[ ! -d "$HOME/aur/$pkg" ]]; then
+        git clone "https://aur.archlinux.org/${pkg}.git"
+        rc=$?
+        if [[ $rc != 0 ]]; then
+            _log "Failed to clone with return status $rc"
+            exit 1
+        fi
     fi
 
     cd "${pkg}"
     git pull
 
     makepkg -si
-    pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
+    sudo pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
+    exit 0
 fi
 
 _usage
