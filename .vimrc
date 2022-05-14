@@ -49,6 +49,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'evanleck/vim-svelte', { 'branch': 'main' }
 Plug 'vim-crystal/vim-crystal'
+Plug 'mracos/mermaid.vim'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -435,13 +436,13 @@ let g:ale_sign_warning = '· '
 
 "" For launching psalm with an explicit wrapper
 "" Ripped from https://github.com/dense-analysis/ale/blob/master/ale_linters/php/psalm.vim
-call ale#linter#Define('php', {
-\   'name': 'psalm_custom',
-\   'lsp': 'stdio',
-\   'executable': '/home/collin/bin/psalm_wrapper.sh',
-\   'command': function('ale_linters#php#psalm#GetCommand'),
-\   'project_root': function('ale_linters#php#psalm#GetProjectRoot'),
-\})
+"" call ale#linter#Define('php', {
+"" \   'name': 'psalm_custom',
+"" \   'lsp': 'stdio',
+"" \   'executable': '/home/collin/bin/psalm_wrapper.sh',
+"" \   'command': function('ale_linters#php#psalm#GetCommand'),
+"" \   'project_root': function('ale_linters#php#psalm#GetProjectRoot'),
+"" \})
 
 let g:ale_completion_enabled = 0
 set omnifunc=ale#completion#OmniFunc
@@ -456,7 +457,7 @@ let g:ale_pattern_options = {
 \ '\.sql$': {'ale_linters': [ ], 'ale_fixers': []},
 \ '\.rb$': {'ale_linters': [ 'ruby', 'solargraph' ], 'ale_fixers': []},
 \ '\.erb$': {'ale_linters': [ 'erb' ], 'ale_fixers': []},
-\ '\.php$': {'ale_linters': [ 'php', 'psalm_custom' ], 'ale_fixers': [ ]},
+\ '\.php$': {'ale_linters': [ 'php', 'psalm' ], 'ale_fixers': [ ]},
 \ '\.js$': {'ale_linters': [ 'eslint', 'tsserver' ], 'ale_fixers': []},
 \ '\.py$': {'ale_linters': [ 'pylint', 'jedils' ], 'ale_fixers': []},
 \ '\.phtml$': {'ale_linters': [ 'prettier' ], 'ale_fixers': []},
