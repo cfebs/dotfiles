@@ -6,8 +6,8 @@ getmakej() {
 
 alias ll="ls -la"
 alias tailcat="tail -n +1"
-alias dok="docker"
-alias dokc="docker-compose"
+alias dk="docker"
+alias dkc="docker compose"
 alias makej="make -j$(getmakej)"
 alias tmux="TERM=screen-256color-bce tmux"
 alias rgi="rg -i"
