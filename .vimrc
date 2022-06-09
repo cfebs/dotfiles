@@ -246,6 +246,9 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+nnoremap <S-t> :tab split<cr>
+nnoremap <S-h> gT
+nnoremap <S-l> gt
 
 "" Quit
 nnoremap <C-q> :qall!<CR>
@@ -255,17 +258,6 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :vsp $MYVIMRC<cr>
 nnoremap <leader>eb :vsp ~/.bashrc<cr>
 nnoremap <leader>eba :vsp ~/.bash_aliases<cr>
-
-nnoremap <S-t> :tab split<cr>
-nnoremap <S-h> gT
-nnoremap <S-l> gt
-tnoremap <S-h> <C-\><C-n>gT
-tnoremap <S-l> <C-\><C-n>gt
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-l> <C-\><C-n><C-w>l
-tnoremap <Esc> <C-\><C-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " kill arrow keys
