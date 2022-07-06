@@ -61,7 +61,7 @@ _upgrade_pkg() {
     git checkout "$def_branch"
     git pull
     makepkg -si
-    pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
+    sudo pacman -U $(makepkg --packagelist)
 }
 
 if [[ "$action" == "upgrade" ]]; then
