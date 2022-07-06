@@ -25,6 +25,10 @@ _upgrade_pkg() {
     pkg="$(basename "$dir")"
     _log "Upgrading $pkg"
     cd $dir
+    if [[ ! -d ./.git ]]; then
+        _log "Failed this directory is not a git repo"
+        return 1
+    fi
     def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
 
     git fetch
@@ -39,6 +43,7 @@ _upgrade_pkg() {
         return 1
     fi
 
+    # TODO: compare installed rev instead
     if [[ "$local_rev" == "$remote_rev" ]]; then
         _log "Nothing to do! Local rev equals remote rev."
         return 0
@@ -115,7 +120,7 @@ if [[ "$action" == "install" ]]; then
     git pull
 
     makepkg -si
-    sudo pacman -U "$pkg*.pkg.tar*" && rm "$pkg*.pkg.tar*"
+    sudo pacman -U $(makepkg --packagelist)
     exit 0
 fi
 
