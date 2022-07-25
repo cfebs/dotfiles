@@ -32,6 +32,9 @@ run_upgrade_pkgs() {
             sudo snap refresh
         fi
 
+        echoerr ">> Syncing archlinux-keyring"
+        sudo pacman -Sy --noconfirm archlinux-keyring
+
         if cmd_exists paru; then
             echoerr ">> Upgrading paru"
             paru
@@ -40,7 +43,7 @@ run_upgrade_pkgs() {
             yay
         else
             echoerr ">> Upgrading pacman"
-            pacman -Syu
+            sudo pacman -Syu
         fi
 
         if cmd_exists paccache; then
