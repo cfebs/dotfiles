@@ -70,6 +70,14 @@ else
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
+
+if which volta 1>/dev/null 2>&1; then
+    # Set the VOLTA_HOME variable to $HOME/.volta
+    # Add $VOLTA_HOME/bin to the beginning of your PATH variable
+    export VOLTA_HOME="$HOME/.volta"
+    prepend_path "$VOLTA_HOME/bin"
+fi
+
 if [[ -e $HOME/.ghcup/bin ]]; then
     prepend_path "$HOME/.ghcup/bin"
 fi
@@ -86,6 +94,8 @@ if [ -f $HOME/src/vimeo/etcutl/vimeo-functions.sh ]; then
     prepend_path "$HOME/src/vimeo/etcutl/bin"
     prepend_path "$HOME/src/vimeo/etcutl/agignore"
 fi
+
+export NODE_OPTIONS="--max_old_space_size=4096"
 
 export GO111MODULE=on
 
