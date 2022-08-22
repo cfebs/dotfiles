@@ -37,29 +37,30 @@
     pushoriginup = "!f() { this_branch=$(git symbolic-ref --short HEAD); [ \"${this_branch}\" = \"master\" ] && echo ERROR: This is master && exit 1; git push -u origin ${this_branch}; }; f"
     rebrase = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git rebase -i $(git merge-base master $this_branch origin/master); }; f"
 [color]
-	ui = true
+    ui = true
 [push]
-	default = simple
+    default = simple
 [credential]
     helper = cache --timeout=36000
 [core]
-	filemode = true
+    filemode = true
 [rerere]
-	enabled = true
+    enabled = true
 [user]
-	email = lefeberc@gmail.com
-	name = Collin Lefeber
+    email = lefeberc@gmail.com
+    name = Collin Lefeber
 [hub]
-	host = github.vimeows.com
-	protocol = ssh
+    host = github.vimeows.com
+    protocol = ssh
 [url "git@github.vimeows.com:"]
-	insteadOf = https://github.vimeows.com
+    insteadOf = https://github.vimeows.com
 [pull]
-	ff = only
+    ff = only
 [merge]
-	renameLimit = 999999
+    renameLimit = 999999
 [init]
-	defaultBranch = main
-
+    defaultBranch = main
 [includeIf "gitdir:~/src/vimeo/**"]
-  path = .gitconfig-vimeo
+    path = .gitconfig-vimeo
+[blame]
+    ignoreRevsFile = .git-blame-ignore-revs
