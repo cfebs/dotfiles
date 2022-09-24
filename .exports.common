@@ -62,13 +62,14 @@ if which ruby >/dev/null && which gem >/dev/null; then
     prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 fi
 
-if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
-    source /usr/share/nvm/init-nvm.sh
-else
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-fi
+# Use volta
+# if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
+#     source /usr/share/nvm/init-nvm.sh
+# else
+#     export NVM_DIR="$HOME/.nvm"
+#     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# fi
 
 
 if which volta 1>/dev/null 2>&1; then
