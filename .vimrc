@@ -4,52 +4,53 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'craigemery/vim-autotag'
-Plug 'kchmck/vim-coffee-script'
-Plug 'groenewege/vim-less'
-Plug 'altercation/vim-colors-solarized'
-Plug 'godlygeek/tabular'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-markdown'
-Plug 'mattn/emmet-vim'
-Plug 'jpo/vim-railscasts-theme'
-Plug 'scrooloose/nerdcommenter'
+
+"" Plug 'fatih/vim-go'
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'aaronbieber/quicktask'
-Plug 'itchyny/lightline.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'gcmt/breeze.vim'
-Plug 'gregsexton/gitv'
-Plug 'pangloss/vim-javascript'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'lvht/mru'
-Plug 'digitaltoad/vim-pug'
-Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
-Plug 'posva/vim-vue'
-Plug 'rust-lang/rust.vim'
-Plug 'lambdatoast/elm.vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'hashivim/vim-terraform'
+Plug 'altercation/vim-colors-solarized'
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'dense-analysis/ale'
-Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'fgsch/vim-varnish'
-Plug 'maksimr/vim-jsbeautify'
-Plug 'tpope/vim-vinegar'
+Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
+Plug 'craigemery/vim-autotag'
 Plug 'dart-lang/dart-vim-plugin'
-"" Plug 'fatih/vim-go'
-Plug 'jvirtanen/vim-hcl'
-Plug 'jakwings/vim-pony'
+Plug 'dense-analysis/ale'
+Plug 'digitaltoad/vim-pug'
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'evanleck/vim-svelte', { 'branch': 'main' }
-Plug 'vim-crystal/vim-crystal'
+Plug 'fgsch/vim-varnish'
+Plug 'gcmt/breeze.vim'
+Plug 'godlygeek/tabular'
+Plug 'gregsexton/gitv'
+Plug 'groenewege/vim-less'
+Plug 'hashivim/vim-terraform'
+Plug 'itchyny/lightline.vim'
+Plug 'jakwings/vim-pony'
+Plug 'jpo/vim-railscasts-theme'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'jvirtanen/vim-hcl'
+Plug 'kchmck/vim-coffee-script'
+Plug 'lambdatoast/elm.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'lvht/mru'
+Plug 'maksimr/vim-jsbeautify'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'mattn/emmet-vim'
 Plug 'mracos/mermaid.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'posva/vim-vue'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-vinegar'
+Plug 'vim-crystal/vim-crystal'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -136,7 +137,7 @@ set colorcolumn=100
 
 "" Tabbing
 set ai
-set expandtab
+" set expandtab
 set shiftwidth=4
 set tabstop=4
 set smarttab
