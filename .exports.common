@@ -7,7 +7,7 @@
 # https://www.babushk.in/posts/renew-environment-tmux.html
 # TODO: automate this with prompt command
 refresh_tmux() {
-    return true
+    return 0
 }
 if [ -n "$TMUX" ]; then
     refresh_tmux() {
