@@ -40,6 +40,7 @@ alias date-now="date +%s"
 
 alias k9sr="k9s --readonly"
 alias k9sw="k9s --write"
+alias curltime="curl -w %{stderr}%{time_connect}:%{time_starttransfer}:%{time_total}"
 
 binz() {
     find ${PATH//:/" "} -executable -printf "%f\n" 2>/dev/null | sort | uniq | fzf

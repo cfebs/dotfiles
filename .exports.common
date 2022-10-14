@@ -2,6 +2,22 @@
 
 # Put stuff that can be shared between bash, zsh here
 
+
+# Refresh env vars in tmux with a function
+# https://www.babushk.in/posts/renew-environment-tmux.html
+# TODO: automate this with prompt command
+refresh_tmux() {
+    return true
+}
+if [ -n "$TMUX" ]; then
+    refresh_tmux() {
+        export $(tmux show-environment | grep "^SSH_AUTH_SOCK")
+        export $(tmux show-environment | grep "^DISPLAY")
+    }
+fi
+
+prepend_promptcmd refresh_tmux
+
 if hash lsd 1>/dev/null 2>&1; then
     alias ls='lsd'
 else

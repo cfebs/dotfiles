@@ -62,5 +62,3 @@
     defaultBranch = main
 [includeIf "gitdir:~/src/vimeo/**"]
     path = .gitconfig-vimeo
-[blame]
-    ignoreRevsFile = .git-blame-ignore-revs
