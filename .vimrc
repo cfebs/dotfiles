@@ -82,7 +82,10 @@ set t_ti= t_te=
 set shell=bash
 "set shellcmdflag=-ic
 set nonu
-set mouse-=a
+"set mouse-=a
+set mouse=
+"set ttymouse=
+
 
 set backupcopy=yes
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
