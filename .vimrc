@@ -186,7 +186,7 @@ augroup vimrcEx
   autocmd BufWinLeave * call clearmatches()
 
   "" 4 spaces
-  autocmd FileType python,javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  autocmd FileType python,javascript,php setlocal tabstop=4 softtabstop=4 shiftwidth=4
 
   "" 2 spaces
   autocmd FileType crystal,coffee,ruby,haml,eruby,html,sass,cucumber,pug,haskell,vcl setlocal ai sw=2 sts=2 et
@@ -207,6 +207,9 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.tsv set ft=tsv
   autocmd! BufRead,BufNewFile *.j2 set ft=jinja
   autocmd! BufRead,BufNewFile .gitconfig-* set ft=gitconfig
+
+  "" 4 spaces vimeo php
+  au BufRead,BufNewFile,BufEnter *vimeo/*.php setlocal ts=4 sts=4 sw=4 et
 
   "" 2 spaces vimeo frontend
   au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.ts setlocal ts=2 sts=2 sw=2
