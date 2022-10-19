@@ -7,25 +7,25 @@
 # https://www.babushk.in/posts/renew-environment-tmux.html
 # TODO: automate this with prompt command
 refresh_tmux() {
-    return 0
+	return 0
 }
 if [ -n "$TMUX" ]; then
-    refresh_tmux() {
-        export $(tmux show-environment | grep "^SSH_AUTH_SOCK")
-        export $(tmux show-environment | grep "^DISPLAY")
-    }
+	refresh_tmux() {
+		export $(tmux show-environment | grep "^SSH_AUTH_SOCK")
+		export $(tmux show-environment | grep "^DISPLAY")
+	}
+
+	prepend_promptcmd refresh_tmux
 fi
 
-prepend_promptcmd refresh_tmux
-
 if hash lsd 1>/dev/null 2>&1; then
-    alias ls='lsd'
+	alias ls='lsd'
 else
-    alias ls='ls --color=auto'
+	alias ls='ls --color=auto'
 fi
 
 if [[ -e "$HOME/homebrew/bin/brew" ]]; then
-    eval "$($HOME/homebrew/bin/brew shellenv)"
+	eval "$($HOME/homebrew/bin/brew shellenv)"
 fi
 
 
@@ -43,10 +43,10 @@ export QT_QPA_PLATFORMTHEME=gtk2
 
 if [[ -r "/usr/share/z/z.sh" ]]
 then
-    source /usr/share/z/z.sh
+	source /usr/share/z/z.sh
 elif [[ -r "$HOME/src/z/z.sh" ]]
 then
-    source "$HOME/src/z/z.sh"
+	source "$HOME/src/z/z.sh"
 fi
 
 
@@ -57,25 +57,25 @@ alias kubectl="kubectl.1.21"
 # export CLOUDSDK_PYTHON=python2
 GCLOUD_SDK_PATH="$HOME/google-cloud-sdk"
 if [ -n "$ZSH_VERSION" ]; then
-    # The next line updates PATH for the Google Cloud SDK.
-    if [ -f "$GCLOUD_SDK_PATH/path.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/path.zsh.inc"; fi
+	# The next line updates PATH for the Google Cloud SDK.
+	if [ -f "$GCLOUD_SDK_PATH/path.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/path.zsh.inc"; fi
 
-    # The next line enables shell command completion for gcloud.
-    if [ -f "$GCLOUD_SDK_PATH/completion.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/completion.zsh.inc"; fi
+	# The next line enables shell command completion for gcloud.
+	if [ -f "$GCLOUD_SDK_PATH/completion.zsh.inc" ]; then . "$GCLOUD_SDK_PATH/completion.zsh.inc"; fi
 else
-    # The next line updates PATH for the Google Cloud SDK.
-    if [ -f "$GCLOUD_SDK_PATH/path.bash.inc" ]; then . "$GCLOUD_SDK_PATH/path.bash.inc"; fi
+	# The next line updates PATH for the Google Cloud SDK.
+	if [ -f "$GCLOUD_SDK_PATH/path.bash.inc" ]; then . "$GCLOUD_SDK_PATH/path.bash.inc"; fi
 
-    # The next line enables shell command completion for gcloud.
-    if [ -f "$GCLOUD_SDK_PATH/completion.bash.inc" ]; then . "$GCLOUD_SDK_PATH/completion.bash.inc"; fi
+	# The next line enables shell command completion for gcloud.
+	if [ -f "$GCLOUD_SDK_PATH/completion.bash.inc" ]; then . "$GCLOUD_SDK_PATH/completion.bash.inc"; fi
 fi
 
 if which rbenv 1>/dev/null 2>&1; then
-    eval "$(rbenv init -)"
+	eval "$(rbenv init -)"
 fi
 
 if which ruby >/dev/null && which gem >/dev/null; then
-    prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
+	prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 fi
 
 # Use volta
@@ -89,27 +89,27 @@ fi
 
 
 if which volta 1>/dev/null 2>&1; then
-    # Set the VOLTA_HOME variable to $HOME/.volta
-    # Add $VOLTA_HOME/bin to the beginning of your PATH variable
-    export VOLTA_HOME="$HOME/.volta"
-    prepend_path "$VOLTA_HOME/bin"
+	# Set the VOLTA_HOME variable to $HOME/.volta
+	# Add $VOLTA_HOME/bin to the beginning of your PATH variable
+	export VOLTA_HOME="$HOME/.volta"
+	prepend_path "$VOLTA_HOME/bin"
 fi
 
 if [[ -e $HOME/.ghcup/bin ]]; then
-    prepend_path "$HOME/.ghcup/bin"
+	prepend_path "$HOME/.ghcup/bin"
 fi
 
 if [[ -e $HOME/.cabal/bin ]]; then
-    prepend_path "$HOME/.cabal/bin"
+	prepend_path "$HOME/.cabal/bin"
 fi
 
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 if [ -f $HOME/src/vimeo/etcutl/vimeo-functions.sh ]; then
-    . $HOME/src/vimeo/etcutl/vimeo-functions.sh
+	. $HOME/src/vimeo/etcutl/vimeo-functions.sh
 
-    prepend_path "$HOME/src/vimeo/etcutl/bin"
-    prepend_path "$HOME/src/vimeo/etcutl/agignore"
+	prepend_path "$HOME/src/vimeo/etcutl/bin"
+	prepend_path "$HOME/src/vimeo/etcutl/agignore"
 fi
 
 export NODE_OPTIONS="--max_old_space_size=4096"

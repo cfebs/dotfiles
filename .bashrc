@@ -57,15 +57,9 @@ prepend_promptcmd() {
             ;;
         *)
             PROMPT_COMMAND="$1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+			;;
     esac
 }
-
-# private stuff, no SCM
-[ -f $HOME/.exports ] && source $HOME/.exports
-
-# public common stuff between shells, tracked in SCM
-[ -f $HOME/.exports.common ] && source $HOME/.exports.common
-
 
 if hash starship 1>/dev/null 2>&1; then
     eval "$(starship init bash)"
@@ -76,4 +70,11 @@ else
     PS1='[\u@\h \W]$(__git_ps1 " (%s)")\n\$ '
 fi
 
-unset -f append_path prepend_path
+
+# private stuff, no SCM
+[ -f $HOME/.exports ] && source $HOME/.exports
+
+# public common stuff between shells, tracked in SCM
+[ -f $HOME/.exports.common ] && source $HOME/.exports.common
+
+unset -f append_path prepend_path append_promptcmd prepend_promptcmd
