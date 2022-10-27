@@ -7,10 +7,12 @@ x-scheme-handler/tg=userapp-Telegram Desktop-V9T8D1.desktop;userapp-Telegram Des
 
 [Default Applications]
 inode/directory=thunar.desktop;
+text/tab-separated-values=libreoffice-calc.desktop;
 text/html=firefox-last-profile.desktop
 text/plain=geany.desktop;
 text/csv=libreoffice-calc.desktop;
 application/pdf=firefox-last-profile.desktop;firefox.desktop;chromium.desktop;
+video/webm=vlc.desktop;
 video/x-matroska=vlc.desktop;
 video/mkv=vlc.desktop;
 video/mp4=vlc.desktop;firefox-last-profile.desktop;firefox.desktop;chromium.desktop;
