@@ -14,60 +14,62 @@ PS1='[\u@\h \W]\$ '
 # https://github.com/archlinux/svntogit-packages/blob/6a803636e849903d1860c53c3ede64277419c4c8/trunk/profile#L6-L15
 # Append "$1" to $PATH when not already in.
 append_path() {
-    case ":$PATH:" in
-        *:"$1":*)
-            # debug
-            # echo ">> append $1 is already in path" 1>&2
-            ;;
-        *)
-            PATH="${PATH:+$PATH:}$1"
-    esac
+	case ":$PATH:" in
+		*:"$1":*)
+			# debug
+			# echo ">> append $1 is already in path" 1>&2
+			;;
+		*)
+			PATH="${PATH:+$PATH:}$1"
+	esac
 }
 
 # Prepend "$1" to $PATH when not already in.
 prepend_path() {
-    case ":$PATH:" in
-        *:"$1":*)
-            # debug
-            # echo ">> prepend $1 is already in path" 1>&2
-            ;;
-        *)
-            PATH="$1${PATH:+:$PATH}"
-    esac
+	case ":$PATH:" in
+		*:"$1":*)
+			# debug
+			# echo ">> prepend $1 is already in path" 1>&2
+			;;
+		*)
+			PATH="$1${PATH:+:$PATH}"
+	esac
 }
 
 # Append "$1" to $PROMPT_COMMAND when not already in.
 append_promptcmd() {
-    case ";$PROMPT_COMMAND;" in
-        *";$1;"*)
-            # debug
-            # echo ">> append $1 is already in prompt_command" 1>&2
-            ;;
-        *)
-            PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}$1"
-    esac
+	case ";$PROMPT_COMMAND;" in
+		*";$1;"*)
+			# debug
+			# echo ">> append $1 is already in prompt_command" 1>&2
+			;;
+		*)
+			PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}$1"
+	esac
 }
 
 # Prepend "$1" to $PROMPT_COMMAND when not already in.
 prepend_promptcmd() {
-    case ";$PROMPT_COMMAND;" in
-        *";$1;"*)
-            # debug
-            # echo ">> prepend $1 is already in prompt_command" 1>&2
-            ;;
-        *)
-            PROMPT_COMMAND="$1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+	case ";$PROMPT_COMMAND;" in
+		*";$1;"*)
+			# debug
+			# echo ">> prepend $1 is already in prompt_command" 1>&2
 			;;
-    esac
+		*)
+			PROMPT_COMMAND="$1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+			;;
+	esac
 }
 
 if hash starship 1>/dev/null 2>&1; then
-    eval "$(starship init bash)"
+	eval "$(starship init bash)"
 else
-    [[ -f ~/.git-prompt.sh ]] && source ~/.git-prompt.sh
-    export GIT_PS1_SHOWDIRTYSTATE=1
-    export GIT_PS1_SHOWUNTRACKEDFILES=1
-    PS1='[\u@\h \W]$(__git_ps1 " (%s)")\n\$ '
+	if [[ -f ~/.git-prompt.sh ]]; then
+		source ~/.git-prompt.sh
+		export GIT_PS1_SHOWDIRTYSTATE=1
+		export GIT_PS1_SHOWUNTRACKEDFILES=1
+		PS1='[\u@\h \W]$(__git_ps1 " (%s)")\n\$ '
+	fi
 fi
 
 

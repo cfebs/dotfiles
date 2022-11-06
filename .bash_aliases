@@ -103,6 +103,12 @@ alias ttime="/usr/bin/time"
 
 alias bashrc=". ~/.bashrc"
 
+if hash lsd 1>/dev/null 2>&1; then
+	alias ls='lsd'
+elif ls --color /dev/null 1>/dev/null 2>&1; then
+	alias ls='ls --color=auto'
+fi
+
 grep_alias='grep'
 if grep --color "a" <<<"a" &>/dev/null; then
     grep_alias="$grep_alias --color=auto"

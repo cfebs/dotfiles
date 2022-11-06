@@ -14,10 +14,18 @@ mkdir -p ~/.vim-tmp ~/.tmp ~/tmp
 mkdir -p .config/nvim
 ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
 
-# nvim plug
-DEST_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
-if [[ ! -e "$DEST_FILE" ]]; then
-    _log fetching vim-plug
+# vim plug
+DEST_FILE=
+if which neovim 1>/dev/null 2>&1; then
+    _log "using nvim"
+	DEST_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+elif which vim 1>/dev/null 2>&1; then
+    _log "using vim"
+	DEST_FILE="$HOME/.vim/autoload/plug.vim"
+fi
+
+if [[ ! -z "$DEST_FILE" ]] && [[ ! -e "$DEST_FILE" ]]; then
+    _log "fetching vim plugged"
     curl -fLo $DEST_FILE --create-dirs \
            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
