@@ -51,6 +51,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-crystal/vim-crystal'
+Plug 'mzlogin/vim-markdown-toc'
+"Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'nvim-orgmode/orgmode'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -208,10 +211,11 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.j2 set ft=jinja
   autocmd! BufRead,BufNewFile .gitconfig-* set ft=gitconfig
 
-  "" 4 spaces vimeo php
+  "" 4 spaces vimeo
   au BufRead,BufNewFile,BufEnter *vimeo/*.php setlocal ts=4 sts=4 sw=4 et
+  au BufRead,BufNewFile,BufEnter *vimeo/*.js setlocal ts=4 sts=4 sw=4 et
 
-  "" 2 spaces vimeo frontend
+  "" 2 spaces vimeo
   au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.ts setlocal ts=2 sts=2 sw=2
   au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.tsx setlocal ts=2 sts=2 sw=2
 
