@@ -42,8 +42,9 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+d exec dmenu_run
 
 # set monitors
-exec --no-startup-id /home/collin/.screenlayout/active.sh
+exec --no-startup-id ~/.screenlayout/active.sh
 #exec --no-startup-id xrandr --dpi 112
+#exec --no-startup-id picom -b --config ~/.config/picom/picom.conf
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -184,6 +185,12 @@ for_window [title="^Steam Keyboard$"] floating enable
 for_window [class="^Steam$" title=".*Library.*Folder.*"] floating enable
 # vampire survivor
 for_window [class="^steam_app_1794680$"] floating enable
+# poe/awakened
+# https://gist.github.com/cfebs/82790d9027cefe62c2d82ea3836bcb96
+# ~/.config/picom/picom.conf 
+# $ picom --config ~/.config/picom/picom.conf
+# for_window [class="awakened-poe-trade"] floating enable border pixel 0
+# for_window [class="^steam_app_238960$"] floating enable fullscreen enable border pixel 0
 
 for_window [class="^KeePassXC$"] floating enable
 for_window [class="^KeePassXC$"] move position center
