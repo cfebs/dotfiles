@@ -581,6 +581,11 @@ proxy-laptop() {
 		-L 3000:localhost:3000 tennisl1
 }
 
+chrome-proxy() {
+	# https://www.chromium.org/developers/design-documents/network-stack/socks-proxy/
+	google-chrome-stable --proxy-server="socks5://localhost:1137" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost" --profile-directory="Profile 1"
+}
+
 percent-change() {
 	python3 -c 'import sys; z, a, b = sys.argv; r=(float(b) - float(a)) / float(a); print(round(r*100.0, 4),"%change")' $@
 }

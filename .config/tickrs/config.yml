@@ -17,7 +17,7 @@ time_frame: 3M
 
 # Interval to update data from API (seconds)
 # Default is 1
-update_interval: 30
+update_interval: 60
 
 # Enable pre / post market hours for graphs
 #enable_pre_post: true
