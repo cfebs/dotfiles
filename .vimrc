@@ -217,8 +217,8 @@ augroup vimrcEx
   au BufRead,BufNewFile,BufEnter *vimeo/*.jsx setlocal ts=4 sts=4 sw=4 et
 
   "" 2 spaces vimeo
-  au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.ts setlocal ts=2 sts=2 sw=2
-  au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.tsx setlocal ts=2 sts=2 sw=2
+  au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.ts setlocal ts=2 sts=2 sw=2 et
+  au BufRead,BufNewFile,BufEnter *vimeo/frontend/*.tsx setlocal ts=2 sts=2 sw=2 et
 
   autocmd! FileType gitcommit setlocal spell
 
