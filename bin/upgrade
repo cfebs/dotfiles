@@ -59,7 +59,7 @@ run_upgrade_pkgs() {
 				#elif cmd_exists vimdiff; then
 				#    DIFFPROG=/usr/bin/vimdiff sudo -E pacdiff
 				if cmd_exists vimdiff; then
-					DIFFPROG='/usr/bin/vimdiff --cmd "colorscheme evening"' sudo -E pacdiff
+					sudo -H -E pacdiff
 				else
 					echoerr ">> ERROR: no good diff programs"
 					return 1
