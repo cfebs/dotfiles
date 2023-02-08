@@ -26,9 +26,11 @@ if [[ -z "$device" ]] || [[ -z "$action" ]]; then
 fi
 
 device_mac=""
+device_name=""
 for i in "${!device_names[@]}"; do
     if [[ "${device_names[$i]}" == "$device" ]]; then
         device_mac="${device_macs[$i]}"
+        device_name="${device_names[$i]}"
         break
     fi
 done
@@ -41,6 +43,7 @@ fi
 echo "Using MAC $device_mac for $device" 1>&2
 
 if [[ "$action" == "pair" ]]; then
+	notify-send --expire-time=3000 "btooth pair $device_name $device_mac"
     scanned="$(timeout 15s bluetoothctl scan on)";
     if ! echo "$scanned" | grep --color=auto -q "$device_mac"; then
         echo "Could not find $device_name $device_mac in scan. Is it in pairing mode?" 1>&2
@@ -53,9 +56,11 @@ if [[ "$action" == "pair" ]]; then
     exit
 
 elif [[ "$action" == "on" ]]; then
+	notify-send --expire-time=3000 "btooth on $device_name $device_mac"
     bluetoothctl connect "$device_mac"
 
 elif [[ "$action" == "off" ]]; then
+	notify-send --expire-time=3000 "btooth off $device_name $device_mac"
     bluetoothctl disconnect "$device_mac"
 fi
 
