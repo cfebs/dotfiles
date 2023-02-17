@@ -2,12 +2,21 @@
 
 source $HOME/bin/.util.sh
 
+lookin="$1"
+ttl="${2:-60}"
+
+if [[ -z "$lookin" ]] || [[ ! -d "$lookin" ]]; then
+	log '%s' "ERROR: provide lookin dir"
+	exit 1
+fi
+
 if ! cmd_exists 'wezterm'; then
 	log '%s' "ERROR: need wezterm"
+	exit 1
 fi
 
 while true; do
-	img="$(find "$HOME/Pictures" -type f -exec file {} \; | awk -F: '{ if ($2 ~/[Ii]mage|EPS/) print $1}' | shuf | head -n1)"
+	img="$(find "$lookin" -type f -exec file {} \; | awk -F: '{ if ($2 ~/[Ii]mage|EPS/) print $1}' | shuf | head -n1)"
 
 	if [[ -z "${img}" ]]; then
 		log '%s' "ERROR: no selected img"
@@ -18,5 +27,5 @@ while true; do
 
 	wezterm imgcat "${img}"
 	log '%s' "selected image $img"
-	sleep 5s
+	sleep "${ttl}s"
 done
