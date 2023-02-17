@@ -58,7 +58,9 @@ run_upgrade_pkgs() {
 				#    DIFFPROG=/usr/bin/meld sudo -E pacdiff
 				#elif cmd_exists vimdiff; then
 				#    DIFFPROG=/usr/bin/vimdiff sudo -E pacdiff
-				if cmd_exists vimdiff; then
+				if cmd_exists nvim; then
+					sudo -H -E DIFFPROG='nvim -d' pacdiff
+				elif cmd_exists vimdiff; then
 					sudo -H -E pacdiff
 				else
 					echoerr ">> ERROR: no good diff programs"
