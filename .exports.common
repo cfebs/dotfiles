@@ -32,7 +32,7 @@ prepend_path "$HOME/src/Nim/bin"
 prepend_path "$HOME/.luarocks/bin"
 
 [ -n "$TMUX" ] && export TERM=screen-256color
-export TERMINAL=alacritty
+export TERMINAL=wezterm
 export QT_QPA_PLATFORMTHEME=gtk2
 
 if [[ -r "/usr/share/z/z.sh" ]]

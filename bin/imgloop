@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+source $HOME/bin/.util.sh
+
+if ! cmd_exists 'wezterm'; then
+	log '%s' "ERROR: need wezterm"
+fi
+
+while true; do
+	img="$(find "$HOME/Pictures" -type f -exec file {} \; | awk -F: '{ if ($2 ~/[Ii]mage|EPS/) print $1}' | shuf | head -n1)"
+
+	if [[ -z "${img}" ]]; then
+		log '%s' "ERROR: no selected img"
+		exit 1
+	fi
+
+	clear;
+
+	wezterm imgcat "${img}"
+	log '%s' "selected image $img"
+	sleep 5s
+done
