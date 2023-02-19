@@ -9,7 +9,7 @@ alias tailcat="tail -n +1"
 alias dk="docker"
 alias dkc="docker compose"
 alias makej="make -j$(getmakej)"
-alias tmux="TERM=screen-256color-bce tmux"
+#alias tmux="TERM=screen-256color-bce tmux"
 alias rgi="rg -i"
 
 alias tm="tmux"
@@ -116,7 +116,7 @@ if grep --color "a" <<<"a" &>/dev/null; then
 fi
 alias grep="$grep_alias"
 
-alias less="less -R"
+#alias less="less -R"
 
 alias c='clear'
 alias bc='bc -l'

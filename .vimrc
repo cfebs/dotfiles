@@ -4,8 +4,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-
-"" Plug 'fatih/vim-go'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'aaronbieber/quicktask'
 Plug 'altercation/vim-colors-solarized'
@@ -52,8 +50,6 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-crystal/vim-crystal'
 Plug 'mzlogin/vim-markdown-toc'
-"Plug 'nvim-treesitter/nvim-treesitter'
-"Plug 'nvim-orgmode/orgmode'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -118,24 +114,22 @@ set showmatch
 " Colors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"" Solarized! This works for solarized + allaritty
+"" Solarized
 let g:solarized_termcolors= 16
 let g:solarized_termtrans = 1
-set background=dark
-"set background=light
 colorscheme solarized
 
-"" Dracula
-"colorscheme dracula
-
-"let g:dracula_colorterm = 0
-"set t_Co=256   " 256 colors
-"set t_Co=16
 "colorscheme railscasts
 "colorscheme desert
 "colorscheme lucius
 "colorscheme jellybeans
 "colorscheme dracula
+"let g:zenbones_compat = 1
+"colorscheme zenbones
+
+set background=dark
+"set background=light
+
 set lazyredraw
 syntax on
 " avoid lines > 100 lines

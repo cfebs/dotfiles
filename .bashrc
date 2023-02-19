@@ -73,10 +73,16 @@ else
 fi
 
 
-# private stuff, no SCM
-[ -f $HOME/.exports ] && source $HOME/.exports
+# individual host stuff, no SCM
+[ -f ~/.exports ] && source ~/.exports
 
 # public common stuff between shells, tracked in SCM
-[ -f $HOME/.exports.common ] && source $HOME/.exports.common
+[ -f ~/.exports.common ] && source ~/.exports.common
+
+# more private/on-demand env variables
+if [ ! -e ~/.exports.creds ]; then
+	touch ~/.exports.creds && chmod 700 ~/.exports.creds
+fi
+alias exportcreds="source ~/.exports.creds"
 
 unset -f append_path prepend_path append_promptcmd prepend_promptcmd
