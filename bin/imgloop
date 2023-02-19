@@ -11,7 +11,7 @@ if [[ -z "$lookin" ]] || [[ ! -d "$lookin" ]]; then
 fi
 
 if ! cmd_exists 'viu'; then
-	log '%s' "ERROR: need wezterm"
+	log '%s' "ERROR: need viu"
 	exit 1
 fi
 
