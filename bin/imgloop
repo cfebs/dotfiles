@@ -10,7 +10,7 @@ if [[ -z "$lookin" ]] || [[ ! -d "$lookin" ]]; then
 	exit 1
 fi
 
-if ! cmd_exists 'wezterm'; then
+if ! cmd_exists 'viu'; then
 	log '%s' "ERROR: need wezterm"
 	exit 1
 fi
@@ -25,7 +25,8 @@ while true; do
 
 	clear;
 
-	wezterm imgcat "${img}"
+	viu "${img}"
+
 	log '%s' "selected image $img"
 	sleep "${ttl}s"
 done
