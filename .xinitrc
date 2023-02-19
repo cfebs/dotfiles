@@ -54,7 +54,7 @@ if [ "$1" = "/usr/bin/startplasma-x11" ]; then
 fi
 
 # for i3's terminal selection
-export TERMINAL=alacritty
+export TERMINAL=kitty
 
 if [ "$export_gtk_stuff" -eq "1" ]; then
     # for qt apps to use gtk themes when launched via rofi/dmenu in i3
