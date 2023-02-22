@@ -75,7 +75,7 @@ sshscreen() {
 }
 
 wttr() {
-	loc="${1:-lga}"
+	loc="${1:-williamsburg+brooklyn}"
 	shift
 
 	# View options:
