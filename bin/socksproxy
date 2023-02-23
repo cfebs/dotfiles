@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 2 ]; then
+	echo "Usage: socksproxy localport user@host [sshport]"
+	echo "    \$1: localport"
+	echo "    \$2: login"
+	echo "    \$3: sshport (default 22)"
+	exit 1
+fi
+
+sshport=${3:-22}
+
+echo "localport: $1, auth: $2, sshport: $sshport"
+ssh -v -N -p "$sshport" -D "0.0.0.0:$1" "$2"

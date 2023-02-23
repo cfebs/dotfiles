@@ -1,64 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Aliases and helper functions.
+# Sourced by .exports.common (try to keep `export`s to exports. files)
+#
+# Tips:
+# * If a function does not need to manipulate current shell session, consider a ~/bin
+# * If a function is one line, consider an alias
 
-getmakej() {
-	echo $(($(nproc) - 1));
-}
+source ~/bin/.util.sh
 
-alias ll="ls -la"
-alias tailcat="tail -n +1"
-alias dk="docker"
-alias dkc="docker compose"
-alias makej="make -j$(getmakej)"
-#alias tmux="TERM=screen-256color-bce tmux"
-alias rgi="rg -i"
+if cmd_exists lsd; then
+	alias ls='lsd'
+elif ls --color /dev/null 1>/dev/null 2>&1; then
+	alias ls='ls --color=auto'
+fi
 
-alias tm="tmux"
-alias tmn="tmux new-session -s"
+if grep --color "a" <<<"a" &>/dev/null; then
+	alias grep="grep --color=auto"
+fi
 
-alias sshno="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null"
-alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes -n"
+if cmd_exists nvim; then
+	export EDITOR='nvim'
+	alias vim="$EDITOR"
+	alias vi="$EDITOR"
+	alias edit="$EDITOR"
+fi
 
-alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
-alias alacritty-dark="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml"
-
-alias ixio="curl -F 'f:1=<-' ix.io"
-alias gistdiff="gist -f diff.diff"
-
-alias somafm="~/.yarn/bin/somafm"
-alias somafm-groove="~/.yarn/bin/somafm play groovesalad"
-alias somafm-drone="~/.yarn/bin/somafm play dronezone"
-
-alias yarn-linked="find . -type l | grep -v .bin | sed 's/^\.\/node_modules\///'"
-alias yarn-unlink-all="yarn-linked | xargs yarn unlink && yarn install --check-files"
-
-alias bonsai="cbonsai -li -t 0.35 -M 7"
-
-alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
+# ubuntu installs this as a bin called gist-paste, weird
+# https://github.com/defunkt/gist
+if hash gist-paste 1>/dev/null 2>&1; then
+	alias gist=gist-paste
+fi
 
 #alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
-alias date-zulu="TZ='utc' printf '%(%FT%TZ)T\n'"
+#alias tmux="TERM=screen-256color-bce tmux"
+alias 1="cd ../"
+alias 2="cd ../../"
+alias 3="cd ../../../"
+alias 4="cd ../../../../"
+alias alacritty-dark="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml"
+alias bashrc=". ~/.bashrc"
+alias bc='bc -l'
+alias bonsai="cbonsai -li -t 0.35 -M 7"
+alias c='clear'
+alias clipboard='xclip -se c'
+alias cp='cp -i'
+alias curltime="curl -w %{stderr}%{time_connect}:%{time_starttransfer}:%{time_total}"
 alias date-now="date +%s"
-
+alias date-zulu="TZ='utc' printf '%(%FT%TZ)T\n'"
+alias dk="docker"
+alias dkc="docker compose"
+alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
+alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
+alias docker-clean-ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
+alias g="git"
+alias gistdiff="gist -f diff.diff"
+alias htmldecode="perl -MHTML::Entities -pe 'decode_entities(\$_)'"
+alias htmlencode="perl -MHTML::Entities -pe 'encode_entities(\$_)'"
+alias ixio="curl -F 'f:1=<-' ix.io"
+alias j="liljournal"
 alias k9sr="k9s --readonly"
 alias k9sw="k9s --write"
-alias curltime="curl -w %{stderr}%{time_connect}:%{time_starttransfer}:%{time_total}"
+alias l='ls'
+alias ll="ls -lat"
+alias ln='ln -i'
+alias localgodoc="godoc -http=:6060 -index -play -index_interval -1m"
+alias makej="make -j$(($(nproc) - 1))"
+alias mv='mv -i'
+alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
+alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
+alias proxydrop="socksproxy 9999 collin@proxydrop 222"
+alias remoteirc="mosh no.city -- screen -rad weechat"
+alias rgi="rg -i"
+alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes -n"
+alias sshno="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null"
+alias tailcat="tail -n +1"
+alias tm="tmux"
+alias tmn="tmux new-session -s"
+alias yarn-linked="find . -type l | grep -v .bin | sed 's/^\.\/node_modules\///'"
+alias yarn-unlink-all="yarn-linked | xargs yarn unlink && yarn install --check-files"
+alias pacman-remove-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
+alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
 
-binz() {
-	find ${PATH//:/" "} -executable -printf "%f\n" 2>/dev/null | sort | uniq | fzf
-}
+# do not delete / or prompt if deleting more than 3 files at a time #
+TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $TEST_FILE 2> /dev/null && \
+	alias rm='rm --preserve-root'
 
-iscmd() {
-	# does the command exist
-	[ -x "$(command -v "$1")" ] || declare -F "$1" &>/dev/null
-}
+TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm -I $TEST_FILE 2> /dev/null && \
+	alias rm='rm -I'
 
-digany() {
-	dig +noall +answer "$1" ANY
-}
 
-myscrot() {
-	mkdir -p ~/Pictures/Screenshots
-	scrot ~/Pictures/Screenshots/%Y-%m-%d_\$wx\$h.png "$@"
+## Functions
+
+bins-list() {
+	find ${PATH//:/" "} -executable -printf "%f\n" 2>/dev/null | sort | uniq
 }
 
 tma() {
@@ -69,131 +103,16 @@ tmnd() {
 	tmux new-session -s $(pwd)
 }
 
-sshscreen() {
-	# ssh's to the box and runs screen attach
-	ssh -t $1 screen -Rad
-}
-
-wttr() {
-	loc="${1:-williamsburg+brooklyn}"
-	shift
-
-	# View options:
-	# 0                       # only current weather
-	# 1                       # current weather + today's forecast
-	# 2                       # current weather + today's + tomorrow's forecast
-	# A                       # ignore User-Agent and force ANSI output format (terminal)
-	# F                       # do not show the "Follow" line
-	# n                       # narrow version (only day and night)
-	# q                       # quiet version (no "Weather report" text)
-	# Q                       # superquiet version (no "Weather report", no city name)
-	# T                       # switch terminal sequences off (no colors)
-	days="${1:-2}"
-	shift
-
-	# use m, F, n by default
-	curl "https://wttr.in/${loc}?m&F&${days}&n&$@"
-}
-
-# Quick nav
-alias 1="cd ../"
-alias 2="cd ../../"
-alias 3="cd ../../../"
-alias 4="cd ../../../../"
-alias ttime="/usr/bin/time"
-
-alias bashrc=". ~/.bashrc"
-
-if hash lsd 1>/dev/null 2>&1; then
-	alias ls='lsd'
-elif ls --color /dev/null 1>/dev/null 2>&1; then
-	alias ls='ls --color=auto'
-fi
-
-grep_alias='grep'
-if grep --color "a" <<<"a" &>/dev/null; then
-	grep_alias="$grep_alias --color=auto"
-fi
-alias grep="$grep_alias"
-
-#alias less="less -R"
-
-alias c='clear'
-alias bc='bc -l'
-alias lt='ls -lat | head -n20'
-alias l='ls'
-alias lsat='ls -at'
-
-export EDITOR='vim'
-if hash nvim 1>/dev/null 2>&1; then
-	export EDITOR='nvim'
-	alias vim=nvim
-fi
-
-# ubuntu installs this as a bin called gist-paste, weird
-# https://github.com/defunkt/gist
-if hash gist-paste 1>/dev/null 2>&1; then
-	alias gist=gist-paste
-fi
-
-alias vi=$EDITOR
-alias v=$EDITOR
-alias svi="sudo $EDITOR"
-alias vis="$EDITOR \"+set si\""
-alias edit="$EDITOR"
-
-alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
-alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
-
-# -index_interval duration
-#   interval of indexing; 0 for default (5m), negative to only index once at startup
-alias localgodoc="godoc -http=:6060 -index -play -index_interval -1m"
-
-alias rm='rm'
-# do not delete / or prompt if deleting more than 3 files at a time #
-TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $TEST_FILE 2> /dev/null && \
-	alias rm='rm --preserve-root'
-
-TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm -I $TEST_FILE 2> /dev/null && \
-	alias rm='rm -I'
-
-alias g="git"
-if [ -z "$ZSH_VERSION" ] && [ -f ~/.git-completion.sh ]; then
-	source ~/.git-completion.sh
-	__git_complete g _git
-fi
-
-# confirmation #
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
-
-alias clipboard='xclip -se c'
-
-## Functions
-
 pn() {
+	# print nth thing with default awk -F
 	while read data;
 	do
 		echo $data | awk "{ print \$$1 }"
-		#echo $data | cut -d' ' -f$1
 	done
 }
 
-g_rlc() {
+grlc() {
 	git checkout $(git reflog | grep checkout | head -80 | grep moving | pn 8 | grep -v '^master$' | fzf)
-}
-
-rvm-project() {
-if [ -z "$1" ]
-then
-	echo Need name argument
-else
-	mkdir "$1"
-	rvm gemset create "$1"
-	echo "rvm gemset use $1" > ./$1/.rvmrc
-	echo '.rvmrc' >> ./$1/.gitignore
-fi
 }
 
 function timer_notify() {
@@ -205,9 +124,7 @@ function timer() {
 	MIN=$1 && for i in $(seq $(($MIN*60)) -1 1); do echo -n "$i, "; sleep 1; done; timer_notify;
 }
 
-alias ack="ack-grep"
 function qfind() {
-
 	[[ -z $1 ]] \
 		&& echo -e "No search param\n\nUsage: ${FUNCNAME[0]} <query> [dir]" && return 0
 
@@ -226,103 +143,7 @@ function qgrep() {
 	grep -irn "$1" .
 }
 
-alias htmlencode="perl -MHTML::Entities -pe 'encode_entities(\$_)'"
-alias htmldecode="perl -MHTML::Entities -pe 'decode_entities(\$_)'"
-
-__my_journal() {
-	local journal_dir="$HOME/quick_journal"
-	local journal_file="$(date +%Y_%m_%d).md"
-
-	if [ ! -d "$journal_dir" ]
-	then
-		mkdir "$journal_dir";
-		echo "Creating $journal_dir"
-	fi
-
-
-	if [ ! -f "$journal_dir/$journal_file" ]
-	then
-		echo "Creating todays file $journal_file"
-		touch "$journal_dir/$journal_file"
-	fi
-
-	local content="- \`$(date +%H:%M:%S)\` $@"
-	echo "$content" >> "$journal_dir/$journal_file"
-	echo "Wrote -> $content to $journal_file"
-
-	return 0;
-}
-
-alias j="__my_journal"
-
-dodat() {
-	# dodat cmd src_file relative_target
-	# dodat cp /tmp/dir/file.txt new_file.txt
-	# => cp /tmp/dir/file.txt /tmp/dir/new_file.txt
-	# dodat mv /tmp/dir/file.txt new_file.txt
-	# => mv /tmp/dir/file.txt /tmp/dir/new_file.txt
-	# dodat touch /tmp/dir/file.txt new_file.txt
-	# => touch /tmp/dir/new_file.txt
-	local cmd="$1"
-	local src="$2"
-	local target="$3"
-	local dest_dir="$(dirname "$src")"
-	local result="${dest_dir}/${target}"
-
-	case "$cmd" in
-		"cp" | "mv")
-			# targets
-			$cmd "$src" "$result";
-			echo "$cmd $src $result";
-			;;
-		"touch")
-			$cmd "$result";
-			echo "$cmd $result";
-			;;
-		*)
-			echo "$cmd not supported"
-			;;
-	esac
-}
-
-mkcp() {
-	local src="$1"
-	local dest="$2"
-	mkdir -pv "$src"
-	cp "$src" "$dest"
-}
-
-npmbin() {
-	$(npm bin)/"$@"
-}
-
-# http://www.commandlinefu.com/commands/view/9807/convert-number-of-bytes-to-human-readable-filesize
-human_filesize() {
-	awk -v sum="$1" ' BEGIN {hum[1024^3]="Gb"; hum[1024^2]="Mb"; hum[1024]="Kb"; for (x=1024^3; x>=1024; x/=1024) { if (sum>=x) { printf "%.2f %s\n",sum/x,hum[x]; break; } } if (sum<1024) print "1kb"; } '
-}
-
-pphtml() {
-	url="$1"
-	shift
-	curl -s "$url" | pup --color "$@"
-}
-
-human_size() {
-	pyscript=$(cat <<SCRIPT
-def sizeof_fmt(num, suffix='B'):
-	for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
-		if abs(num) < 1024.0:
-			return "%3.1f%s%s" % (num, unit, suffix)
-		num /= 1024.0
-	return "%.1f%s%s" % (num, 'Yi', suffix)
-print sizeof_fmt($1)
-SCRIPT
-)
-python -c "$pyscript"
-}
-
-set_title()
-{
+set_title() {
 	ORIG=$PS1
 	TITLE="\e]2;$*\a"
 	PS1=${ORIG}${TITLE}
@@ -337,93 +158,8 @@ pssh() {
 	parallel-ssh -O StrictHostKeyChecking=no -i -H "$(eval echo $1)" $2
 }
 
-alias sshvpn="ssh -c 3des-cbc"
-
-knownhostsrm() {
-	ssh-keygen -f $HOME/.ssh/known_hosts -R $1
-	for ip in $(dig +short $1)
-	do
-		ssh-keygen -f $HOME/.ssh/known_hosts -R $ip
-	done
-}
-
-sshtun() {
-	# $1 hostname
-	# $2 host port
-	# $3 local port
-	if [ $# -lt 3 ]
-	then
-
-		echo "Usage: ${FUNCNAME[0]} <connect-to-addr> <remote-port> <local-port> [remote-addr]"
-		echo ""
-		echo "Arguments:"
-		echo "  connect-to-addr:  ssh will connect to this address or hostname"
-		echo "  remote-port:      forward traffic from this port on the destination to the local port"
-		echo "  local-port:       local port to forward to"
-		echo "  remote-addr:      default: localhost, connect to this address on the remote"
-		echo "Examples:"
-		echo ""
-		echo "  # connect to no.city, make no.city:8545 (localhost) -> localhost:9545"
-		echo "  ${FUNCNAME[0]} no.city 8545 9545"
-		return 1
-	fi
-
-	local connectto="${1}"
-	local remoteport="${2}"
-	local localport="${3}"
-	local remoteaddr="${4-localhost}"
-
-	echo "connect-to-addr: $connectto, remoteport: $remoteport, local-port: $localport, remote-addr: $remoteaddr"
-
-	ssh -v -N "$connectto" -L "$localport:$remoteaddr:$remoteport" -N
-}
-
-socksproxy() {
-	if [ $# -lt 2 ]
-	then
-		echo "Usage: socksproxy localport user@host [sshport]"
-		echo "    \$1: localport"
-		echo "    \$2: login"
-		echo "    \$3: sshport (default 22)"
-		return 1
-	fi
-
-	sshport=${3-22}
-
-	echo "localport: $1, auth: $2, sshport: $sshport"
-	ssh -v -N -p "$sshport" -D "0.0.0.0:$1" "$2"
-}
-
-lookupip() {
-	curl "https://tools.keycdn.com/geo.json?host=$1" | jq .
-}
-
-helpme() {
-	export LESS=-RXFi
-	export LESS_TERMCAP_mb=$(printf "\e[1;31m")
-	export LESS_TERMCAP_md=$(printf "\e[1;31m")
-	export LESS_TERMCAP_me=$(printf "\e[0m")
-	export LESS_TERMCAP_se=$(printf "\e[0m")
-	export LESS_TERMCAP_so=$(printf "\e[1;44;33m")
-	export LESS_TERMCAP_ue=$(printf "\e[0m")
-	export LESS_TERMCAP_us=$(printf "\e[1;32m")
-
-	tldr "$@" && env man "$@"
-}
-
-alias randpass="cat /dev/urandom | head -c 15 | base64"
-alias proxydrop="socksproxy 9999 collin@proxydrop 222"
-
-rubycheck() {
-	echo "Checking .rb"
-	find . -type f -name '*.rb' -exec ruby -c {} \; > /dev/null
-	echo "Checking .erb"
-	find . -type f -name '*.erb' -exec sh -c "erb -x -T '-' {} | ruby -c" \; > /dev/null
-	echo "Done"
-}
-
 genpassword() {
-	if iscmd pwgen; then
+	if cmd_exists pwgen; then
 		pwgen -scy 32 | head -n1
 		return $?
 	fi
@@ -448,61 +184,6 @@ docker-compose-tail() {
 	docker-compose logs -f --tail=0 "$1"
 }
 
-alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
-alias remoteirc="mosh no.city -- screen -rad weechat"
-
-aws-mfa-vimeo() {
-	eval $(AWS_MFA_ARN="$AWS_MFA_ARN" AWS_PROFILE=vimeo $HOME/src/vimeo/ops/aws/aws-mfa.py)
-}
-
-aws-mfa-vhx-legacy() {
-	eval $(AWS_MFA_ARN="$AWS_VHX_LEGACY_MFA_ARN" AWS_PROFILE=vhx-legacy $HOME/src/vimeo/ops/aws/aws-mfa.py)
-}
-
-alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
-
-aws-mfa-pci() {
-	eval $(AWS_MFA_ARN="$AWS_PCI_MFA_ARN" AWS_PROFILE=pci $HOME/src/vimeo/ops/aws/aws-mfa.py)
-}
-
-alias qdig="dig +noall +answer"
-alias diggoog="dig +noall +answer @8.8.8.8"
-alias digiac="dig +noall +answer @192.168.200.29"
-
-alias gpgdecrypt="gpg -d"
-# gpgimport ./priv.asc
-alias gpgimport="gpg --import"
-alias gpglist="gpg --list-secret-keys --keyid-format LONG"
-alias gpglistpub="gpg --list-keys --keyid-format LONG"
-
-gpgencrypt() {
-	# use gpglistpub to list recips
-	recip="$1"
-	gpg -r "$recip" --encrypt --armor
-}
-
-gpgexport() {
-	id="$1"
-	echo "Using key id $id, listing key"
-	gpg --list-keys "$id"
-	rc=$?
-	[ $rc != 0 ] && echo "Bad id" && return 1
-
-	echo "Look ok? Ctrl-C to exit, enter to continue"
-	read a
-
-	dir=$(mktemp -d)
-	echo "Create temp dir $dir, moving there"
-	sleep 1
-	cd $dir
-	echo "Exporting"
-	gpg --armor --export "$id" > pub.asc
-	gpg --armor --export-secret-keys "$id" > priv.asc
-	gpg --export-ownertrust trust > trust
-
-	echo "Done"
-	ls -lat .
-}
 
 certinfo() {
 	if [ -z "$1" ]; then
@@ -519,50 +200,6 @@ jqdiff() {
 		return 1
 	fi
 	diff <(jq -S . "$1") <(jq -S . "$2")
-}
-
-flattenlink() {
-	full_path="$1"
-	if [ -z "$full_path" ]; then
-		"Usage: $0 <absolute path to link>"
-		return 1
-	fi
-
-	no_slash="${full_path#\/}"
-	if [ "$no_slash" == "$full_path" ]; then
-		echo "Please provide path from root"
-		return 1
-	fi
-
-	real_path="$(readlink -f "$full_path")"
-
-	if [ "$real_path" == "$full_path" ]; then
-		echo "File paths are the same, nothing to do"
-		return 0
-	fi
-
-	echo "Unlinking $full_path, Copying $real_path to $full_path"
-	unlink "$full_path"
-	cp "$real_path" "$full_path"
-	echo "Done"
-}
-
-rss-read() {
-	rawdog -Nuw
-	xdg-open ~/.rawdog/output.html
-}
-
-pacman-update-mirrors() {
-	echo "Starting reflector update" 1>&2
-	sudo reflector --connection-timeout 2 -c 'United States' -a 3 -p https -i '\.edu' \
-		-f 5 --save /etc/pacman.d/mirrorlist
-	rc=$?
-	cat /etc/pacman.d/mirrorlist 1>&2
-	echo "Done. Exit $rc" 1>&2
-}
-
-pacman-remove-orphans() {
-	sudo pacman -Qtdq | sudo pacman -Rns -
 }
 
 vimeo-vpn() {
@@ -638,41 +275,8 @@ unbak() {
 	mv "$dbl_bak" "$abs"
 }
 
-tenor() {
-	args="$@"
-	query="$(echo "$@" | sed 's/ \+/+/g')"
-	echo "Query: $query" 1>&2
-	curl -sL "https://api.tenor.com/v1/search?q=${query}&key=&limit=3" | jq -r '.results[].media[].mediumgif.url'
-}
-
-jwt-decode() {
-	jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "${1}"
-	echo "Signature: $(echo "${1}" | awk -F'.' '{print $3}')"
-}
-
-# bt-sony-pair() {
-#     scanned="$(timeout 15s bluetoothctl scan on)"
-#     if ! echo "$scanned" | grep -q 'CC:98:8B:B6:B3:3B'; then
-#         echo "Could not find sony WH-1000XM3 CC:98:8B:B6:B3:3B in scan. Is it in pairing mode?"
-#         return 1
-#     fi
-#
-#     bluetoothctl pair CC:98:8B:B6:B3:3B && \
-#         bluetoothctl trust CC:98:8B:B6:B3:3B
-# }
-#
-# bt-sony-on() {
-#     bluetoothctl connect CC:98:8B:B6:B3:3B
-# }
-#
-# bt-sony-off() {
-#     bluetoothctl disconnect CC:98:8B:B6:B3:3B
-# }
-
-
 # https://github.com/jarun/nnn/blob/master/misc/quitcd/quitcd.bash_zsh
-n ()
-{
+n() {
 	# Block nesting of nnn in subshells
 	if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
 		echo "nnn is already running"
@@ -699,12 +303,6 @@ n ()
 	fi
 }
 
-check-internet() {
-	ping 8.8.8.8 | grep --line-buffered 'time=' | while read -r line; do
-	echo "$line"; echo internet | speak-ng; sleep 2;
-	done;
-}
-
 agr() {
 	ag -0 -l "$1" | xargs -0 perl -pi -e "s/$1/$2/g"
 }
@@ -713,46 +311,9 @@ agrbak() {
 	ag -0 -l "$1" | xargs -0 perl -pi.bak -e "s/$1/$2/g"
 }
 
-youtube-dl-gem() {
-	url="$1"
-	shift 1
-	output="$1"
-	shift 1
-	if [[ -z "$url" ]]; then echo "Missing url first arg"; return 1; fi
-	output=
-	ism_name="$(echo "$url" | awk -F'/' '{print $5}')"
-	if [[ -n "$ism_name" ]] && echo "$ism_name" | grep -q '.ism'; then
-		output="$(echo "$ism_name" | sed 's/.ism$/.mp4/g')"
-		echo "Using output: $output" 1>&2
-	fi
-	if [[ -z "$output" ]]; then echo "Missing output format second arg"; return 1; fi
-	youtube-dl -f 'bestvideo+bestaudio[format_id=audio-English]' -o "$output" "$@" "$url"
-}
-
-git-init-bare() {
-	dest="~/src/${1}.git"
-	ssh no.city "git init --bare $dest; cd $dest; git symbolic-ref HEAD refs/head/main"
-}
-
 datemili() {
 	milis="$1"
 	date -d@$((milis / 1000))
-}
-
-ffmpeg-test-video() {
-	duration="$1"
-	out="$2"
-	if [[ -z "$duration" ]]; then
-		echo "ERROR: missing duration"
-		return 1
-	fi
-
-	if [[ -z "$out" ]]; then
-		echo "ERROR: missing out file"
-		return 1
-	fi
-
-	ffmpeg -y -f lavfi -i "sine=frequency=250:beep_factor=3" -re -f lavfi -i "testsrc=size=1920x1080:r=30" -vf "drawbox=y=0:x=0:color=black:width=iw/3:height=60:t=fill,drawtext='font=sans-serif:text='%{localtime}':x=0:y=0:fontcolor=white:fontsize=60'" -ac 2 -acodec aac -vcodec libx264 -preset ultrafast -pix_fmt yuv420p -t "$duration" -f mp4 "$out"
 }
 
 exportcreds() {

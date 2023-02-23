@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# gpg shortcuts because I always forget the syntax
+
+cmd="$1"
+shift
+
+_usage() {
+	echo "$(basename "$0") [export|import|keys|pubs|decrypt|encrypt] args" 1>&2
+}
+
+if [ -z "$cmd" ]; then
+	_usage
+	exit 1
+fi
+
+if [ "$cmd" = "export" ]; then
+	id="$1"
+	echo "Using key id $id, listing key"
+	gpg --list-keys "$id"
+	rc=$?
+	if [ $rc != 0 ]; then
+		echo "Bad id" 1>&2
+		exit 1
+	fi;
+
+	echo "Look ok? Ctrl-C to exit, enter to continue" 1>&2
+	read a
+
+	if [ -e ./pub.asc ] || [ -e ./priv.asc ] || [ -e ./trust ]; then
+		echo "Found one of: pub.asc, priv.asc, trust in pwd. Move somewhere to avoid overwrite." 1>&2
+		exit 1
+	fi
+
+	echo "Exporting pub.asc" 1>&2
+	yn_confirm && gpg --armor --export "$id" > pub.asc && chmod 600 pub.asc
+	echo "Exporting priv.asc" 1>&2
+	yn_confirm && gpg --armor --export-secret-keys "$id" > priv.asc && chmod 600 priv.asc
+	echo "Exporting trust" 1>&2
+	yn_confirm && gpg --export-ownertrust > trust
+
+	echo "Done" 1>&2
+	exit 0
+fi
+
+if [ "$cmd" = "import" ]; then
+	gpg --import "$@"
+	exit $?
+fi
+
+if [ "$cmd" = "keys" ]; then
+	gpg --list-secret-keys --keyid-format LONG "$@"
+	exit $?
+fi
+
+if [ "$cmd" = "pubs" ]; then
+	gpg --list-keys --keyid-format LONG "$@"
+	exit $?
+fi
+
+if [ "$cmd" = "decrypt" ]; then
+	gpg -d "$@"
+	exit $?
+fi
+
+if [ "$cmd" = "encrypt" ]; then
+	recip="$1"
+	if [ -z "$recip" ]; then
+		echo "No recipient, use \`qpg pubs\` to view pub key candidates" 1>&2
+		exit 1
+	fi
+	gpg -r "$recip" --encrypt --armor
+	exit $?
+fi

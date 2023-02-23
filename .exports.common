@@ -2,6 +2,7 @@
 
 # Put stuff that can be shared between bash, zsh here
 
+export WTTR_LOCATION='williamsburg+brooklyn'
 
 # Refresh env vars in tmux with a function
 # https://www.babushk.in/posts/renew-environment-tmux.html
@@ -64,6 +65,11 @@ else
 	if [ -f "$GCLOUD_SDK_PATH/completion.bash.inc" ]; then . "$GCLOUD_SDK_PATH/completion.bash.inc"; fi
 fi
 
+if [ -z "$ZSH_VERSION" ] && [ -f ~/.git-completion.sh ]; then
+	source ~/.git-completion.sh
+	__git_complete g _git
+fi
+
 if which rbenv 1>/dev/null 2>&1; then
 	eval "$(rbenv init -)"
 fi
@@ -71,16 +77,6 @@ fi
 if which ruby >/dev/null && which gem >/dev/null; then
 	prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 fi
-
-# Use volta
-# if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
-#     source /usr/share/nvm/init-nvm.sh
-# else
-#     export NVM_DIR="$HOME/.nvm"
-#     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# fi
-
 
 if which volta 1>/dev/null 2>&1; then
 	# Set the VOLTA_HOME variable to $HOME/.volta

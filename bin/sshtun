@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Helper to remember ssh tun args
+
+# $1 hostname
+# $2 host port
+# $3 local port
+if [ $# -lt 3 ]; then
+	echo "Usage: $0 <connect-to-addr> <remote-port> <local-port> [remote-addr]"
+	echo ""
+	echo "Arguments:"
+	echo "  connect-to-addr:  ssh will connect to this address or hostname"
+	echo "  remote-port:      forward traffic from this port on the destination to the local port"
+	echo "  local-port:       local port to forward to"
+	echo "  remote-addr:      default: localhost, connect to this address on the remote"
+	echo "Examples:"
+	echo ""
+	echo "  # connect to no.city, make no.city:8545 (localhost) -> localhost:9545"
+	echo "  $0 no.city 8545 9545"
+	exit 1
+fi
+
+local connectto="${1}"
+local remoteport="${2}"
+local localport="${3}"
+local remoteaddr="${4-localhost}"
+
+echo "connect-to-addr: $connectto, remoteport: $remoteport, local-port: $localport, remote-addr: $remoteaddr"
+
+ssh -v -N "$connectto" -L "$localport:$remoteaddr:$remoteport" -N

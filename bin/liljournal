@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+journal_dir="$HOME/quick_journal"
+journal_file="$(date +%Y_%m_%d).md"
+
+if [ ! -d "$journal_dir" ]; then
+	mkdir "$journal_dir"
+	echo "Creating $journal_dir" 1>&2
+fi
+
+
+if [ ! -f "$journal_dir/$journal_file" ]; then
+	echo "Creating todays file $journal_file" 1>&2
+	touch "$journal_dir/$journal_file"
+fi
+
+content="* \`$(date +%H:%M:%S)\` $@"
+echo "$content" >> "$journal_dir/$journal_file"
+echo "Wrote -> $content to $journal_file" 1>&2
+
+exit 0

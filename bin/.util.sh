@@ -1,4 +1,5 @@
 # Utils for scripts to be sourced
+
 echoerr() {
 	echo "$@" 1>&2
 }
@@ -10,6 +11,18 @@ log() {
 }
 
 cmd_exists() {
-	command -v "$1" >/dev/null 2>&1
-	return $?
+	[ -x "$(command -v "$1")" ] || declare -F "$1" &>/dev/null
+}
+
+yn_confirm() {
+	read -r -p "Are you sure? [y/N] " response
+	case "$response" in
+		[yY][eE][sS]|[yY])
+			return 0
+			;;
+		*)
+			return 1
+			;;
+	esac
+	return 1
 }
