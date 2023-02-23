@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
-
-echoerr() {
-	echo "$@" 1>&2
-}
-
-cmd_exists() {
-	command -v "$1" >/dev/null 2>&1
-	return $?
-}
+source ~/bin/.util.sh
 
 run_upgrade_pkgs() {
 	(
@@ -15,105 +7,105 @@ run_upgrade_pkgs() {
 		# elevate with a noop
 		sudo cat /dev/null
 		if [[ $? != 0 ]]; then
-			echoerr ">> No sudo. Exiting..."
+			utl_echoerr ">> No sudo. Exiting..."
 			exit 1
 		fi
 
 		if grep -i -q "DISTRIB_ID=[\"']*Arch" /etc/lsb-release; then
-			echoerr ">> Upgrading archlinux"
-			if cmd_exists flatpak; then
-				echoerr ">> Upgrading flatpack"
+			utl_echoerr ">> Upgrading archlinux"
+			if utl_cmd_exists flatpak; then
+				utl_echoerr ">> Upgrading flatpack"
 				sudo flatpak update
 				sudo flatpak uninstall --unused
 			fi
 
-			if cmd_exists snap; then
-				echoerr ">> Upgrading snaps"
+			if utl_cmd_exists snap; then
+				utl_echoerr ">> Upgrading snaps"
 				sudo snap refresh
 			fi
 
-			echoerr ">> Syncing archlinux-keyring"
+			utl_echoerr ">> Syncing archlinux-keyring"
 			sudo pacman -Sy --noconfirm archlinux-keyring
 
-			if cmd_exists paru; then
-				echoerr ">> Upgrading paru"
+			if utl_cmd_exists paru; then
+				utl_echoerr ">> Upgrading paru"
 				paru
-			elif cmd_exists yay; then
-				echoerr ">> Upgrading yay"
+			elif utl_cmd_exists yay; then
+				utl_echoerr ">> Upgrading yay"
 				yay
 			else
-				echoerr ">> Upgrading pacman"
+				utl_echoerr ">> Upgrading pacman"
 				sudo pacman -Syu
 			fi
 
-			if cmd_exists paccache; then
-				echoerr ">> Running paccache cleanup"
+			if utl_cmd_exists paccache; then
+				utl_echoerr ">> Running paccache cleanup"
 				sudo paccache -r -k 4
 			fi
 
 
-			if cmd_exists pacdiff; then
-				echoerr ">> Running pacdiff"
-				#if cmd_exists meld; then
+			if utl_cmd_exists pacdiff; then
+				utl_echoerr ">> Running pacdiff"
+				#if utl_cmd_exists meld; then
 				#    DIFFPROG=/usr/bin/meld sudo -E pacdiff
-				#elif cmd_exists vimdiff; then
+				#elif utl_cmd_exists vimdiff; then
 				#    DIFFPROG=/usr/bin/vimdiff sudo -E pacdiff
-				if cmd_exists nvim; then
+				if utl_cmd_exists nvim; then
 					sudo -H -E DIFFPROG='nvim -d' pacdiff
-				elif cmd_exists vimdiff; then
+				elif utl_cmd_exists vimdiff; then
 					sudo -H -E pacdiff
 				else
-					echoerr ">> ERROR: no good diff programs"
+					utl_echoerr ">> ERROR: no good diff programs"
 					return 1
 				fi
 			fi
 		fi
 
-		if cmd_exists apt; then
-			echoerr ">> Upgrading apt"
+		if utl_cmd_exists apt; then
+			utl_echoerr ">> Upgrading apt"
 			apt update && sudo apt upgrade -y
 		fi
 	)
 	rc=$?
-	echoerr ">> ${FUNCNAME[0]} function returned with code $?"
+	utl_echoerr ">> ${FUNCNAME[0]} function returned with code $?"
 	return $rc
 }
 
 run_ansible() {
 	(
 		set -e
-		if ! cmd_exists git; then
-			echoerr ">> ERROR ansible: Git is not installed"
+		if ! utl_cmd_exists git; then
+			utl_echoerr ">> ERROR ansible: Git is not installed"
 			return 1;
 		fi
 
 		if [[ ! -d "$HOME/src/ansibles" ]]; then
-			echoerr ">> No ansible dir, skipping"
+			utl_echoerr ">> No ansible dir, skipping"
 			return 0;
 		fi
 
-		echoerr ">> Checking for ansible run"
+		utl_echoerr ">> Checking for ansible run"
 		pushd "$HOME/src/ansibles" 1>/dev/null
 		if [[ ! -z "$(git status --untracked-files=no --porcelain)" ]]; then
-			echoerr ">> WARNING: Ansible git not clean, not running"
+			utl_echoerr ">> WARNING: Ansible git not clean, not running"
 			return 0
 		fi
 
-		echoerr ">> Running ansible"
+		utl_echoerr ">> Running ansible"
 		git pull
 		sudo make this-no-become
 
-		echoerr ">> Updating vim plugins"
+		utl_echoerr ">> Updating vim plugins"
 		# Vim update plugins:
 		# - Plug
 		# - vim-go
-		if cmd_exists nvim; then
+		if utl_cmd_exists nvim; then
 			(
 			nvim +PlugInstall +PlugUpdate +qall;
 			nvim +GoInstallBinaries +qall;
 			exit 0;
 		)
-		elif cmd_exists vim; then
+		elif utl_cmd_exists vim; then
 			(
 				vim +PlugInstall +PlugUpdate +qall;
 				vim +GoInstallBinaries +qall;
@@ -123,7 +115,7 @@ run_ansible() {
 			popd 1>/dev/null
 	)
 	rc=$?
-	echoerr ">> ${FUNCNAME[0]} function returned with code $?"
+	utl_echoerr ">> ${FUNCNAME[0]} function returned with code $?"
 	return $rc
 }
 
@@ -134,5 +126,5 @@ main() {
 
 main
 rc=$?
-echoerr ">> Finished with code $rc"
+utl_echoerr ">> Finished with code $rc"
 exit $?

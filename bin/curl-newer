@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
+source ~/bin/.util.sh
 
-echoerr() { echo "$@" 1>&2; }
-log() { echo ">> $@" 1>&2; }
 usage() {
-    echoerr "Usage: $0 <unique-file-key> <expire_seconds_in_future> ...curl opts"
-    echoerr "Will use curl and store output of file for expire_seconds_in_future seconds"
+	utl_echoerr "Usage: $(basename "$0") <unique-file-key> <expire_seconds_in_future> ...curl opts"
+    utl_echoerr "Will use curl and store output of file for expire_seconds_in_future seconds"
 }
 
 FILE_KEY="$1"
 shift 1
 
 if [[ -z "$FILE_KEY" ]]; then
-    log "ERROR: no file key provided"
+    utl_log '%s' "ERROR: no file key provided"
     usage
     exit 1
 fi
@@ -23,7 +22,7 @@ CACHED_FILE_ERR="$TRACKING_DIR/${FILE_KEY}_err"
 SECONDS="${1-0}"
 shift 1
 
-log "Using options -> key: $FILE_KEY, ttl secs: $SECONDS, curl args: $@"
+utl_log '%s' "Using options -> key: $FILE_KEY, ttl secs: $SECONDS, curl args: $@"
 
 DO_FETCH=
 
@@ -36,20 +35,20 @@ elif [[ ! -s "$CACHED_FILE" ]]; then
 else
     # date of cache is < now
     EXPIRES=$(($(date -r "$CACHED_FILE" +%s) + SECONDS))
-    log "$CACHED_FILE set to expires at $EXPIRES"
+    utl_log '%s' "$CACHED_FILE set to expires at $EXPIRES"
     if [[ $EXPIRES < $(date +%s) ]]; then
-        log "It expired"
+        utl_log '%s' "It expired"
         DO_FETCH=1
     fi
 fi
 
 if [[ "$DO_FETCH" ]]; then
-    log "Fetching $CACHED_FILE"
+    utl_log '%s' "Fetching $CACHED_FILE"
     mkdir -p "$TRACKING_DIR"
     curl -o "$CACHED_FILE" -L "$@"
     rc=$?
     if [[ $rc != 0 ]]; then
-        log "Error $rc, marking $CACHED_FILE_ERR so next try will fetch"
+        utl_log '%s' "Error $rc, marking $CACHED_FILE_ERR so next try will fetch"
         touch "$CACHED_FILE_ERR"
     fi
 fi

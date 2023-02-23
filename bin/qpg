@@ -32,11 +32,11 @@ if [ "$cmd" = "export" ]; then
 	fi
 
 	echo "Exporting pub.asc" 1>&2
-	yn_confirm && gpg --armor --export "$id" > pub.asc && chmod 600 pub.asc
+	utl_yn_confirm && gpg --armor --export "$id" > pub.asc && chmod 600 pub.asc
 	echo "Exporting priv.asc" 1>&2
-	yn_confirm && gpg --armor --export-secret-keys "$id" > priv.asc && chmod 600 priv.asc
+	utl_yn_confirm && gpg --armor --export-secret-keys "$id" > priv.asc && chmod 600 priv.asc
 	echo "Exporting trust" 1>&2
-	yn_confirm && gpg --export-ownertrust > trust
+	utl_yn_confirm && gpg --export-ownertrust > trust
 
 	echo "Done" 1>&2
 	exit 0

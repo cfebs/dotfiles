@@ -8,7 +8,7 @@
 
 source ~/bin/.util.sh
 
-if cmd_exists lsd; then
+if utl_cmd_exists lsd; then
 	alias ls='lsd'
 elif ls --color /dev/null 1>/dev/null 2>&1; then
 	alias ls='ls --color=auto'
@@ -18,7 +18,7 @@ if grep --color "a" <<<"a" &>/dev/null; then
 	alias grep="grep --color=auto"
 fi
 
-if cmd_exists nvim; then
+if utl_cmd_exists nvim; then
 	export EDITOR='nvim'
 	alias vim="$EDITOR"
 	alias vi="$EDITOR"
@@ -159,7 +159,7 @@ pssh() {
 }
 
 genpassword() {
-	if cmd_exists pwgen; then
+	if utl_cmd_exists pwgen; then
 		pwgen -scy 32 | head -n1
 		return $?
 	fi

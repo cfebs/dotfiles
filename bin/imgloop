@@ -6,12 +6,12 @@ lookin="$1"
 ttl="${2:-60}"
 
 if [[ -z "$lookin" ]] || [[ ! -d "$lookin" ]]; then
-	log '%s' "ERROR: provide lookin dir"
+	utl_log '%s' "ERROR: provide lookin dir"
 	exit 1
 fi
 
-if ! cmd_exists 'viu'; then
-	log '%s' "ERROR: need viu"
+if ! utl_cmd_exists 'viu'; then
+	utl_log '%s' "ERROR: need viu"
 	exit 1
 fi
 
@@ -19,7 +19,7 @@ while true; do
 	img="$(find "$lookin" -type f -exec file {} \; | awk -F: '{ if ($2 ~/[Ii]mage|EPS/) print $1}' | shuf | head -n1)"
 
 	if [[ -z "${img}" ]]; then
-		log '%s' "ERROR: no selected img"
+		utl_log '%s' "ERROR: no selected img"
 		exit 1
 	fi
 
@@ -27,6 +27,6 @@ while true; do
 
 	viu "${img}"
 
-	log '%s' "selected image $img"
+	utl_log '%s' "selected image $img"
 	sleep "${ttl}s"
 done

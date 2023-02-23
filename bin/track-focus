@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echoerr() { echo "$@" 1>&2; }
-
 LAST_PROFILE_DIR="$HOME/.local/var/last-firefox-profile/"
 LAST_PROFILE_FILE="$LAST_PROFILE_DIR/profile"
 

@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
+source ~/bin/.util.sh
 
 action="$1"
 
 _usage() {
     echo "Usage: $(basename $0) upgrade|search|install"
-}
-
-_log() {
-    echo ">> $@" 1>&2
 }
 
 _confirm() {
@@ -23,10 +20,10 @@ _confirm() {
 _upgrade_pkg() {
     dir="$1"
     pkg="$(basename "$dir")"
-    _log "Upgrading $pkg"
+    utl_log '%s' "Upgrading $pkg"
     cd $dir
     if [[ ! -d ./.git ]]; then
-        _log "Failed this directory is not a git repo"
+        utl_log '%s' "Failed this directory is not a git repo"
         return 1
     fi
     def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
@@ -35,25 +32,25 @@ _upgrade_pkg() {
     local_rev="$(git rev-parse HEAD)"
     remote_rev="$(git rev-parse "origin/$def_branch")"
     if [[ -z "$local_rev" ]]; then
-        _log "Failed to get local rev for $def_branch"
+        utl_log '%s' "Failed to get local rev for $def_branch"
         return 1
     fi
     if [[ -z "$remote_rev" ]]; then
-        _log "Failed to get remote rev for origin/$def_branch"
+        utl_log '%s' "Failed to get remote rev for origin/$def_branch"
         return 1
     fi
 
     # TODO: compare installed rev instead
     if [[ "$local_rev" == "$remote_rev" ]]; then
-        _log "Nothing to do! Local rev equals remote rev."
+        utl_log '%s' "Nothing to do! Local rev equals remote rev."
         return 0
     fi
 
-    _log "Showing diff for review"
+    utl_log '%s' "Showing diff for review"
     sleep 0.75
     git diff HEAD..origin/master
     if ! _confirm "upgrade $dir"; then
-        _log "Not confirmed. Skipping"
+        utl_log '%s' "Not confirmed. Skipping"
         return 0
     fi
 
@@ -67,7 +64,7 @@ _upgrade_pkg() {
 if [[ "$action" == "upgrade" ]]; then
     mkdir -p "$HOME/aur"
 
-    _log "Starting upgrade"
+    utl_log '%s' "Starting upgrade"
     for d in $HOME/aur/*/; do
         _upgrade_pkg "$d"
     done
@@ -94,7 +91,7 @@ if [[ "$action" == "search" ]]; then
     # },
 
     query="$2"
-    _log "Searching aur for: $query"
+    utl_log '%s' "Searching aur for: $query"
     curl -sL -G --data-urlencode "arg=$query" 'https://aur.archlinux.org/rpc/?v=5&type=search' \
         | jq -r '.results[] | "name: \(.Name), votes: \(.NumVotes), modified: \(.LastModified |  strftime("%Y-%m-%d"))"'
 
@@ -105,13 +102,13 @@ if [[ "$action" == "install" ]]; then
     mkdir -p "$HOME/aur"
 
     pkg="$2"
-    _log "Installing $pkg"
+    utl_log '%s' "Installing $pkg"
     cd "$HOME/aur"
     if [[ ! -d "$HOME/aur/$pkg" ]]; then
         git clone "https://aur.archlinux.org/${pkg}.git"
         rc=$?
         if [[ $rc != 0 ]]; then
-            _log "Failed to clone with return status $rc"
+            utl_log '%s' "Failed to clone with return status $rc"
             exit 1
         fi
     fi

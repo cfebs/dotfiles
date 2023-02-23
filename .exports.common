@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 # Put stuff that can be shared between bash, zsh here
+# Defaults, PATH manipulation etc.
 
 export WTTR_LOCATION='williamsburg+brooklyn'
 export USER_AGENT_BROWSER='Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0'
@@ -45,12 +46,6 @@ then
 	source "$HOME/src/z/z.sh"
 fi
 
-
-# use a fixed version of kubectl
-alias kubectl="kubectl.1.21"
-
-# TODO temp workarounds until python 3.10 issues are fixed
-# export CLOUDSDK_PYTHON=python2
 GCLOUD_SDK_PATH="$HOME/google-cloud-sdk"
 if [ -n "$ZSH_VERSION" ]; then
 	# The next line updates PATH for the Google Cloud SDK.
@@ -108,7 +103,7 @@ export NODE_OPTIONS="--max_old_space_size=4096"
 export GO111MODULE=on
 
 # https://github.com/keybase/keybase-issues/issues/2798
-# https://unix.stackexchange.com/questions/257061/gentoo-linux-gpg-encrypts-properly-a-file-passed-through-parameter-but-throws-i/257065#257065
+# https://unix.stackexchange.com/a/257065
 export GPG_TTY=$(tty)
 
 eval $(keychain --agents gpg,ssh --eval --quiet $(grep -r -l -i 'BEGIN.*PRIVATE KEY' ~/.ssh))
