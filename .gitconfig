@@ -1,6 +1,6 @@
 [alias]
-    user-vimeo = !git config user.name "Collin Lefeber" && git config user.email "collin@vimeo.com && git config commit.gpgsign true && git config user.signingkey 02A351A05D30AFB62127FF5E284D659F3B003823"
-    user-default = !git config user.name "Collin Lefeber" && git config user.email "lefeberc@gmail.com && git config commit.gpgsign true && git config user.signingkey EAAEC3829CF42B878877D14295352A65EB0C27A9"
+    user-vimeo = !git config user.name 'Collin Lefeber' && git config user.email "collin@vimeo.com && git config commit.gpgsign true && git config user.signingkey 02A351A05D30AFB62127FF5E284D659F3B003823"
+    user-default = !git config user.name 'Collin Lefeber' && git config user.email "hello@cfebs.com && git config commit.gpgsign true && git config user.signingkey EAAEC3829CF42B878877D14295352A65EB0C27A9"
     f = fetch --all
     co = checkout
     st = status
@@ -47,7 +47,7 @@
 [rerere]
     enabled = true
 [user]
-    email = lefeberc@gmail.com
+    email = hello@cfebs.com
     name = Collin Lefeber
 [hub]
     host = github.vimeows.com
