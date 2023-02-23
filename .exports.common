@@ -3,6 +3,7 @@
 # Put stuff that can be shared between bash, zsh here
 
 export WTTR_LOCATION='williamsburg+brooklyn'
+export USER_AGENT_BROWSER='Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0'
 
 # Refresh env vars in tmux with a function
 # https://www.babushk.in/posts/renew-environment-tmux.html

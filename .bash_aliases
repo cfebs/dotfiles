@@ -31,7 +31,6 @@ if hash gist-paste 1>/dev/null 2>&1; then
 	alias gist=gist-paste
 fi
 
-#alias date-zulu="date -u +'%Y-%m-%dT%H:%M:%SZ'"
 #alias tmux="TERM=screen-256color-bce tmux"
 alias 1="cd ../"
 alias 2="cd ../../"
@@ -68,7 +67,9 @@ alias makej="make -j$(($(nproc) - 1))"
 alias mv='mv -i'
 alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
 alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
+alias pacman-remove-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
 alias proxydrop="socksproxy 9999 collin@proxydrop 222"
+alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
 alias remoteirc="mosh no.city -- screen -rad weechat"
 alias rgi="rg -i"
 alias sshbatch="ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -oBatchMode=yes -n"
@@ -78,10 +79,9 @@ alias tm="tmux"
 alias tmn="tmux new-session -s"
 alias yarn-linked="find . -type l | grep -v .bin | sed 's/^\.\/node_modules\///'"
 alias yarn-unlink-all="yarn-linked | xargs yarn unlink && yarn install --check-files"
-alias pacman-remove-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
-alias qfeh="feh -C /usr/share/fonts/truetype/dejavu -e DejaVuSans/8 -. -Z -B black -g800x600"
 
 # do not delete / or prompt if deleting more than 3 files at a time #
+# TODO: document where this comes from, its old...
 TEST_FILE="$HOME/.rm_preserve_test" && touch $TEST_FILE && rm --preserve-root $TEST_FILE 2> /dev/null && \
 	alias rm='rm --preserve-root'
 
@@ -326,5 +326,3 @@ exportcreds() {
 	echo "using cred file $credfile" 1>&2
 	source "$credfile"
 }
-
-export CHROME_USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
