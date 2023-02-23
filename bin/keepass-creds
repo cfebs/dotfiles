@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+import csv
+import argparse
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dbfile', help='db file to use')
+parser.add_argument('-s', '--select', action='append',
+    help='an entry from db exported. provide the option in the format {Title}:{MY_ENV_VAR}. The command will output MY_ENV_VAR={Password} from the entry that matches')
+args = parser.parse_args()
+
+cmd = ['keepassxc-cli', 'export', '-f', 'csv', args.dbfile]
+result = subprocess.run(cmd, check=True, text=True, stdout=subprocess.PIPE)
+lines = result.stdout.splitlines()
+reader = csv.DictReader(lines)
+
+select_map = {}
+for select in args.select:
+    title, env_name = select.split(':')
+    select_map[title] = env_name
+
+out = ""
+
+selected = []
+for row in reader:
+    title = row.get('Title', None)
+    env_name = select_map.get(title)
+    if title and env_name:
+        out += "export {0}='{1}'".format(env_name, row.get('Password'))
+
+print(out)
