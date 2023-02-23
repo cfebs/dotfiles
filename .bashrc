@@ -83,6 +83,5 @@ fi
 if [ ! -e ~/.exports.creds ]; then
 	touch ~/.exports.creds && chmod 700 ~/.exports.creds
 fi
-alias exportcreds="source ~/.exports.creds"
 
 unset -f append_path prepend_path append_promptcmd prepend_promptcmd

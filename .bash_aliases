@@ -755,4 +755,15 @@ ffmpeg-test-video() {
 	ffmpeg -y -f lavfi -i "sine=frequency=250:beep_factor=3" -re -f lavfi -i "testsrc=size=1920x1080:r=30" -vf "drawbox=y=0:x=0:color=black:width=iw/3:height=60:t=fill,drawtext='font=sans-serif:text='%{localtime}':x=0:y=0:fontcolor=white:fontsize=60'" -ac 2 -acodec aac -vcodec libx264 -preset ultrafast -pix_fmt yuv420p -t "$duration" -f mp4 "$out"
 }
 
+exportcreds() {
+	credname="${1:-exports}"
+	credfile="$HOME/.${credname}.creds"
+	if [[ ! -e "$credfile" ]]; then
+		echo "${credfile} not found" 1>&2
+		return 1
+	fi
+	echo "using cred file $credfile" 1>&2
+	source "$credfile"
+}
+
 export CHROME_USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
