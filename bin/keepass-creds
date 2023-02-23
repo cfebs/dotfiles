@@ -27,6 +27,8 @@ for row in reader:
     title = row.get('Title', None)
     env_name = select_map.get(title)
     if title and env_name:
-        out += "export {0}='{1}'".format(env_name, row.get('Password'))
+        out += "export {0}='{1}'\n".format(env_name, row.get('Password'))
 
+# a marker so user can use it to not export again
+out += 'KEEPASS_CREDS_EXPORTED=1'
 print(out)
