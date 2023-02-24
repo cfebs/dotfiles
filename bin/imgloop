@@ -10,7 +10,12 @@ if [[ -z "$lookin" ]] || [[ ! -d "$lookin" ]]; then
 	exit 1
 fi
 
-if ! utl_cmd_exists 'viu'; then
+viewer=viu
+if [ -n "$KITTY_PID" ] && utl_cmd_exists 'kitten'; then
+	viewer='kitten icat'
+fi
+
+if [ "$viewer" = "viu" ] && ! utl_cmd_exists 'viu'; then
 	utl_log '%s' "ERROR: need viu"
 	exit 1
 fi
@@ -25,7 +30,7 @@ while true; do
 
 	clear;
 
-	viu "${img}"
+	$viewer "${img}"
 
 	utl_log '%s' "selected image $img"
 	sleep "${ttl}s"
