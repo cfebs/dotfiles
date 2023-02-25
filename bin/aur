@@ -4,121 +4,112 @@ source ~/bin/.util.sh
 action="$1"
 
 _usage() {
-    echo "Usage: $(basename $0) upgrade|search|install"
-}
-
-_confirm() {
-    read -p ">> Confirm: $1 (Y/n)" -n 1 -r
-    echo    # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        return 0
-    fi
-    return 1
+	echo "Usage: $(basename $0) upgrade|search|install"
 }
 
 _upgrade_pkg() {
-    dir="$1"
-    pkg="$(basename "$dir")"
-    utl_log '%s' "Upgrading $pkg"
-    cd $dir
-    if [[ ! -d ./.git ]]; then
-        utl_log '%s' "Failed this directory is not a git repo"
-        return 1
-    fi
-    def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
+	dir="$1"
+	pkg="$(basename "$dir")"
+	utl_log '%s' "Upgrading $pkg"
+	cd $dir
+	if [[ ! -d ./.git ]]; then
+		utl_log '%s' "Failed this directory is not a git repo"
+		return 1
+	fi
+	def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
 
-    git fetch
-    local_rev="$(git rev-parse HEAD)"
-    remote_rev="$(git rev-parse "origin/$def_branch")"
-    if [[ -z "$local_rev" ]]; then
-        utl_log '%s' "Failed to get local rev for $def_branch"
-        return 1
-    fi
-    if [[ -z "$remote_rev" ]]; then
-        utl_log '%s' "Failed to get remote rev for origin/$def_branch"
-        return 1
-    fi
+	git fetch
+	local_rev="$(git rev-parse HEAD)"
+	remote_rev="$(git rev-parse "origin/$def_branch")"
+	if [[ -z "$local_rev" ]]; then
+		utl_log '%s' "Failed to get local rev for $def_branch"
+		return 1
+	fi
+	if [[ -z "$remote_rev" ]]; then
+		utl_log '%s' "Failed to get remote rev for origin/$def_branch"
+		return 1
+	fi
 
-    # TODO: compare installed rev instead
-    if [[ "$local_rev" == "$remote_rev" ]]; then
-        utl_log '%s' "Nothing to do! Local rev equals remote rev."
-        return 0
-    fi
+	# TODO: compare installed rev instead
+	if [[ "$local_rev" == "$remote_rev" ]]; then
+		utl_log '%s' "Nothing to do! Local rev equals remote rev."
+		return 0
+	fi
 
-    utl_log '%s' "Showing diff for review"
-    sleep 0.75
-    git diff HEAD..origin/master
-    if ! _confirm "upgrade $dir"; then
-        utl_log '%s' "Not confirmed. Skipping"
-        return 0
-    fi
+	utl_log '%s' "Showing diff for review"
+	sleep 0.75
+	git diff HEAD..origin/master
+	echo "Confirm upgrade $dir"
+	if ! utl_yn_confirm; then
+		utl_log '%s' "Not confirmed. Skipping"
+		return 0
+	fi
 
-    git reset
-    git checkout "$def_branch"
-    git pull
-    makepkg -si
-    sudo pacman -U $(makepkg --packagelist)
+	git reset
+	git checkout "$def_branch"
+	git pull
+	makepkg -si
+	sudo pacman -U $(makepkg --packagelist)
 }
 
 if [[ "$action" == "upgrade" ]]; then
-    mkdir -p "$HOME/aur"
+	mkdir -p "$HOME/aur"
 
-    utl_log '%s' "Starting upgrade"
-    for d in $HOME/aur/*/; do
-        _upgrade_pkg "$d"
-    done
+	utl_log '%s' "Starting upgrade"
+	for d in $HOME/aur/*/; do
+		_upgrade_pkg "$d"
+	done
 
-    exit 0
+	exit 0
 fi
 
 if [[ "$action" == "search" ]]; then
-    # {
-    #   "Description": "Feature packed AUR helper",
-    #   "FirstSubmitted": 1603068527,
-    #   "ID": 927488,
-    #   "LastModified": 1624884796,
-    #   "Maintainer": "Morganamilo",
-    #   "Name": "paru-git",
-    #   "NumVotes": 18,
-    #   "OutOfDate": null,
-    #   "PackageBase": "paru-git",
-    #   "PackageBaseID": 158892,
-    #   "Popularity": 0.361562,
-    #   "URL": "https://github.com/morganamilo/paru",
-    #   "URLPath": "/cgit/aur.git/snapshot/paru-git.tar.gz",
-    #   "Version": "1.7.3.r22.g1ed1f29-1"
-    # },
+	# {
+	#   "Description": "Feature packed AUR helper",
+	#   "FirstSubmitted": 1603068527,
+	#   "ID": 927488,
+	#   "LastModified": 1624884796,
+	#   "Maintainer": "Morganamilo",
+	#   "Name": "paru-git",
+	#   "NumVotes": 18,
+	#   "OutOfDate": null,
+	#   "PackageBase": "paru-git",
+	#   "PackageBaseID": 158892,
+	#   "Popularity": 0.361562,
+	#   "URL": "https://github.com/morganamilo/paru",
+	#   "URLPath": "/cgit/aur.git/snapshot/paru-git.tar.gz",
+	#   "Version": "1.7.3.r22.g1ed1f29-1"
+	# },
 
-    query="$2"
-    utl_log '%s' "Searching aur for: $query"
-    curl -sL -G --data-urlencode "arg=$query" 'https://aur.archlinux.org/rpc/?v=5&type=search' \
-        | jq -r '.results[] | "name: \(.Name), votes: \(.NumVotes), modified: \(.LastModified |  strftime("%Y-%m-%d"))"'
+	query="$2"
+	utl_log '%s' "Searching aur for: $query"
+	curl -sL -G --data-urlencode "arg=$query" 'https://aur.archlinux.org/rpc/?v=5&type=search' \
+		| jq -r '.results[] | "name: \(.Name), votes: \(.NumVotes), modified: \(.LastModified |  strftime("%Y-%m-%d"))"'
 
-    exit 0
+	exit 0
 fi
 
 if [[ "$action" == "install" ]]; then
-    mkdir -p "$HOME/aur"
+	mkdir -p "$HOME/aur"
 
-    pkg="$2"
-    utl_log '%s' "Installing $pkg"
-    cd "$HOME/aur"
-    if [[ ! -d "$HOME/aur/$pkg" ]]; then
-        git clone "https://aur.archlinux.org/${pkg}.git"
-        rc=$?
-        if [[ $rc != 0 ]]; then
-            utl_log '%s' "Failed to clone with return status $rc"
-            exit 1
-        fi
-    fi
+	pkg="$2"
+	utl_log '%s' "Installing $pkg"
+	cd "$HOME/aur"
+	if [[ ! -d "$HOME/aur/$pkg" ]]; then
+		git clone "https://aur.archlinux.org/${pkg}.git"
+		rc=$?
+		if [[ $rc != 0 ]]; then
+			utl_log '%s' "Failed to clone with return status $rc"
+			exit 1
+		fi
+	fi
 
-    cd "${pkg}"
-    git pull
+	cd "${pkg}"
+	git pull
 
-    makepkg -si
-    sudo pacman -U $(makepkg --packagelist)
-    exit 0
+	makepkg -si
+	sudo pacman -U $(makepkg --packagelist)
+	exit 0
 fi
 
 _usage
