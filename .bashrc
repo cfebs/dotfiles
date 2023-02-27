@@ -84,4 +84,6 @@ if [ ! -e ~/.exports.creds ]; then
 	touch ~/.exports.creds && chmod 700 ~/.exports.creds
 fi
 
+[ -f ~/Sync/exports ] && source ~/Sync/exports
+
 unset -f append_path prepend_path append_promptcmd prepend_promptcmd
