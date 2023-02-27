@@ -8,7 +8,7 @@ title="$1"
 shift
 
 _usage() {
-	echo "$(basename "$0") <pass|totp> <ls|get> title [field]"
+	echo "$(basename "$0") <pass|totp> <ls|get> [title] [field]"
 }
 
 if [ "$cmd" = "pass" ]; then
