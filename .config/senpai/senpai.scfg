@@ -1,0 +1,13 @@
+# https://git.sr.ht/~taiite/senpai/tree/master/item/doc/senpai.5.scd
+address chat.sr.ht
+nickname cfebs
+username cfebs
+password-cmd kpxc pass get sourcehut_chat_oauth
+mouse false
+
+colors {
+	foreground 0
+	status_foreground 10
+	unread 15
+	prompt 0
+}
