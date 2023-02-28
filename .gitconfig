@@ -1,7 +1,7 @@
 [alias]
 	user-vimeo = !git config user.name 'Collin Lefeber' && git config user.email "collin@vimeo.com && git config commit.gpgsign true && git config user.signingkey 02A351A05D30AFB62127FF5E284D659F3B003823"
 	user-default = !git config user.name 'Collin Lefeber' && git config user.email "hello@cfebs.com && git config commit.gpgsign true && git config user.signingkey EAAEC3829CF42B878877D14295352A65EB0C27A9"
-	sendemail-cfebs = !git config sendemail.smtpserver '/usr/bin/msmtp' && git config sendemail.smtpserveroption '-a' && git config sendemail.smtpserveroption 'cfebs'
+	sendemail-cfebs = !git config sendemail.smtpserver '/usr/bin/msmtp' && git config sendemail.smtpserveroption '-a' && git config --add sendemail.smtpserveroption 'cfebs'
 	f = fetch --all
 	co = checkout
 	st = status
@@ -63,3 +63,7 @@
 	defaultBranch = main
 [includeIf "gitdir:~/src/vimeo/**"]
 	path = .gitconfig-vimeo
+[sendemail]
+	suppresscc = self
+[format]
+	outputDirectory = ./.mypatches
