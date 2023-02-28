@@ -41,7 +41,6 @@ alias bashrc=". ~/.bashrc"
 alias bc='bc -l'
 alias bonsai="cbonsai -li -t 0.35 -M 7"
 alias c='clear'
-alias clipboard='xclip -se c'
 alias cp='cp -i'
 alias curltime="curl -w %{stderr}%{time_connect}:%{time_starttransfer}:%{time_total}"
 alias date-now="date +%s"
