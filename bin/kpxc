@@ -11,6 +11,8 @@ _usage() {
 	echo "$(basename "$0") <pass|totp> <ls|get> [title] [field]"
 }
 
+gpg_decrypt='gpg --quiet --for-your-eyes-only --no-tty --decrypt'
+
 if [ "$cmd" = "pass" ]; then
 	[ -z "$KPXCP" ] && echo "Please set KPXCP" && exit 1
 	[ -z "$KPXCPDB" ] && echo "Please set KPXCPDB" && exit 1
@@ -21,7 +23,7 @@ if [ "$cmd" = "pass" ]; then
 	if [ "$dbcmd" = "get" ]; then
 		[ -z "$title" ] && echo "Missing title of record to fetch" && exit 1
 		field="${1:-Password}"
-		gpg --decrypt "$KPXCP" | keepassxc-cli show "$KPXCPDB" "$title" -s -a "$field"
+		$gpg_decrypt "$KPXCP" | keepassxc-cli show "$KPXCPDB" "$title" -s -a "$field"
 		exit $?
 	fi
 	echo "Missing subcmd"
@@ -32,12 +34,12 @@ if [ "$cmd" = "totp" ]; then
 	[ -z "$KPXCT" ] && echo "Please set KPXCT" && exit 1
 	[ -z "$KPXCTDB" ] && echo "Please set KPXCTDB" && exit 1
 	if [ "$dbcmd" = "ls" ]; then
-		gpg --decrypt "$KPXCT" | keepassxc-cli ls "$KPXCTDB"
+		$gpg_decrypt "$KPXCT" | keepassxc-cli ls "$KPXCTDB"
 		exit $?
 	fi
 	if [ "$dbcmd" = "get" ]; then
 		[ -z "$title" ] && echo "Missing title of record" && exit 1
-		gpg --decrypt "$KPXCT" | keepassxc-cli clip -t "$KPXCTDB" "$title"
+		$gpg_decrypt "$KPXCT" | keepassxc-cli clip -t "$KPXCTDB" "$title"
 		exit $?
 	fi
 	echo "Missing subcmd"
