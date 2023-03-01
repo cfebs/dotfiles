@@ -17,7 +17,7 @@ if [ "$cmd" = "pass" ]; then
 	[ -z "$KPXCP" ] && echo "Please set KPXCP" && exit 1
 	[ -z "$KPXCPDB" ] && echo "Please set KPXCPDB" && exit 1
 	if [ "$dbcmd" = "ls" ]; then
-		gpg --decrypt "$KPXCP" | keepassxc-cli ls "$KPXCPDB"
+		$gpg_decrypt "$KPXCP" | keepassxc-cli ls "$KPXCPDB"
 		exit $?
 	fi
 	if [ "$dbcmd" = "get" ]; then
