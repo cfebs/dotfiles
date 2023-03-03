@@ -8,7 +8,7 @@ title="$1"
 shift
 
 _usage() {
-	echo "$(basename "$0") <pass|totp> <ls|get> [title] [field]"
+	echo "$(basename "$0") <pass|totp> <s|select|ls|clip|get> [title] [field]"
 }
 
 gpg_decrypt='gpg --quiet --for-your-eyes-only --no-tty --decrypt'
@@ -16,8 +16,14 @@ gpg_decrypt='gpg --quiet --for-your-eyes-only --no-tty --decrypt'
 if [ "$cmd" = "pass" ]; then
 	[ -z "$KPXCP" ] && echo "Please set KPXCP" && exit 1
 	[ -z "$KPXCPDB" ] && echo "Please set KPXCPDB" && exit 1
+	if [ "$dbcmd" = "s" ] || [ "$dbcmd" = "select" ]; then
+		sel="$(kpxc "$cmd" ls | fzf)"
+		[ -z "$sel" ] && echo "Empty selection" && exit 1
+		kpxc "$cmd" clip "$sel"
+		exit $?
+	fi
 	if [ "$dbcmd" = "ls" ]; then
-		$gpg_decrypt "$KPXCP" | keepassxc-cli ls "$KPXCPDB"
+		$gpg_decrypt "$KPXCP" | keepassxc-cli ls --quiet "$KPXCPDB"
 		exit $?
 	fi
 	if [ "$dbcmd" = "get" ]; then
@@ -26,13 +32,34 @@ if [ "$cmd" = "pass" ]; then
 		$gpg_decrypt "$KPXCP" | keepassxc-cli show --quiet "$KPXCPDB" "$title" -s -a "$field"
 		exit $?
 	fi
+	if [ "$dbcmd" = "clip" ]; then
+		[ -z "$title" ] && echo "Missing title of record to fetch" && exit 1
+		field="${1:-Password}"
+		$gpg_decrypt "$KPXCP" | keepassxc-cli clip --quiet "$KPXCPDB" "$title" "$field" 0
+		rc=$?
+		if [ "$rc" != "0" ]; then
+			exit $rc
+		fi
+
+		echo "Copied $title to clipboard, clearing clipboard in 10s..." 1>&2
+		sleep 10
+		echo '' | clipboard
+		exit $?
+	fi
 	echo "Missing subcmd"
 	_usage
+	exit $?
 fi
 
 if [ "$cmd" = "totp" ]; then
 	[ -z "$KPXCT" ] && echo "Please set KPXCT" && exit 1
 	[ -z "$KPXCTDB" ] && echo "Please set KPXCTDB" && exit 1
+	if [ "$dbcmd" = "s" ] || [ "$dbcmd" = "select" ]; then
+		sel="$(kpxc "$cmd" ls | fzf)"
+		[ -z "$sel" ] && echo "Empty selection" && exit 1
+		kpxc "$cmd" get "$sel"
+		exit $?
+	fi
 	if [ "$dbcmd" = "ls" ]; then
 		$gpg_decrypt "$KPXCT" | keepassxc-cli ls --quiet "$KPXCTDB"
 		exit $?
@@ -45,13 +72,14 @@ if [ "$cmd" = "totp" ]; then
 			exit $rc
 		fi
 
-		echo "Copied to clipboard, clearing clipboard in 10s..." 1>&2
+		echo "Copied $title to clipboard, clearing clipboard in 10s..." 1>&2
 		sleep 10
 		echo '' | clipboard
-		exit 0
 		exit $?
 	fi
 	echo "Missing subcmd"
 	_usage
+	exit $?
 fi
+
 _usage
