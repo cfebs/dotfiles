@@ -35,7 +35,7 @@ if [ "$cmd" = "pass" ]; then
 	if [ "$dbcmd" = "clip" ]; then
 		[ -z "$title" ] && echo "Missing title of record to fetch" && exit 1
 		field="${1:-Password}"
-		$gpg_decrypt "$KPXCP" | keepassxc-cli clip --quiet "$KPXCPDB" "$title" "$field" 0
+		$gpg_decrypt "$KPXCP" | keepassxc-cli clip -a "$field" --quiet "$KPXCPDB" "$title" 0
 		rc=$?
 		if [ "$rc" != "0" ]; then
 			exit $rc
