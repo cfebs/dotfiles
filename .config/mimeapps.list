@@ -3,6 +3,7 @@ application/vnd.openxmlformats-officedocument.wordprocessingml.document=abiword.
 application/xhtml+xml=nvim.desktop;
 image/jpeg=ristretto.desktop;sxiv.desktop;feh.desktop;
 image/png=ristretto.desktop;sxiv.desktop;gimp.desktop;
+image/gif=org.xfce.ristretto.desktop;sxiv.desktop;viewnior.desktop;
 
 [Default Applications]
 inode/directory=thunar.desktop;
