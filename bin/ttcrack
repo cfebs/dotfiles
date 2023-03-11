@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+source ~/bin/.util.sh
+
+if ! utl_cmd_exists zxcvbn; then
+	utl_echoerr 'zxcvbn does not exist'
+	exit 1
+fi
+
+if ! utl_cmd_exists jq; then
+	utl_echoerr 'jq does not exist'
+	exit 1
+fi
+
+read -p Password: -s l && echo $l | zxcvbn | jq '. | {crack_times_display, score, feedback}'
