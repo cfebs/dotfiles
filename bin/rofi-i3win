@@ -4,38 +4,48 @@ import sys
 import json
 import subprocess
 
-RUN_OPTS = {'check':False, 'capture_output':True, 'encoding':'utf8'}
+RUN_OPTS = {"capture_output": True, "encoding": "utf8"}
+
 
 def walktree(node, result):
     """
     walks i3 tree of nodes and collects ones that look like user windows (window_type = normal)
     """
-    if 'nodes' in node:
-        for n in node['nodes']:
-            walktree(n, result)
+    if "nodes" in node:
+        for i in node["nodes"]:
+            walktree(i, result)
 
-    if 'window_properties' not in node or 'window_type' not in node:
+    if "window_properties" not in node or "window_type" not in node:
         return
 
-    if node['window_type'] != 'normal':
+    if node["window_type"] != "normal":
         return
 
-    result.append({
-        'id': node['id'],
-        'title': node['window_properties']['title'],
-        'class': node['window_properties']['class'],
-    })
+    result.append(
+        {
+            "id": node["id"],
+            "title": node["window_properties"]["title"],
+            "class": node["window_properties"]["class"],
+        }
+    )
+
 
 def gettree():
-    res = subprocess.run(['i3-msg', '-t', 'get_tree'], **RUN_OPTS)
+    res = subprocess.run(["i3-msg", "-t", "get_tree"], check=False, **RUN_OPTS)
 
     if res.returncode != 0:
         sys.exit(1)
 
     return json.loads(res.stdout)
 
+
 def rofi(rofi_str):
-    res = subprocess.run(['rofi', '-window-title', 'i3 window select', '-dmenu'], input=rofi_str, **RUN_OPTS)
+    res = subprocess.run(
+        ["rofi", "-window-title", "i3 window select", "-dmenu"],
+        check=False,
+        input=rofi_str,
+        **RUN_OPTS,
+    )
 
     if res.returncode != 0:
         sys.exit(1)
@@ -44,20 +54,25 @@ def rofi(rofi_str):
         sys.exit(1)
 
     chosen = str(res.stdout).strip()
-    return chosen.split(' ')[-1]
+    return chosen.split(" ")[-1]
 
 
 def focuswin(winid):
     # i3-msg '[con_id="135748312"] focus'
-    res = subprocess.run(['i3-msg', f'[con_id="{winid}"] focus'], **RUN_OPTS)
+    res = subprocess.run(
+        ["i3-msg", f'[con_id="{winid}"] focus'], check=False, **RUN_OPTS
+    )
     if res.returncode != 0:
         print(res.stderr)
         sys.exit(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     tree = gettree()
     for_rofi = []
     walktree(tree, for_rofi)
 
-    rofi_str = "\n".join([f'`{item["class"]}` {item["title"][:60]} {item["id"]}' for item in for_rofi])
+    rofi_str = "\n".join(
+        [f'`{item["class"]}` {item["title"][:80]} {item["id"]}' for item in for_rofi]
+    )
     focuswin(rofi(rofi_str))
