@@ -46,7 +46,7 @@ alias curltime="curl -w %{stderr}%{time_connect}:%{time_starttransfer}:%{time_to
 alias date-now="date +%s"
 alias date-zulu="TZ='utc' printf '%(%FT%TZ)T\n'"
 alias dk="docker"
-alias dkc="docker compose"
+alias dkk="docker compose"
 alias dmenu="dmenu -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
 alias dmenu_run="dmenu_run -b -i -l 15 -fn '-misc-fixed-medium-r-normal--18-*-*-*-*-*-*-*'"
 alias docker-clean-ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
