@@ -43,7 +43,7 @@ def rofi(rofi_str):
     res = subprocess.run(
         ["rofi", "-window-title", "i3 window select", "-dmenu"],
         check=False,
-        input=rofi_str,
+        input=rofi_str.lower(),
         **RUN_OPTS,
     )
 
