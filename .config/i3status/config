@@ -46,11 +46,11 @@ tztime local {
 }
 
 load {
-    format = "﬙ %1min"
+    format = "󰈸 %1min"
 }
 
 disk "/" {
-    format = " %avail"
+    format = "󰋊 %avail"
 }
 
 volume master {
@@ -67,7 +67,7 @@ path_exists VPN {
 }
 
 memory {
-        format = " %available"
+        format = "󰍛 %available"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
