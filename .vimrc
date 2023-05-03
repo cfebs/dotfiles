@@ -51,6 +51,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-crystal/vim-crystal'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'fladson/vim-kitty'
+Plug 'github/copilot.vim'
 
 set fileformat=unix
 set fileformats=unix,dos
