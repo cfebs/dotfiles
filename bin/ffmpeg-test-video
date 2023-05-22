@@ -3,7 +3,7 @@
 duration="$1"
 out="$2"
 if [[ -z "$duration" ]]; then
-	echo "ERROR: missing duration"
+	echo "ERROR: missing duration in seconds"
 	exit 1
 fi
 
