@@ -43,7 +43,7 @@ if [ "$cmd" = "pass" ]; then
 
 		echo "Copied $title to clipboard, clearing clipboard in 10s..." 1>&2
 		sleep 10
-		echo '' | clipboard
+		(echo '' | clipboard)
 		exit $?
 	fi
 	echo "Missing subcmd"
@@ -74,7 +74,7 @@ if [ "$cmd" = "totp" ]; then
 
 		echo "Copied $title to clipboard, clearing clipboard in 10s..." 1>&2
 		sleep 10
-		echo '' | clipboard
+		(echo '' | clipboard)
 		exit $?
 	fi
 	echo "Missing subcmd"
