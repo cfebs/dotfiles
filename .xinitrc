@@ -9,7 +9,6 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 
 if [ -f $sysresources ]; then
     xrdb -merge $sysresources
-
 fi
 
 if [ -f $sysmodmap ]; then
