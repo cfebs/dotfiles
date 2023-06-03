@@ -66,6 +66,13 @@ if [ -s "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]; then
 	fi
 fi
 
+if [ -z "$XDG_CURRENT_DESKTOP" ] && [ -n "$XDG_SESSION_DESKTOP" ]; then
+	# TODO: emptty does not set XDG_CURRENT_DESKTOP
+	# so take it from $XDG_SESSION_DESKTOP
+	export XDG_CURRENT_DESKTOP="$XDG_SESSION_DESKTOP"
+fi
+
+
 # TODO: dbus-launch has some crappy interaction with portal + gtk
 # and causes firefox/gtk apps to take >20s to launch
 # https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/74
