@@ -73,15 +73,17 @@ if [ -z "$XDG_CURRENT_DESKTOP" ] && [ -n "$XDG_SESSION_DESKTOP" ]; then
 fi
 
 
-# TODO: dbus-launch has some crappy interaction with portal + gtk
-# and causes firefox/gtk apps to take >20s to launch
+# Dbus-launch has some crappy interaction with portal + gtk
+# and causes firefox/gtk apps to take >20s to launch.
+# The main fix for me was completely removing gnome when using i3/sway etc.
+#
 # https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/74
 # https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/merge_requests/78
 # https://github.com/swaywm/sway/issues/5732
 # https://github.com/flatpak/xdg-desktop-portal/issues/986
 # https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/86
-# _debug ">> dbus-launching $@"
-# exec dbus-launch $@
+_debug ">> dbus-launching $@"
+exec dbus-launch $@
 
-_debug ">> exec launching $@"
-exec $@
+#_debug ">> exec launching $@"
+#exec $@
