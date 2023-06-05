@@ -324,3 +324,7 @@ exportcreds() {
 	echo "using cred file $credfile" 1>&2
 	source "$credfile"
 }
+
+gsettings-getall-desktop() {
+	gsettings list-keys org.gnome.desktop.interface | while read -r name; do echo "$name: $(gsettings get org.gnome.desktop.interface $name)"; done;
+}
