@@ -77,6 +77,8 @@ alias tm="tmux"
 alias tmn="tmux new-session -s"
 alias yarn-linked="find . -type l | grep -v .bin | sed 's/^\.\/node_modules\///'"
 alias yarn-unlink-all="yarn-linked | xargs yarn unlink && yarn install --check-files"
+alias psshno="pssh -O StrictHostKeyChecking=no"
+alias jj='liljournal'
 
 # do not delete / or prompt if deleting more than 3 files at a time #
 # TODO: document where this comes from, its old...
@@ -147,14 +149,14 @@ set_title() {
 	PS1=${ORIG}${TITLE}
 }
 
-pssh() {
-	# $1 some string to eval 'pweb{1..10}'
-	# $2 cmd
-	# Usage: pssh 'pweb{1..10}' 'hostname'
-	echo "Running on $(eval echo $1)..."
-	sleep 0.7
-	parallel-ssh -O StrictHostKeyChecking=no -i -H "$(eval echo $1)" $2
-}
+#pssh() {
+#	# $1 some string to eval 'pweb{1..10}'
+#	# $2 cmd
+#	# Usage: pssh 'pweb{1..10}' 'hostname'
+#	echo "Running on $(eval echo $1)..."
+#	sleep 0.7
+#	parallel-ssh -O StrictHostKeyChecking=no -i -H "$(eval echo $1)" $2
+#}
 
 genpassword() {
 	if utl_cmd_exists pwgen; then
