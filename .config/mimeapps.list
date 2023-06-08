@@ -4,6 +4,9 @@ application/xhtml+xml=nvim.desktop;
 image/jpeg=ristretto.desktop;sxiv.desktop;feh.desktop;
 image/png=ristretto.desktop;sxiv.desktop;gimp.desktop;
 image/gif=org.xfce.ristretto.desktop;sxiv.desktop;viewnior.desktop;
+application/xml=geany.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-M5YW41.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-M5YW41.desktop;
 
 [Default Applications]
 inode/directory=thunar.desktop;
@@ -22,7 +25,9 @@ audio/ogg=vlc.desktop;firefox-last-profile.desktop;firefox.desktop;chromium.desk
 x-scheme-handler/about=firefox-last-profile.desktop
 x-scheme-handler/http=firefox-last-profile.desktop
 x-scheme-handler/https=firefox-last-profile.desktop
-x-scheme-handler/mailto=firefox-last-profile.desktop;firefox.desktop;chromium.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-M5YW41.desktop
 x-scheme-handler/unknown=firefox-last-profile.desktop
 x-scheme-handler/webcal=firefox-last-profile.desktop;firefox.desktop;chromium.desktop;
 x-scheme-handler/tg=org.telegram.desktop.desktop
+message/rfc822=userapp-Thunderbird-M5YW41.desktop
+x-scheme-handler/mid=userapp-Thunderbird-M5YW41.desktop
