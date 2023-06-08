@@ -6,8 +6,10 @@ password-cmd kpxc pass get sourcehut_chat_oauth
 mouse false
 
 colors {
-	foreground 0
-	status_foreground 10
+	# TODO: colors from a branch of mine
+	# foreground 0
+	# status_foreground 10
+	status 10
 	unread 15
 	prompt 0
 }
