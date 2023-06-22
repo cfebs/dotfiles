@@ -83,7 +83,7 @@ fi
 # https://github.com/flatpak/xdg-desktop-portal/issues/986
 # https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/86
 _debug ">> dbus-launching $@"
-exec dbus-launch $@
+exec dbus-launch --exit-with-session $@
 
 #_debug ">> exec launching $@"
 #exec $@
