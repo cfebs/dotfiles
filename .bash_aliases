@@ -63,7 +63,8 @@ alias ll="ls -lat"
 alias ln='ln -i'
 alias localgodoc="godoc -http=:6060 -index -play -index_interval -1m"
 alias mv='mv -i'
-alias ncdu-full="sudo ncdu --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
+alias ncdu="ncdu --color off"
+alias ncdu-full="sudo ncdu --color off --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
 alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
 alias pacman-remove-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
 alias proxydrop="socksproxy 9999 collin@proxydrop 222"
