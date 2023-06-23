@@ -204,6 +204,7 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id redshift-gtk
 exec --no-startup-id pasystray
 exec nitrogen --restore
+exec --no-startup-id thunar --daemon
 exec --no-startup-id xss-lock -l -- i3lock -c 111111
 # touchpad stuff
 exec --no-startup-id syndaemon -K -i 0.2 -R -d
