@@ -64,7 +64,11 @@ if [ "$cmd" = "totp" ]; then
 		$gpg_decrypt "$KPXCT" | keepassxc-cli ls --quiet "$KPXCTDB"
 		exit $?
 	fi
-	if [ "$dbcmd" = "get" ] || [ "$dbcmd" = "clip" ]; then
+	if [ "$dbcmd" = "get" ]; then
+		$gpg_decrypt "$KPXCT" | keepassxc-cli show --quiet -t "$KPXCTDB" "$title"
+		exit $?
+	fi
+	if [ "$dbcmd" = "clip" ]; then
 		[ -z "$title" ] && echo "Missing title of record" && exit 1
 		$gpg_decrypt "$KPXCT" | keepassxc-cli clip --quiet -t "$KPXCTDB" "$title" 0
 		rc=$?
