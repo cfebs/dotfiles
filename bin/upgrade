@@ -121,10 +121,15 @@ run_ansible() {
 
 main() {
 	run_upgrade_pkgs || return $?
-	run_ansible || return $?
+	if [[ -z "$SKIP_ANSIBLE" ]]; then
+		run_ansible || return $?
+	else
+		utl_echoerr ">> Skipping ansible with SKIP_ANSIBLE"
+		return 0
+	fi
 }
 
-main
+main "$@"
 rc=$?
 utl_echoerr ">> Finished with code $rc"
 exit $?
