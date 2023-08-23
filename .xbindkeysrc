@@ -1,0 +1,8 @@
+# $ xbindkeys -d > ~/.xbindkeysrc
+# for a default config
+
+"~/bin/xbindkeys-f2"
+	F2
+
+"~/bin/xbindkeys-f3"
+	F3
