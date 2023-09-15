@@ -13,11 +13,11 @@ symbols:
 # Use specified time frame when starting program and when new stocks are added
 # Default is 1D
 # Possible values: 1D, 1W, 1M, 3M, 6M, 1Y, 5Y
-time_frame: 3M
+time_frame: 1M
 
 # Interval to update data from API (seconds)
 # Default is 1
-update_interval: 60
+#update_interval: 1
 
 # Enable pre / post market hours for graphs
 #enable_pre_post: true
