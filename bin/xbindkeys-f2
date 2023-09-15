@@ -3,13 +3,13 @@
 POE_WINDOW_CLASS="steam_app_238960"
 ACTIVE_WINDOW_CLASS="$(xdotool getactivewindow getwindowclassname)"
 
+echo "${0} $(date)"
 if [[ "$POE_WINDOW_CLASS" == "$ACTIVE_WINDOW_CLASS" ]]; then
 	echo "Active window $ACTIVE_WINDOW_CLASS matched $POE_WINDOW_CLASS"
-
-	WIN_ID="$( xdotool search --limit 1 --all --pid $( pgrep PathOfExile.exe ) --name Path )"
-	xdotool key --delay 0 --window "$WIN_ID" Return
-	usleep 300000
-	xdotool key --delay 0 --window "$WIN_ID" slash h i d e o u t Return
+	WIN_ID="$(xdotool getactivewindow)"
+	xdotool key --window "$WIN_ID" Return
+	usleep 200000
+	xdotool key --window "$WIN_ID" slash h i d e o u t Return
 	exit 0
 fi
 

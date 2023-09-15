@@ -2,7 +2,7 @@
 # for a default config
 
 "~/bin/xbindkeys-f2"
-	F2
+	Control + 1 + Release
 
 "~/bin/xbindkeys-f3"
-	F3
+	Control + 3 + Release

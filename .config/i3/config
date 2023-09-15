@@ -141,10 +141,10 @@ mode "resize" {
     # Pressing right will grow the window’s width.
     # Pressing up will shrink the window’s height.
     # Pressing down will grow the window’s height.
-    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym j resize shrink height 10 px or 10 ppt
     bindsym k resize grow height 10 px or 10 ppt
-    bindsym l resize shrink height 10 px or 10 ppt
-    bindsym semicolon resize grow width 10 px or 10 ppt
 
     # same bindings, but for the arrow keys
     bindsym Left resize shrink width 10 px or 10 ppt
@@ -239,6 +239,8 @@ bindsym XF86AudioMute exec --no-startup-id exec pactl set-sink-mute 0 toggle
 #bindsym $mod+F4 exec --no-startup-id pactl set-sink-mute 0 toggle &&notify-send 'vol toggle' && killall -SIGUSR1 i3status
 #bindsym $mod+F2 exec --no-startup-id brightnessctl s +20 && notify-send '+'
 #bindsym $mod+F1 exec --no-startup-id brightnessctl s 20- && notify-send '-'
+#bindsym $mod+F1 exec --no-startup-id ~/bin/i3-macro-8
+#bindsym $mod+F2 exec --no-startup-id ~/bin/i3-macro-9
 
 set $Locker i3lock -c 111111 && sleep 1
 
