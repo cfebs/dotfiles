@@ -38,6 +38,7 @@
 	fixhead = !git commit --fixup=HEAD && git rebase -i --autosquash HEAD^^
 	pushoriginup = "!f() { this_branch=$(git symbolic-ref --short HEAD); [ \"${this_branch}\" = \"master\" ] && echo ERROR: This is master && exit 1; git push -u origin ${this_branch}; }; f"
 	rebrase = "!f() { local this_branch=$(git symbolic-ref --short HEAD); git rebase -i $(git merge-base master $this_branch origin/master); }; f"
+	nohook = config core.hooksPath /dev/null
 [color]
 	ui = true
 [push]
