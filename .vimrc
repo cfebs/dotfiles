@@ -25,7 +25,6 @@ Plug 'gregsexton/gitv'
 Plug 'groenewege/vim-less'
 Plug 'hashivim/vim-terraform'
 Plug 'itchyny/lightline.vim'
-Plug 'jakwings/vim-pony'
 Plug 'jpo/vim-railscasts-theme'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
