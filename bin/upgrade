@@ -119,12 +119,31 @@ run_ansible() {
 	return $rc
 }
 
+usage() {
+	utl_echoerr "Usage: upgrade [OPTION]"
+	utl_echoerr "Options:"
+	utl_echoerr -e "  -s\tskip ansible"
+}
+
 main() {
+	local cli_skip_ansible=0
+
+	while [[ "$#" -gt 0 ]]; do
+		case $1 in
+			#-t|--target) target="$2"; shift ;;
+			#-u|--uglify) uglify=1 ;;
+			-s) cli_skip_ansible=1 ;;
+			-h|--help) usage; exit 0 ;;
+			*) echo "Unknown parameter passed: $1"; usage; exit 1 ;;
+		esac
+		shift
+	done
+
 	run_upgrade_pkgs || return $?
-	if [[ -z "$SKIP_ANSIBLE" ]]; then
+	if [[ -z "$cli_skip_ansible" ]]; then
 		run_ansible || return $?
 	else
-		utl_echoerr ">> Skipping ansible with SKIP_ANSIBLE"
+		utl_echoerr ">> Skipping ansible with -s"
 		return 0
 	fi
 }
