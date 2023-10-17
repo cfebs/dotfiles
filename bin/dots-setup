@@ -8,13 +8,12 @@ source ~/bin/.util.sh
 # temp dirs for vim etc
 mkdir -p ~/.vim-tmp ~/.tmp ~/tmp
 
-# link vmrc to nvim
+# nvim config dir
 mkdir -p .config/nvim
-ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
 
 # vim plug
 DEST_FILE=
-if which neovim 1>/dev/null 2>&1; then
+if which nvim 1>/dev/null 2>&1; then
     utl_log "using nvim"
 	DEST_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
 elif which vim 1>/dev/null 2>&1; then
