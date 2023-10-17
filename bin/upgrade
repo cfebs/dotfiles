@@ -140,7 +140,7 @@ main() {
 	done
 
 	run_upgrade_pkgs || return $?
-	if [[ -z "$cli_skip_ansible" ]]; then
+	if [ "$cli_skip_ansible" = "0" ]; then
 		run_ansible || return $?
 	else
 		utl_echoerr ">> Skipping ansible with -s"
