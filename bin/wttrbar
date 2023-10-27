@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-LOCATION="Brooklyn NY"
+WTTR_LOCATION="${WTTR_LOCATION:-NYC}"
 FILE_OUT="/tmp/wttrbar.txt"
-res="$(curl -m10 -sL "https://wttr.in/$LOCATION?m&format=%c%f+%l")"
+FORMAT="%c%f+%l"
+res="$(curl -m10 -sL "https://wttr.in/${LOCATION}?m&format=${FORMAT}")"
 rc=$?
 
 if [[ "$rc" != "0" ]]; then
@@ -16,7 +17,13 @@ if echo "$res" | grep -q 'weather report for the default city'; then
     exit 0
 fi
 
-echo "$res" > "$FILE_OUT"
+if [[ "$FORMAT" == "3" ]] || [[ "$FORMAT" =~ "%c" ]]; then
+	# remove first space from the unicode format for nicer spacing
+	echo "$res" | sed 's/ //' > "$FILE_OUT"
+else
+	echo "$res" > "$FILE_OUT"
+fi
+
 
 echo "Wrote $FILE_OUT"
 exit 0

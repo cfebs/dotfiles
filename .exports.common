@@ -13,7 +13,6 @@ if [ -n "$NPROC" ] && [ "$NPROC" -gt 3 ]; then
 	export MAKEFLAGS="-j$((NPROC - 2))"
 fi
 
-
 alias makej="make -j$(($(nproc) - 2))"
 
 # Refresh env vars in tmux with a function
