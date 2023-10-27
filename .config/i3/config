@@ -187,7 +187,7 @@ for_window [class="^Steam$" title=".*Library.*Folder.*"] floating enable
 for_window [class="^steam_app_1794680$"] floating enable
 # poe/awakened
 # https://gist.github.com/cfebs/82790d9027cefe62c2d82ea3836bcb96
-# ~/.config/picom/picom.conf 
+# ~/.config/picom/picom.conf
 # $ picom --config ~/.config/picom/picom.conf
 # for_window [class="awakened-poe-trade"] floating enable border pixel 0
 # for_window [class="^steam_app_238960$"] floating enable fullscreen enable border pixel 0
