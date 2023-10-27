@@ -3,7 +3,7 @@
 WTTR_LOCATION="${WTTR_LOCATION:-NYC}"
 FILE_OUT="/tmp/wttrbar.txt"
 FORMAT="%c%f+%l"
-res="$(curl -m10 -sL "https://wttr.in/${LOCATION}?m&format=${FORMAT}")"
+res="$(curl -m10 -sL "https://wttr.in/${WTTR_LOCATION}?m&format=${FORMAT}")"
 rc=$?
 
 if [[ "$rc" != "0" ]]; then
