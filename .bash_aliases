@@ -65,6 +65,7 @@ alias localgodoc="godoc -http=:6060 -index -play -index_interval -1m"
 alias mv='mv -i'
 alias ncdu="ncdu --color off"
 alias ncdu-full="sudo ncdu --color off --exclude '/media/*' --exclude '/proc/*' --exclude '/sys/*' /"
+alias gdu-full="sudo gdu -i /media -i /proc -i /sys /"
 alias nethack-remote="alacritty --config-file ~/.config/alacritty/alacritty-dark.yml -e /bin/bash -c 'ssh nethack@alt.org'"
 alias pacman-remove-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
 alias proxydrop="socksproxy 9999 collin@proxydrop 222"
@@ -83,6 +84,7 @@ alias jj='liljournal'
 alias termdown-warn="termdown --exec-cmd \"if [ '{0}' == '60' ]; then espeak '{1} remaining'; fi\""
 alias pomo-work="termdown-warn 30m"
 alias pomo-break='termdown-warn 5m'
+alias icat="kitty +kitten icat"
 
 # do not delete / or prompt if deleting more than 3 files at a time #
 # TODO: document where this comes from, its old...
