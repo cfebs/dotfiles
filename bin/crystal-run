@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+exe="$1"
+shift
+crystal run "$exe" -- "$@"

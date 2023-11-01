@@ -1,0 +1,73 @@
+#!/usr/bin/env crystal-run
+require "http/client"
+require "xml"
+require "log"
+
+Log.setup(:debug, Log::IOBackend.new(STDERR))
+
+lat = ARGV[0].to_s
+lon = ARGV[1].to_s
+
+uri = URI.parse("https://forecast.weather.gov/MapClick.php?lat=#{lat}&lon=#{lon}&unit=0&lg=english&FcstType=dwml")
+client = HTTP::Client.new(uri)
+client.connect_timeout = 5
+
+response = HTTP::Client::Response
+begin
+  response = client.get(uri.request_target)
+rescue IO::TimeoutError
+  raise "Request Timeout!"
+end
+
+if response.nil?
+  raise "Nil response"
+end
+
+if !response.success?
+  raise "Error:#{response.status_code}"
+end
+
+document = XML.parse(response.body)
+temp_f = nil
+cond_s = nil
+cond_emoji = nil
+
+
+def f_to_c(f)
+  return (f-32) * 5/9
+end
+
+cur = document.xpath("/dwml/data[@type=\"current observations\"]//temperature[@type=\"apparent\"]/value")
+if cur.is_a?(XML::NodeSet)
+  if cur.size == 1
+    temp_f = cur[0].content.to_i
+  end
+end
+
+if temp_f.nil?
+  raise "No temp fetched"
+end
+
+cur = document.xpath("/dwml/data[@type=\"current observations\"]//weather-conditions[@weather-summary]")
+if cur.is_a?(XML::NodeSet)
+  if cur.size == 1
+    cond_s = cur[0]["weather-summary"].to_s.downcase
+  end
+end
+
+cond_emoji_map = {
+  "mostly cloudy" => "\u{2601}",
+  "a few clouds" => "\u{26C5}",
+  "partly cloudy" => "\u{26C5}",
+  "mostly sunny" => "\u{2600}",
+  "chance rain" => "\u{1F326}",
+  "rain" => "\u{1F327}",
+}
+
+cond_emoji = cond_emoji_map[cond_s]
+if cond_emoji.nil?
+  cond_emoji = cond_s
+end
+
+Log.info { cond_s }
+puts "#{cond_emoji} #{f_to_c(temp_f).to_i}#{"\u{00B0}"}C"
