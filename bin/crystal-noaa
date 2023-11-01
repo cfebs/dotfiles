@@ -59,12 +59,13 @@ cond_emoji_map = {
   "mostly cloudy" => "\u{2601}",
   "a few clouds" => "\u{26C5}",
   "partly cloudy" => "\u{26C5}",
+  "fair" => "\u{26C5}",
   "mostly sunny" => "\u{2600}",
   "chance rain" => "\u{1F326}",
   "rain" => "\u{1F327}",
 }
 
-cond_emoji = cond_emoji_map[cond_s]
+cond_emoji = cond_emoji_map[cond_s]?
 if cond_emoji.nil?
   cond_emoji = cond_s
 end
