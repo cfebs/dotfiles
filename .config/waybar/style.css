@@ -1,7 +1,7 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: monospace;
     font-size: 14px;
     min-height: 0;
 }
@@ -20,6 +20,11 @@ tooltip label {
   color: white;
 }
 
+.modules-right widget label {
+	padding: 0 5px;
+	margin: 0;
+}
+
 #workspaces button {
     padding: 0 5px;
     background: transparent;
@@ -32,16 +37,9 @@ tooltip label {
     border-bottom: 3px solid white;
 }
 
-#mode, #clock, #battery {
-    padding: 0 10px;
-}
-
 #mode {
     background: #64727D;
     border-bottom: 3px solid white;
-}
-
-#clock {
 }
 
 #battery {
