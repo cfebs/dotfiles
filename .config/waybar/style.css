@@ -34,6 +34,8 @@ tooltip label {
 
 #workspaces button.focused {
     border-bottom: 3px solid white;
+	animation: none;
+	transition: none;
 }
 
 #mode {
