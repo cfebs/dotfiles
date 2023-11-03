@@ -4,12 +4,14 @@
 output DP-1 {
 	resolution 2560x1440
 	position 0 0
+	scale 1
 }
 
 output DP-2 {
 	resolution 1440x2560
 	position 2560 0
 	transform 270
+	scale 1
 }
 
 output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
