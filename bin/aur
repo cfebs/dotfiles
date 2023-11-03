@@ -18,12 +18,15 @@ _upgrade_pkg() {
 	fi
 
 	tracked_remote="$(git branch --list "$(git branch --show-current)" "--format=%(upstream:remotename)")"
+	utl_log 'INFO: %s' "Using remote ${tracked_remote}"
 	local_rev="$(git rev-parse HEAD)"
 	if [[ -z "$local_rev" ]]; then
 		utl_log 'ERROR: %s' "Failed to get local rev"
 		return 1
 	fi
 
+	utl_log 'INFO: %s' "Git fetch"
+	git fetch
 	remote_rev="$(git rev-parse "${tracked_remote}/HEAD")"
 	if [[ -z "$remote_rev" ]]; then
 		utl_log 'ERROR: %s' "Failed to get remote rev ${tracked_remote}/HEAD"
