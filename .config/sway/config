@@ -188,6 +188,7 @@ exec lxpolkit
 	bindsym $mod+Shift+bracketright exec --no-startup-id ~/bin/btooth sony on
 	bindsym $mod+Shift+bracketleft exec --no-startup-id ~/bin/btooth sony off
 	bindsym $mod+Shift+b exec blueman-manager
+	bindsym $mod+Shift+s exec flameshot gui
 	bindsym Ctrl+Mod1+Delete exec swaylock -f -c 111111
 
 	# laptop btns
@@ -240,6 +241,9 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
+	## Custom: change bar to waybar
+	swaybar_command waybar
+
     position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
