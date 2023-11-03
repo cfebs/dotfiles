@@ -10,44 +10,76 @@ _usage() {
 _upgrade_pkg() {
 	dir="$1"
 	pkg="$(basename "$dir")"
-	utl_log '%s' "Upgrading $pkg"
+	utl_log 'INFO: %s' "Upgrading $pkg"
 	cd $dir
 	if [[ ! -d ./.git ]]; then
-		utl_log '%s' "Failed this directory is not a git repo"
+		utl_log 'INFO: %s' "Failed this directory is not a git repo"
 		return 1
 	fi
-	def_branch="$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)"
 
-	git fetch
+	tracked_remote="$(git branch --list "$(git branch --show-current)" "--format=%(upstream:remotename)")"
 	local_rev="$(git rev-parse HEAD)"
-	remote_rev="$(git rev-parse "origin/$def_branch")"
 	if [[ -z "$local_rev" ]]; then
-		utl_log '%s' "Failed to get local rev for $def_branch"
-		return 1
-	fi
-	if [[ -z "$remote_rev" ]]; then
-		utl_log '%s' "Failed to get remote rev for origin/$def_branch"
+		utl_log 'ERROR: %s' "Failed to get local rev"
 		return 1
 	fi
 
-	# TODO: compare installed rev instead
-	if [[ "$local_rev" == "$remote_rev" ]]; then
-		utl_log '%s' "Nothing to do! Local rev equals remote rev."
+	remote_rev="$(git rev-parse "${tracked_remote}/HEAD")"
+	if [[ -z "$remote_rev" ]]; then
+		utl_log 'ERROR: %s' "Failed to get remote rev ${tracked_remote}/HEAD"
+		return 1
+	fi
+
+	if [[ "$local_rev" != "$remote_rev" ]]; then
+		utl_log 'INFO: %s' "Local rev does not match remote rev. Updating local pulling."
+		utl_log 'DEBUG: %s' "Git reset"
+		git reset
+		utl_log 'DEBUG: %s' "Git pull"
+		git pull
+	fi
+
+	installed_pkg_ver="$(pacman -Q $pkg | awk '{print $2}')"
+	utl_log 'INFO: %s' "Installed pkg ver $installed_pkg_ver"
+
+	local_pkgver=""
+	local_pkgrel=""
+	while read -r line; do
+		if [[ "$line" =~ ^pkgver=[^=\s]+$ ]]; then
+			local_pkgver="${line#pkgver=}"
+			continue
+		fi
+		if [[ "$line" =~ ^pkgrel=[^=\s]+$ ]]; then
+			local_pkgrel="${line#pkgrel=}"
+			continue
+		fi
+	done < <(cat ./PKGBUILD)
+
+	if [[ -z "$local_pkgver" ]]; then
+		utl_log 'ERROR: %s' "Failed to get local pkgver"
+		return 1
+	fi
+
+	if [[ -z "$local_pkgrel" ]]; then
+		utl_log 'ERROR: %s' "Failed to get local pkgrel"
+		return 1
+	fi
+
+	local_pkg_ver="${local_pkgver}-${local_pkgrel}"
+
+	if [[ "$local_pkg_ver" == "$installed_pkg_ver" ]]; then
+		utl_log 'INFO: Local version %s matches installed version %s. Nothing to do!' "$local_pkg_ver" "$installed_pkg_ver"
 		return 0
 	fi
 
 	utl_log '%s' "Showing diff for review"
 	sleep 0.75
-	git diff HEAD..origin/master
+	git diff "HEAD..${tracked_remote}/HEAD" -- ./PKGBUILD
 	echo "Confirm upgrade $dir"
 	if ! utl_yn_confirm; then
 		utl_log '%s' "Not confirmed. Skipping"
 		return 0
 	fi
 
-	git reset
-	git checkout "$def_branch"
-	git pull
 	makepkg -si
 	sudo pacman -U $(makepkg --packagelist)
 }
@@ -55,7 +87,7 @@ _upgrade_pkg() {
 if [[ "$action" == "upgrade" ]]; then
 	mkdir -p "$HOME/aur"
 
-	utl_log '%s' "Starting upgrade"
+	utl_log 'INFO: %s' "Starting upgrade with ${0}"
 	for d in $HOME/aur/*/; do
 		_upgrade_pkg "$d"
 	done
