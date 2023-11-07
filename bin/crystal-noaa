@@ -1,4 +1,5 @@
 #!/usr/bin/env crystal-run
+# vim: ft=crystal
 require "http/client"
 require "xml"
 require "log"
@@ -57,6 +58,7 @@ end
 
 cond_emoji_map = {
   "mostly cloudy" => "\u{2601}",
+  "overcast" => "\u{2601}",
   "a few clouds" => "\u{26C5}",
   "partly cloudy" => "\u{26C5}",
   "fair" => "\u{26C5}",
