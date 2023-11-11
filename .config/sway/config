@@ -185,8 +185,8 @@ exec lxpolkit
 	bindsym $mod+p workspace prev
 	bindsym $mod+o exec rofi-firefox-profile
 	bindsym $mod+Shift+p exec keepassxc
-	bindsym $mod+Shift+bracketright exec --no-startup-id ~/bin/btooth sony on
-	bindsym $mod+Shift+bracketleft exec --no-startup-id ~/bin/btooth sony off
+	bindsym $mod+Shift+bracketright exec ~/bin/btooth sony on
+	bindsym $mod+Shift+bracketleft exec ~/bin/btooth sony off
 	bindsym $mod+Shift+b exec blueman-manager
 	bindsym $mod+Shift+s exec flameshot gui
 	bindsym Ctrl+Mod1+Delete exec swaylock -f -c 111111

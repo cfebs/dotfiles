@@ -223,9 +223,8 @@ bindsym $mod+semicolon exec rofimoji
 bindsym $mod+Shift+b exec blueman-manager
 bindsym $mod+Shift+v exec ~/bin/rofi-vpn
 bindsym $mod+Shift+p exec keepassxc
-
-bindsym $mod+Shift+plus exec --no-startup-id ~/bin/btooth sony on
-bindsym $mod+Shift+minus exec --no-startup-id ~/bin/btooth sony off
+bindsym $mod+Shift+bracketright exec --no-startup-id ~/bin/btooth sony on
+bindsym $mod+Shift+bracketleft exec --no-startup-id ~/bin/btooth sony off
 
 # laptop btns
 # should work with lenovo + huawei
