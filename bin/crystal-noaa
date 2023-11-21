@@ -52,7 +52,7 @@ end
 cur = document.xpath("/dwml/data[@type=\"current observations\"]//weather-conditions[@weather-summary]")
 if cur.is_a?(XML::NodeSet)
   if cur.size == 1
-    cond_s = cur[0]["weather-summary"].to_s.downcase
+    cond_s = cur[0]["weather-summary"].to_s.downcase.strip
   end
 end
 
@@ -65,6 +65,11 @@ cond_emoji_map = {
   "mostly sunny" => "\u{2600}",
   "chance rain" => "\u{1F326}",
   "rain" => "\u{1F327}",
+  "light rain" => "\u{1F327}",
+  "snow" => "\u{1F328}",
+  "light snow" => "\u{1F328}",
+  "heavy snow" => "\u{2744}",
+  "freezing rain" => "\u{1F9CA}",
 }
 
 cond_emoji = cond_emoji_map[cond_s]?
