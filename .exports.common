@@ -23,8 +23,8 @@ refresh_tmux() {
 }
 if [ -n "$TMUX" ]; then
 	refresh_tmux() {
-		export $(tmux show-environment | grep "^SSH_AUTH_SOCK")
-		export $(tmux show-environment | grep "^DISPLAY")
+		exp="$(tmux show-environment | grep "^SSH_AUTH_SOCK\|^DISPLAY")"
+		[ $? = 0 ] && export ${exp}
 	}
 
 	prepend_promptcmd refresh_tmux
