@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+fonts_dir="$1"
+source_font_file="$2"
+
+_usage() {
+	echo "Usage: $0 <fonts_dir> <source_font_file>" 1>&2
+	echo "Description:" 1>&2
+	echo "  Links one source font file to create all the valid wow ttf files" 1>&2
+	echo "Options:" 1>&2
+	echo -e "  fonts_dir\tFonts/ directory that should be in the same directory as the wow exe" 1>&2
+	echo -e "  source_font_file\tFont file to use for all wow fonts" 1>&2
+}
+
+if [[ ! -d "$fonts_dir" ]]; then
+	echo "ERROR: Fonts dir does not exist" 1>&2
+	_usage
+	exit 1
+fi
+
+if [[ ! -e "$source_font_file" ]]; then
+	echo "ERROR: source font file does not exist" 1>&2
+	_usage
+	exit 1
+fi
+
+source_font_file="$(readlink -f "$source_font_file")"
+fonts_dir="$(readlink -f "$fonts_dir")"
+
+if [[ ! -e "$fonts_dir/../Wow.exe" ]] && [[ ! -e "$fonts_dir/../WowClassic.exe" ]]; then
+	echo "ERROR: Fonts dir does not look like it's correct, no Wow.exe or WowClassic.exe in parent dir" 1>&2
+	_usage
+	exit 1
+fi
+
+if [[ "$(dirname "$source_font_file")" == "$fonts_dir" ]]; then
+	# if source font file is in the fonts dir, simplify the source font file path for link
+	source_font_file="$(basename "$source_font_file")"
+	echo "INFO: source font lives in Fonts dir, simplifying source path to $source_font_file" 1>&2
+fi
+
+pushd "$fonts_dir" 1>/dev/null
+for fname in 'skurri.ttf' 'ARIALN.ttf' 'MORPHEUS.ttf' 'FRIZQT__.ttf'; do
+	echo "INFO: Linking: $source_font_file -> $fname" 1>&2
+	ln -sf "$source_font_file" "$fname"
+done
+popd 1>/dev/null
