@@ -69,3 +69,6 @@
 	suppresscc = self
 [format]
 	outputDirectory = ./.mypatches
+[url "git@gh_vimeows:vimeows/"]
+	insteadOf = git@github.com:vimeows/
+	insteadOf = https://github.com/vimeows/
