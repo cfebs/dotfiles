@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
 
-echo "# aws"
-curl 'https://ip-ranges.amazonaws.com/ip-ranges.json' | jq -r '.prefixes[].ip_prefix | "deny " + . + ";"'
+echo "# generated with cloudblocklist on $(date)"
+echo "# begin aws"
+curl -L 'https://ip-ranges.amazonaws.com/ip-ranges.json' | jq -r '.prefixes[].ip_prefix | select(.) | "deny " + . + ";"'
+echo "# end aws"
+
+echo "# begin google"
+curl -L 'https://www.gstatic.com/ipranges/cloud.json' | jq -r '.prefixes[].ipv4Prefix | select(.) | "deny " + . + ";"'
+echo "# end google"
+
+echo "# begin digital ocean"
+curl -L 'https://digitalocean.com/geo/google.csv' | awk -F',' '{print $1}' | grep -v ':' | awk '{print "deny " $1 ";"}'
+echo "# end digital ocean"
