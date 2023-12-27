@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "# aws"
+curl 'https://ip-ranges.amazonaws.com/ip-ranges.json' | jq -r '.prefixes[].ip_prefix | "deny " + . + ";"'
