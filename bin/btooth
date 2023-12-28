@@ -10,7 +10,7 @@ device_macs=()
 
 # add new devices in pairs
 device_names+=("sony")
-device_macs+=("CC:98:8B:B6:B3:3B")
+device_macs+=("AC:80:0A:72:9C:F2")
 
 usage() {
     echo -e "Usage $(basename "$0") <device_name> <on|off|pair>\n" 1>&2
