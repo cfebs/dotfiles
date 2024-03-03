@@ -67,15 +67,15 @@ prepend_promptcmd() {
 # public common stuff between shells, tracked in SCM
 [ -f ~/.exports.common ] && source ~/.exports.common
 
-# starship after path manipulation
-if [ -x "$(command -v "starship")" ] || declare -F "$1" &>/dev/null; then
+# starship after path manipulation. obey env var to disable it if needed
+if [ -z "$DISABLE_STARSHIP" ] && [ -x "$(command -v "starship")" ] || declare -F "$1" &>/dev/null; then
 	eval "$(starship init bash)"
 else
 	if [[ -f ~/.git-prompt.sh ]]; then
 		source ~/.git-prompt.sh
 		export GIT_PS1_SHOWDIRTYSTATE=1
 		export GIT_PS1_SHOWUNTRACKEDFILES=1
-		PS1='[\u@\h \W]$(__git_ps1 " (%s)")\n\$ '
+		PS1='[\u@\h \W]$(__git_ps1 " (%s)")\n❯ '
 	fi
 fi
 
