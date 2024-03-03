@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Download a few base utils if not using ansible
+
+. ~/bin/.util.sh
+
+################################################################################
+#### vim plugged
+################################################################################
+utl_log "INFO: checking fetching plugged"
+if [[ ! -f ~/.vim/autoload/plug.vim ]]; then
+	utl_log "INFO: fetching plugged"
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+else
+	utl_log "INFO: plugged exists"
+fi
+
+################################################################################
+#### git prompt
+################################################################################
+utl_log "INFO: checking git prompt"
+if [[ ! -f ~/.git-prompt.sh ]]; then
+	utl_log "INFO: fetching git prompt"
+	curl -fLo ~/.git-prompt.sh --create-dirs \
+		https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+else
+	utl_log "INFO: git prompt exists"
+fi
