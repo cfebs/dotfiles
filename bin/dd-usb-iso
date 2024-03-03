@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+source ~/bin/.util.sh
+
+if ! utl_cmd_exists 'fzf'; then
+	utl_log "ERROR: fzf is required"
+	exit 1
+fi
+
+_usage() {
+	utl_echoerr "$0 <in_file>"
+	utl_echoerr "  Will use fzf to prompt for which usb to write to"
+}
+
+in_file="$1"
+if [[ ! -f "$in_file" ]]; then
+	utl_log "ERROR: in file '$in_file' does not exist"
+	exit 1
+fi
+
+usb_device="$(find /dev/disk/by-id/ -iname "usb-*" -not -iname '*-part[0-9]' | fzf)"
+
+if [[ -z "$usb_device" ]]; then
+	utl_log "ERROR: empty usb device selection"
+	exit 1
+fi
+
+if [[ ! -e "$usb_device" ]]; then
+	utl_log "ERROR: usb device $usb_device does not exist"
+	exit 1
+fi
+
+cmd="sudo dd bs=4M if=$in_file of=$usb_device conv=fsync oflag=direct status=progress"
+utl_echoerr "Will write $in_file to $usb_device using dd with this command:"
+utl_echoerr "  $cmd"
+
+if ! utl_yn_confirm; then
+	utl_log "Aborting"
+	exit 1
+fi
+
+$cmd
