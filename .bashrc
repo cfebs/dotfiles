@@ -61,7 +61,14 @@ prepend_promptcmd() {
 	esac
 }
 
-if hash starship 1>/dev/null 2>&1; then
+# individual host stuff, no SCM
+[ -f ~/.exports ] && source ~/.exports
+
+# public common stuff between shells, tracked in SCM
+[ -f ~/.exports.common ] && source ~/.exports.common
+
+# starship after path manipulation
+if [ -x "$(command -v "starship")" ] || declare -F "$1" &>/dev/null; then
 	eval "$(starship init bash)"
 else
 	if [[ -f ~/.git-prompt.sh ]]; then
@@ -72,11 +79,6 @@ else
 	fi
 fi
 
-# individual host stuff, no SCM
-[ -f ~/.exports ] && source ~/.exports
-
-# public common stuff between shells, tracked in SCM
-[ -f ~/.exports.common ] && source ~/.exports.common
 
 # more private/on-demand env variables
 if [ ! -e ~/.exports.creds ]; then
