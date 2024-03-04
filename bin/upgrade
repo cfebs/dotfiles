@@ -11,18 +11,19 @@ run_upgrade_pkgs() {
 			exit 1
 		fi
 
+		if utl_cmd_exists snap; then
+			utl_echoerr ">> Upgrading snaps"
+			sudo snap refresh
+		fi
+
+		if utl_cmd_exists flatpak; then
+			utl_echoerr ">> Upgrading flatpack"
+			sudo flatpak update
+			sudo flatpak uninstall --unused
+		fi
+
 		if grep -i -q "DISTRIB_ID=[\"']*Arch" /etc/lsb-release; then
 			utl_echoerr ">> Upgrading archlinux"
-			if utl_cmd_exists flatpak; then
-				utl_echoerr ">> Upgrading flatpack"
-				sudo flatpak update
-				sudo flatpak uninstall --unused
-			fi
-
-			if utl_cmd_exists snap; then
-				utl_echoerr ">> Upgrading snaps"
-				sudo snap refresh
-			fi
 
 			utl_echoerr ">> Syncing archlinux-keyring"
 			sudo pacman -Sy --noconfirm archlinux-keyring
@@ -68,7 +69,7 @@ run_upgrade_pkgs() {
 
 		if utl_cmd_exists apt; then
 			utl_echoerr ">> Upgrading apt"
-			apt update && sudo apt upgrade -y
+			sudo apt update && sudo apt upgrade
 		fi
 	)
 	rc=$?
