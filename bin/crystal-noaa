@@ -66,8 +66,10 @@ cond_emoji_map = {
   "chance rain" => "\u{1F326}",
   "rain" => "\u{1F327}",
   "light rain" => "\u{1F327}",
+  "light rain fog/mist" => "\u{1F327}",
   "snow" => "\u{1F328}",
   "light snow" => "\u{1F328}",
+  "light snow fog/mist" => "\u{1F328}",
   "heavy snow" => "\u{2744}",
   "freezing rain" => "\u{1F9CA}",
 }
