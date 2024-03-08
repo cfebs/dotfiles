@@ -51,6 +51,7 @@ Plug 'vim-crystal/vim-crystal'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'fladson/vim-kitty'
 Plug 'github/copilot.vim'
+Plug 'leafo/moonscript-vim'
 
 set fileformat=unix
 set fileformats=unix,dos
