@@ -81,7 +81,7 @@ alias yarn-linked="find . -type l | grep -v .bin | sed 's/^\.\/node_modules\///'
 alias yarn-unlink-all="yarn-linked | xargs yarn unlink && yarn install --check-files"
 alias psshno="pssh -O StrictHostKeyChecking=no"
 alias jj='liljournal'
-alias termdown-warn="termdown --exec-cmd \"if [ '{0}' == '60' ]; then espeak '{1} remaining'; fi\""
+alias termdown-warn="termdown --exec-cmd \"if [ '{0}' -lt '6' ]; then espeak '{1}'; elif ['{0}' == '60' ]; then espeak '{1} remaining'; fi\""
 alias pomo-work="termdown-warn 30m"
 alias pomo-break='termdown-warn 5m'
 alias icat="kitty +kitten icat"
