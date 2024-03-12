@@ -3,26 +3,36 @@
 
 . ~/bin/.util.sh
 
+__fetch() {
+	name="$1"
+	remote_url="$2"
+	dest="$3"
+	utl_log "INFO: checking $name"
+	if [[ ! -f "$dest" ]]; then
+		utl_log "INFO: fetching $name from $remote_url"
+		curl -fLo "$dest" --create-dirs "$remote_url"
+	else
+		utl_log "INFO: $name already exists at $dest"
+	fi
+}
+
 ################################################################################
 #### vim plugged
 ################################################################################
-utl_log "INFO: checking fetching plugged"
-if [[ ! -f ~/.vim/autoload/plug.vim ]]; then
-	utl_log "INFO: fetching plugged"
-	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-else
-	utl_log "INFO: plugged exists"
-fi
+__fetch 'vim plugged' \
+	'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' \
+	"$HOME/.vim/autoload/plug.vim"
 
 ################################################################################
 #### git prompt
 ################################################################################
-utl_log "INFO: checking git prompt"
-if [[ ! -f ~/.git-prompt.sh ]]; then
-	utl_log "INFO: fetching git prompt"
-	curl -fLo ~/.git-prompt.sh --create-dirs \
-		https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-else
-	utl_log "INFO: git prompt exists"
-fi
+__fetch 'git prompt' \
+	'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh' \
+	"$HOME/.git-prompt.sh"
+
+################################################################################
+#### git completion
+################################################################################
+__fetch 'git completion' \
+	'https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash' \
+	"$HOME/.git-completion.sh"
