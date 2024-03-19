@@ -82,7 +82,7 @@ if which ruby >/dev/null && which gem >/dev/null; then
 	prepend_path "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 fi
 
-if which volta 1>/dev/null 2>&1; then
+if which volta 1>/dev/null 2>&1 || [[ -d "$HOME/.volta" ]]; then
 	# Set the VOLTA_HOME variable to $HOME/.volta
 	# Add $VOLTA_HOME/bin to the beginning of your PATH variable
 	export VOLTA_HOME="$HOME/.volta"
