@@ -22,9 +22,13 @@
 (tool-bar-mode -1)
 
 ;; Enable Evil
+(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+(setq evil-want-keybinding nil)
+(setq evil-want-C-i-jump nil) ;; Turns off normal mode <tab>
 (require 'evil)
+(when (require 'evil-collection nil t)
+  (evil-collection-init))
 (evil-mode 1)
-(evil-collection-init '(calendar dired calc ediff magit))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
