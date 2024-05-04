@@ -22,23 +22,18 @@
 (tool-bar-mode -1)
 
 ;; Enable Evil
-(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;; This is optional since it's already set to t by default.
+(setq evil-want-integration t)
 (setq evil-want-keybinding nil)
-(setq evil-want-C-i-jump nil) ;; Turns off normal mode <tab>
+;; Turns off normal mode <tab> which is tag jumping by default
+(setq evil-want-C-i-jump nil)
 (require 'evil)
 (when (require 'evil-collection nil t)
   (evil-collection-init))
+;; Evil leader keybinds
+(evil-set-leader nil (kbd ","))
+(evil-define-key 'normal 'global (kbd "<leader>x") 'evil-window-delete)
 (evil-mode 1)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(evil-collection magit evil)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Highlight trailing whitespace in red
+(setq-default show-trailing-whitespace t)
