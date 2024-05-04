@@ -8,12 +8,13 @@
 ;; (package-refresh-contents)
 
 ;; Download packages
-(setq package-list '(evil
-		     doom-themes
-		     magit
-		     evil-collection
-		     counsel
-		     ))
+(setq package-list
+	  '(evil
+		doom-themes
+		magit
+		evil-collection
+		counsel
+		))
 
 (dolist (pkg package-list)
   (unless (package-installed-p pkg)
@@ -29,6 +30,8 @@
 
 ;; Highlight trailing whitespace in red
 (setq-default show-trailing-whitespace t)
+;; Tabs
+(setq-default tab-width 4)
 
 ;; backups
 (let ((backup-dir "~/tmp/emacs/backups")
@@ -57,7 +60,8 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 50)
 (setq recentf-max-saved-items 50)
-(run-at-time nil (* 5 60) 'recentf-save-list)
+;; Can run recentf save periodically
+;; (run-at-time nil (* 5 60) 'recentf-save-list)
 
 ;; Theme
 (load-theme 'doom-solarized-dark t)
@@ -71,6 +75,8 @@
 (require 'evil)
 (when (require 'evil-collection nil t)
   (evil-collection-init))
+;; make tab work as expected in insert mode
+(define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 ;; Evil leader keybinds
 (evil-set-leader nil (kbd ","))
 (evil-define-key 'normal 'global (kbd "<leader>x") 'evil-window-delete)
