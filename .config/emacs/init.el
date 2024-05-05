@@ -97,6 +97,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other Plugin stuff
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(if (display-graphic-p)
+	(progn
+		(set-fringe-mode 10)
+		(set-face-attribute 'default nil :font "JetBrains Mono" :height 120)
+		(scroll-bar-mode -1)
+  ))
 
 ;; Evil binds
 (evil-set-leader nil (kbd ","))
