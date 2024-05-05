@@ -1,3 +1,6 @@
+;; Set a place for custom values (but won't be loaded)
+(setq custom-file (concat user-emacs-directory "/custom.el"))
+
 ;; Set up package.el to work with MELPA
 (require 'package)
 (add-to-list 'package-archives
@@ -23,7 +26,24 @@
 	(package-install pkg)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Base stuff
+;; Enable evil early
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Enable Evil
+;; This is optional since it's already set to t by default.
+(setq evil-want-integration t)
+(setq evil-want-keybinding nil)
+;; Turns off normal mode <tab> which is tag jumping by default
+(setq evil-want-C-i-jump nil)
+(require 'evil)
+(when (require 'evil-collection nil t)
+  (evil-collection-init))
+;; make tab work as expected in insert mode
+(define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
+(evil-mode 1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Base settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Hide bars
@@ -31,7 +51,10 @@
 (tool-bar-mode -1)
 
 ;; Highlight trailing whitespace in red
-(setq-default show-trailing-whitespace t)
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace t)))
+
 ;; Line numbers
 ;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (setq-default indicate-empty-lines t)
@@ -63,8 +86,26 @@
 	  delete-old-versions t)	; Clean up the backups
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Plugin stuff
+;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq org-agenda-files '("~/Sync/org"))
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Other Plugin stuff
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Evil binds
+(evil-set-leader nil (kbd ","))
+(evil-define-key 'normal 'global (kbd "<leader>x")	'evil-window-delete)
+(evil-define-key 'normal 'global (kbd "<leader>f")	'counsel-git)
+(evil-define-key 'normal 'global (kbd "<leader>m")	'counsel-recentf)
+(evil-define-key 'normal 'global (kbd "<leader>b")	'ivy-switch-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>t")	'counsel-fzf)
+(evil-define-key 'normal 'global (kbd "<leader>gs")	'magit)
 
 ;; recent files
 (recentf-mode 1)
@@ -76,27 +117,6 @@
 ;; Theme
 (load-theme 'doom-solarized-dark t)
 
-;; Enable Evil
-;; This is optional since it's already set to t by default.
-(setq evil-want-integration t)
-(setq evil-want-keybinding nil)
-;; Turns off normal mode <tab> which is tag jumping by default
-(setq evil-want-C-i-jump nil)
-(require 'evil)
-(when (require 'evil-collection nil t)
-  (evil-collection-init))
-;; make tab work as expected in insert mode
-(define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
-;; Evil leader keybinds
-(evil-set-leader nil (kbd ","))
-(evil-define-key 'normal 'global (kbd "<leader>x")		'evil-window-delete)
-(evil-define-key 'normal 'global (kbd "<leader>f")		'counsel-git)
-(evil-define-key 'normal 'global (kbd "<leader>m")		'counsel-recentf)
-(evil-define-key 'normal 'global (kbd "<leader>b")		'ivy-switch-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>t")		'counsel-fzf)
-(evil-define-key 'normal 'global (kbd "<leader>gs")		'magit)
-(evil-mode 1)
-
 ;; ivy, counsel mode ON
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
@@ -106,18 +126,3 @@
 ;; vimrc highlighting
 (require 'vimrc-mode)
 (add-to-list 'auto-mode-alist '("\\.vim\\(rc\\)?\\'" . vimrc-mode))
-
-;; TODO learn wtf this is, appears from time to time
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ws-butler vimrc-mode counsel solarized-theme magit evil-collection doom-themes)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
