@@ -52,6 +52,8 @@ Plug 'mzlogin/vim-markdown-toc'
 Plug 'fladson/vim-kitty'
 Plug 'github/copilot.vim'
 Plug 'leafo/moonscript-vim'
+Plug 'cfebs/vim-checkbox'
+Plug 'tpope/vim-unimpaired'
 
 set fileformat=unix
 set fileformats=unix,dos
@@ -279,6 +281,9 @@ map <Down> <Nop>
 "" %% expands to the current directory
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
+"" Folds
+nnoremap <space> za
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " rename current file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -503,3 +508,28 @@ let g:rustfmt_autosave = 1
 
 """ Goyo
 nnoremap <silent><leader>vv :Goyo<cr>:set linebreak<cr>:set wrap<cr>
+
+""" Checkboxes
+let g:insert_checkbox = '^'
+let g:insert_checkbox_prefix = '* '
+let g:insert_checkbox_suffix = " "
+map <silent> <leader>kk :call checkbox#ToggleCB()<cr>
+function! DoneCB()
+	" toggles a markdown checkbox
+	let curpos = getcurpos()
+	let doneline = search('^#.*DONE', 'n')
+	if doneline == 0
+		echoerr "Could not find DONE line"
+		return
+	end
+	" yank task to "y register
+	normal "ydd
+	" move cursor to done
+	call cursor(doneline, 1)
+	" paste
+	normal "yp
+	" back to cursor pos
+	call setpos('.', curpos)
+endfunction
+" moves a checkbox to the next markdown header: DONE
+map <silent> <leader>kd :call DoneCB()<cr>
