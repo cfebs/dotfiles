@@ -19,6 +19,7 @@
 		vimrc-mode
 		ws-butler
 		vterm
+		orderless
 		vertico
 		consult
 		marginalia
@@ -168,6 +169,9 @@
 
 (vertico-mode 1)
 (marginalia-mode 1)
+(setq completion-styles '(orderless basic)
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion))))
 
 ;; vimrc highlighting
 (require 'vimrc-mode)
