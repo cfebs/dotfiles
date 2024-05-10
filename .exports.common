@@ -114,4 +114,4 @@ export GO111MODULE=on
 # https://unix.stackexchange.com/a/257065
 export GPG_TTY=$(tty)
 
-eval $(keychain --agents gpg,ssh --timeout 60 --eval --quiet $(grep -r -l -i 'BEGIN.*PRIVATE KEY' ~/.ssh))
+eval $(keychain --agents gpg,ssh --timeout 120 --eval --quiet)
