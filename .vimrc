@@ -244,12 +244,15 @@ if executable('xclip')
     vmap <Leader>xc :w !xclip -selection clipboard<cr>
 endif
 
+"" Kill Ctrl-C. It's a bad habit.
+map! <C-C> <Nop>
+
+
 "" Quick leader functions
 nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
 nnoremap <leader>o :only<cr>
 nnoremap <leader>x :clo<cr>
-imap <c-c> <esc>
 
 
 "" Split/window nav
@@ -270,6 +273,12 @@ nnoremap <leader>ev :vsp $MYVIMRC<cr>
 nnoremap <leader>eb :vsp ~/.bashrc<cr>
 nnoremap <leader>eba :vsp ~/.bash_aliases<cr>
 
+"" %% expands to the current directory
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+"" Folds
+nnoremap <space> za
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " kill arrow keys
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -277,12 +286,6 @@ map <Left> <Nop>
 map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
-
-"" %% expands to the current directory
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-
-"" Folds
-nnoremap <space> za
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " rename current file
