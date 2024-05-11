@@ -4,8 +4,8 @@
 # will bring down existing vpn connection if it exists
 # will not bring up connection that was just brought down
 
-vpn="$(nmcli connection show | awk '{if ($3 == "vpn") print $1, $4}' | rofi -dmenu | awk '{print $1}')"
-activevpn="$(nmcli connection show --active | awk '{if ($3 == "vpn") print $1}')"
+vpn="$(nmcli connection show | awk '{if ($3 == "vpn" || $3 == "wireguard") print $1, $4}' | rofi -dmenu | awk '{print $1}')"
+activevpn="$(nmcli connection show --active | awk '{if ($3 == "vpn" || $3 == "wireguard") print $1}')"
 
 if [[ -z "$vpn" ]]; then
     notify-send "error" "No vpn selected $vpn";
