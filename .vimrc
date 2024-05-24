@@ -119,10 +119,14 @@ set showmatch
 " Colors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+set background=dark
+"set background=light
+
 "" Solarized
 "let g:solarized_termcolors = 16
 "let g:solarized_termtrans = 1
-colorscheme solarized8
+"colorscheme solarized
+autocmd vimenter * ++nested colorscheme solarized8
 
 "colorscheme railscasts
 "colorscheme desert
@@ -132,8 +136,6 @@ colorscheme solarized8
 "let g:zenbones_compat = 1
 "colorscheme zenbones
 
-set background=dark
-"set background=light
 
 set lazyredraw
 syntax on
