@@ -7,6 +7,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'aaronbieber/quicktask'
 Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
@@ -119,9 +120,9 @@ set showmatch
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" Solarized
-let g:solarized_termcolors= 16
-let g:solarized_termtrans = 1
-colorscheme solarized
+"let g:solarized_termcolors = 16
+"let g:solarized_termtrans = 1
+colorscheme solarized8
 
 "colorscheme railscasts
 "colorscheme desert
