@@ -1,70 +1,80 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/junegunn/vim-plug
-"
 """"""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'aaronbieber/quicktask'
-Plug 'altercation/vim-colors-solarized'
+"" Themes
+"Plug 'LuRsT/austere.vim'
+"Plug 'altercation/vim-colors-solarized'
+"Plug 'andreasvc/vim-256noir'
+"Plug 'chriskempson/base16-vim'
+"Plug 'dracula/vim', { 'as': 'dracula' }
+"Plug 'jaredgorski/Mies.vim'
+"Plug 'jpo/vim-railscasts-theme'
+"Plug 'mcchrish/zenbones.nvim'
+"Plug 'nanotech/jellybeans.vim'
 Plug 'lifepillar/vim-solarized8'
-Plug 'c9s/helper.vim'
-Plug 'c9s/treemenu.vim'
-Plug 'c9s/vikube.vim'
-Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
-Plug 'craigemery/vim-autotag'
+"" Syntax
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'dense-analysis/ale'
 Plug 'digitaltoad/vim-pug'
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'evanleck/vim-svelte', { 'branch': 'main' }
 Plug 'fgsch/vim-varnish'
-Plug 'gcmt/breeze.vim'
-Plug 'godlygeek/tabular'
-Plug 'gregsexton/gitv'
+Plug 'fladson/vim-kitty'
+Plug 'git@git.sr.ht:~sircmpwn/hare.vim'
 Plug 'groenewege/vim-less'
 Plug 'hashivim/vim-terraform'
-Plug 'itchyny/lightline.vim'
-Plug 'jpo/vim-railscasts-theme'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
 Plug 'jvirtanen/vim-hcl'
 Plug 'kchmck/vim-coffee-script'
 Plug 'lambdatoast/elm.vim'
 Plug 'leafgarland/typescript-vim'
-Plug 'lvht/mru'
-Plug 'maksimr/vim-jsbeautify'
+Plug 'leafo/moonscript-vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'mattn/emmet-vim'
 Plug 'mracos/mermaid.vim'
-Plug 'nanotech/jellybeans.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'posva/vim-vue'
 Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-markdown'
+Plug 'vim-crystal/vim-crystal'
+"" Other
+Plug 'aaronbieber/quicktask'
+Plug 'c9s/helper.vim'
+Plug 'c9s/treemenu.vim'
+Plug 'c9s/vikube.vim'
+Plug 'cfebs/vim-checkbox'
+Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
+Plug 'craigemery/vim-autotag'
+Plug 'dense-analysis/ale'
+Plug 'gcmt/breeze.vim'
+Plug 'github/copilot.vim'
+Plug 'godlygeek/tabular'
+Plug 'gregsexton/gitv'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'lvht/mru'
+Plug 'maksimr/vim-jsbeautify'
+Plug 'mattn/emmet-vim'
+Plug 'mzlogin/vim-markdown-toc'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-vinegar'
-Plug 'vim-crystal/vim-crystal'
-Plug 'mzlogin/vim-markdown-toc'
-Plug 'fladson/vim-kitty'
-Plug 'github/copilot.vim'
-Plug 'leafo/moonscript-vim'
-Plug 'cfebs/vim-checkbox'
 Plug 'tpope/vim-unimpaired'
-
-set fileformat=unix
-set fileformats=unix,dos
+Plug 'tpope/vim-vinegar'
 
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Fundamentals
 """"""""""""""""""""""""""""""""""""""""""""""""""
+set fileformat=unix
+set fileformats=unix,dos
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+
 set nocp
+set nonu
 filetype plugin indent on
 
 set guicursor=
@@ -84,12 +94,8 @@ set scrolloff=3
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
 set shell=bash
-"set shellcmdflag=-ic
-set nonu
-"set mouse-=a
-set mouse=
-"set ttymouse=
 
+set mouse=
 
 set backupcopy=yes
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -120,22 +126,12 @@ set showmatch
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set background=dark
-"set background=light
 
 "" Solarized
 "let g:solarized_termcolors = 16
 "let g:solarized_termtrans = 1
 "colorscheme solarized
 autocmd vimenter * ++nested colorscheme solarized8
-
-"colorscheme railscasts
-"colorscheme desert
-"colorscheme lucius
-"colorscheme jellybeans
-"colorscheme dracula
-"let g:zenbones_compat = 1
-"colorscheme zenbones
-
 
 set lazyredraw
 syntax on
@@ -164,12 +160,6 @@ set wildignore+=*.so,*.swp,*/.git/*,.gitkeep
 set laststatus=2
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-"" Experimental Turn OFF
-""""""""""""""""""""""""""""""""""""""""""""""""""
-"set cpo-=<
-"set wcm=<C-Z>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Auto Commands
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -189,8 +179,11 @@ augroup vimrcEx
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
   autocmd BufWinLeave * call clearmatches()
 
+  "" 8 width tab
+  autocmd FileType hare setlocal noet ts=8 sts=8 sw=8
+
   "" 4 spaces
-  autocmd FileType python,javascript,php setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  autocmd FileType python,javascript,php setlocal noet tabstop=4 softtabstop=4 shiftwidth=4
 
   "" 2 spaces
   autocmd FileType crystal,coffee,ruby,haml,eruby,html,sass,cucumber,pug,haskell,vcl setlocal ai sw=2 sts=2 et
@@ -256,7 +249,6 @@ nnoremap <leader><leader> <c-^>
 nnoremap <leader><cr> :noh<cr>
 nnoremap <leader>o :only<cr>
 nnoremap <leader>x :clo<cr>
-
 
 "" Split/window nav
 nnoremap <C-j> <C-w>j
@@ -426,7 +418,6 @@ noremap <leader>vt :call InsertTemplateTag()<cr>
 noremap <leader>vo :call InsertTemplateTagOut()<cr>
 noremap <leader>vl :call InsertLogger()<cr>
 
-set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 let g:gh_line_map_default = 0
 let g:gh_line_map = '<leader>gh'
@@ -435,7 +426,9 @@ let g:gh_echo_only = 1
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 
-"""" Ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" highlight SignColumn ctermbg=Black
 highlight clear SignColumn
@@ -505,9 +498,9 @@ let g:vim_json_syntax_conceal = 0
 " annoying sql omni complete disable
 let g:ftplugin_sql_omni_key = '<Plug>DisableSqlOmni'
 
-
-""" Completion
-"" TODO
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Other
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """ Rust
 let g:rustfmt_autosave = 1
