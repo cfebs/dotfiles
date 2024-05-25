@@ -125,13 +125,15 @@ set showmatch
 " Colors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+set t_Co=16
 set background=dark
+colorscheme lunaperche
 
 "" Solarized
 "let g:solarized_termcolors = 16
 "let g:solarized_termtrans = 1
 "colorscheme solarized
-autocmd vimenter * ++nested colorscheme solarized8
+"autocmd vimenter * ++nested colorscheme solarized8
 
 set lazyredraw
 syntax on
