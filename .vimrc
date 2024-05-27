@@ -5,7 +5,6 @@ call plug#begin('~/.vim/plugged')
 
 "" Themes
 "Plug 'LuRsT/austere.vim'
-"Plug 'altercation/vim-colors-solarized'
 "Plug 'andreasvc/vim-256noir'
 "Plug 'chriskempson/base16-vim'
 "Plug 'dracula/vim', { 'as': 'dracula' }
@@ -13,7 +12,9 @@ call plug#begin('~/.vim/plugged')
 "Plug 'jpo/vim-railscasts-theme'
 "Plug 'mcchrish/zenbones.nvim'
 "Plug 'nanotech/jellybeans.vim'
-Plug 'lifepillar/vim-solarized8'
+"Plug 'lifepillar/vim-solarized8'
+"Plug 'altercation/vim-colors-solarized'
+Plug 'cfebs/solarized-16.vim'
 "" Syntax
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'dart-lang/dart-vim-plugin'
@@ -48,7 +49,6 @@ Plug 'cfebs/vim-gh-line', { 'branch': 'feat-echo-only' }
 Plug 'craigemery/vim-autotag'
 Plug 'dense-analysis/ale'
 Plug 'gcmt/breeze.vim'
-Plug 'github/copilot.vim'
 Plug 'godlygeek/tabular'
 Plug 'gregsexton/gitv'
 Plug 'itchyny/lightline.vim'
@@ -126,14 +126,9 @@ set showmatch
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set t_Co=16
+set notermguicolors
 set background=dark
-colorscheme lunaperche
-
-"" Solarized
-"let g:solarized_termcolors = 16
-"let g:solarized_termtrans = 1
-"colorscheme solarized
-"autocmd vimenter * ++nested colorscheme solarized8
+colorscheme solarized-16
 
 set lazyredraw
 syntax on
