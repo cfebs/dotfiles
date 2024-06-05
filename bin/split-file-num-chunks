@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+fname="$1"
+num="$2"
+_usage() {
+	echo "Usage: $0 <file_to_split> <num_files>" 1>&2
+	echo "Splits files into chunks, preserves lines" 1>&2
+}
+if [[ -z "$fname" ]]; then
+	echo "$fname does not exist" 1>&2
+fi
+if [[ -z "$num" ]]; then
+	echo "No num chunks provided" 1>&2
+fi
+split -d -n "l/$num" "$fname" "$fname"
