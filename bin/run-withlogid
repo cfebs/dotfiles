@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+_usage() {
+	echo "Usage: $0 <run_id>" 1>&2
+	echo "	run_id: this can be a name or path to a file" 1>&1
+	echo "		    stderr and stdout will be written to <run_id>.{date}.log" 1>&1
+}
+
+id="$1"
+if [ -z "$1" ]; then
+	echo "ERROR: empty id" 1>&2
+	exit 1
+fi
+shift
+logfile="$id.$(date -Is).log"
+$@ 2>&1 1>$logfile
