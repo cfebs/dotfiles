@@ -58,8 +58,8 @@ if [ "$XDG_SESSION_TYPE" = "x11" ]; then
 	fi
 fi
 
-# for qt apps to use gtk themes when launched via rofi/dmenu in i3
-export QT_QPA_PLATFORMTHEME=gtk2
+# https://wiki.archlinux.org/title/qt#Configuration_of_Qt_5/6_applications_under_environments_other_than_KDE_Plasma
+export QT_QPA_PLATFORMTHEME=qt5ct
 
 # so every app that launches will export current GTK_THEME which should enable dark mode
 # in certain apps like chrome
