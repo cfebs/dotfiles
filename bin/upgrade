@@ -41,7 +41,7 @@ run_upgrade_pkgs() {
 
 			if utl_cmd_exists paccache; then
 				utl_echoerr ">> Running paccache cleanup"
-				local paccache_cmd="paccache -k 3 -r -c $(pacman-conf CacheDir)"
+				local paccache_cmd="paccache -k 1 -r -c $(pacman-conf CacheDir)"
 				# handle paru clone dirs
 				for d in "${XDG_CACHE_HOME:-$HOME/.cache}"/paru/clone/*/; do
 				  paccache_cmd="$paccache_cmd -c $d"
