@@ -23,7 +23,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'evanleck/vim-svelte', { 'branch': 'main' }
 Plug 'fgsch/vim-varnish'
 Plug 'fladson/vim-kitty'
-Plug 'git@git.sr.ht:~sircmpwn/hare.vim'
+Plug 'https://git.sr.ht/~sircmpwn/hare.vim'
 Plug 'groenewege/vim-less'
 Plug 'hashivim/vim-terraform'
 Plug 'jvirtanen/vim-hcl'
